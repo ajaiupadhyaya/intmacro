@@ -1,4 +1,1 @@
-{
-    "strip_sources": true,
-    "template": "material"
-  }
+{ "strip_sources": true, "template": "material" }
