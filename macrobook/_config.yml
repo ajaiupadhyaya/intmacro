@@ -34,6 +34,12 @@ html:
       announcement: "🚀 Live Macro Models. Data. Theory. Beautiful."
       show_navbar_depth: 2
 
+
+repository:
+  url: https://github.com/ajaiupadhyaya/intmacro
+  path_to_book: macrobook/
+  branch: main
+  
 # Execution options (optional if using Thebe)
 execute:
   execute_notebooks: force
