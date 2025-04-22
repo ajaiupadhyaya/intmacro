@@ -16,6 +16,8 @@ favicon: _static/favicon.ico
 
 # HTML output configuration
 html:
+  extra_css:
+    - _static/custom.css
   use_jupyter_widgets: true
   favicon: _static/favicon.ico
   logo: _static/vuoksi_logo.png

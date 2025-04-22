@@ -1,0 +1,24 @@
+/* Vuoksi Theme - Elegant, Clean */
+body {
+    font-family: "IBM Plex Sans", sans-serif;
+    background-color: #fcfcfc;
+    color: #111;
+  }
+  
+  h1, h2 {
+    color: #111;
+    font-weight: 600;
+    margin-top: 1.5rem;
+  }
+  
+  .output {
+    border: 1px solid #e2e2e2;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .thebe-status {
+    display: none;
+  }
