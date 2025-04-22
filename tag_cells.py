@@ -1,25 +1,26 @@
 # tag_cells.py
-import os
 import nbformat
+import os
 
-folder = "./macrobook/content"
+path = "macrobook/content"
 
-for file in os.listdir(folder):
-    if file.endswith(".ipynb"):
-        path = os.path.join(folder, file)
-        with open(path, "r", encoding="utf-8") as f:
-            nb = nbformat.read(f, as_version=4)
+for root, _, files in os.walk(path):
+    for file in files:
+        if file.endswith(".ipynb"):
+            full_path = os.path.join(root, file)
+            with open(full_path, "r", encoding="utf-8") as f:
+                nb = nbformat.read(f, as_version=4)
 
-        for cell in nb.cells:
-            if cell.cell_type == "code":
-                cell.metadata.setdefault("tags", [])
-                if "thebe-init" not in cell.metadata["tags"]:
-                    cell.metadata["tags"].append("thebe-init")
-                if "hide-input" not in cell.metadata["tags"]:
-                    cell.metadata["tags"].append("hide-input")
-                break  # only tag the first code cell
+            for cell in nb.cells:
+                if cell.cell_type == "code":
+                    tags = cell.metadata.get("tags", [])
+                    if "thebe-init" not in tags:
+                        tags.append("thebe-init")
+                    else:
+                        tags = list(set(tags))  # remove duplicates
+                    cell.metadata["tags"] = tags
 
-        with open(path, "w", encoding="utf-8") as f:
-            nbformat.write(nb, f)
+            with open(full_path, "w", encoding="utf-8") as f:
+                nbformat.write(nb, f)
 
-print("✅ Applied 'thebe-init' and 'hide-input' to first code cell of each notebook.")
+print("✅ Cleaned and updated all thebe-init tags without duplication.")
