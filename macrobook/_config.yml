@@ -36,13 +36,21 @@ html:
 
 # Execution options (optional if using Thebe)
 execute:
-  execute_notebooks: auto
+  execute_notebooks: force
+  allow_errors: false
 
-# Enable Thebe for interactive cells
 launch_buttons:
+  notebook_interface: "jupyterlab"
   thebe: true
+  colab_url: "https://colab.research.google.com"
   binderhub_url: "https://mybinder.org"
-  notebook_interface: "classic"
+
+html:
+  use_repository_button: true
+  use_edit_page_button: true
+  use_issues_button: true
+  extra_footer: "Built with ❤️ by Ajai for Intermediate Macroeconomics"
+  announcement: "🚀 Interactive Vuoksi Macroeconomics Sim!"
 
 # Enable myst extensions for math and interactivity
 parse:

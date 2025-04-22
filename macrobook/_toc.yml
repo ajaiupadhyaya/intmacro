@@ -27,8 +27,8 @@ chapters:
   - file: content/realgdpacross
   - file: content/realvsnom
   - file: content/robots
-  - file: content/romer_model_endogen
   - file: content/romer_model
+  - file: content/romer_model_endogen
   - file: content/romerendogenous
   - file: content/scale_effects
   - file: content/slowinggrowth
