@@ -1,48 +1,55 @@
-title: intmacro
+# ===========================
+# _config.yml for Jupyter Book
+# Clean. Beautiful. Vuoksi-tier.
+# ===========================
+
+# Site-wide settings
+root: content/intro
+
+format: jb-book
+
+# Book metadata
+title: Vuoksi Macroeconomics
 author: Ajai Upadhyaya
-logo: images/logo.png  # Optional if you add a logo
-only_build_toc_files: true
+logo: _static/vuoksi_logo.png
+favicon: _static/favicon.ico
 
-execute:
-  execute_notebooks: force
-  allow_errors: false
-  timeout: 120
-  exclude_patterns: []
-
-launch_buttons:
-  notebook_interface: classic
-  colab_url: https://colab.research.google.com
-
-repository:
-  url: https://github.com/ajaiupadhyaya/intmacro
-  path_to_book: macrobook
-  branch: main
-
+# HTML output configuration
 html:
+  use_jupyter_widgets: true
+  favicon: _static/favicon.ico
+  logo: _static/vuoksi_logo.png
+  home_page_in_toc: true
+  extra_navbar: ""
+  extra_footer: "<small>Vuoksi Capital | Created by Ajai Upadhyaya with ❤️</small>"
   theme:
     name: sphinx_book_theme
     options:
       path_to_docs: "macrobook"
       repository_url: https://github.com/ajaiupadhyaya/intmacro
+      repository_branch: main
       use_repository_button: true
       use_edit_page_button: true
       use_issues_button: true
-      extra_navbar: ""
-      extra_footer: "Vuoksi Capital Macroeconomics | Built by Ajai Upadhyaya"
-      home_page_in_toc: true
-  favicon: "_static/favicon.ico"
-  logo: "_static/logo.png"
-  favicon: images/favicon.ico  # Optional
-  use_issues_button: true
-  use_repository_button: true
-  extra_navbar: Powered by Jupyter Book
-  html:
-  use_repository_button: true
-  use_issues_button: true
-  use_edit_page_button: true
-  extra_footer: "Made with 💙"
-  extra_navbar: "Vuoksi Macroeconomics"
-  announcement: "🚀 Welcome to the most beautiful macro book ever built!"
-  use_thebe: true
-  use_jupyeter_widgets: true
-  use_analytics: true
+      announcement: "🚀 Live Macro Models. Data. Theory. Beautiful."
+      show_navbar_depth: 2
+
+# Execution options (optional if using Thebe)
+execute:
+  execute_notebooks: auto
+
+# Enable Thebe for interactive cells
+launch_buttons:
+  thebe: true
+  binderhub_url: "https://mybinder.org"
+  notebook_interface: "classic"
+
+# Enable myst extensions for math and interactivity
+parse:
+  myst_enable_extensions:
+    - dollarmath
+    - colon_fence
+    - linkify
+    - substitution
+    - tasklist
+    - deflist
