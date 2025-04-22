@@ -1,66 +1,57 @@
 # ===========================
-# _config.yml for Jupyter Book
-# Clean. Beautiful. Vuoksi-tier.
+# Vuoksi Macroeconomics - _config.yml
+# Clean. Interactive. Beautiful.
 # ===========================
 
-# Site-wide settings
-root: content/intro
-
-format: jb-book
-
-# Book metadata
+# Project metadata
 title: Vuoksi Macroeconomics
 author: Ajai Upadhyaya
 logo: _static/vuoksi_logo.png
 favicon: _static/favicon.ico
+root: content/intro
+format: jb-book
 
-# HTML output configuration
+# Repository buttons + source links
+repository:
+  url: https://github.com/ajaiupadhyaya/intmacro
+  path_to_book: macrobook/
+  branch: main
+
+# Launch + Interactivity
+launch_buttons:
+  notebook_interface: jupyterlab
+  thebe: true
+  binderhub_url: https://mybinder.org
+  colab_url: https://colab.research.google.com
+
+# Enable Thebe + Widgets
 html:
+  favicon: _static/favicon.ico
+  logo: _static/vuoksi_logo.png
   extra_css:
     - _static/custom.css
   use_jupyter_widgets: true
-  favicon: _static/favicon.ico
-  logo: _static/vuoksi_logo.png
   home_page_in_toc: true
   extra_navbar: ""
   extra_footer: "<small>Vuoksi Capital | Created by Ajai Upadhyaya with ❤️</small>"
   theme:
     name: sphinx_book_theme
     options:
-      path_to_docs: "macrobook"
       repository_url: https://github.com/ajaiupadhyaya/intmacro
       repository_branch: main
+      path_to_docs: "macrobook"
       use_repository_button: true
       use_edit_page_button: true
       use_issues_button: true
-      announcement: "🚀 Live Macro Models. Data. Theory. Beautiful."
       show_navbar_depth: 2
+      announcement: "🚀 Interactive Vuoksi Models. Built Beautifully."
 
-
-repository:
-  url: https://github.com/ajaiupadhyaya/intmacro
-  path_to_book: macrobook/
-  branch: main
-  
-# Execution options (optional if using Thebe)
+# Notebook execution settings
 execute:
   execute_notebooks: force
   allow_errors: false
 
-launch_buttons:
-  notebook_interface: "jupyterlab"
-  thebe: true
-  colab_url: "https://colab.research.google.com"
-  binderhub_url: "https://mybinder.org"
-
-html:
-  use_repository_button: true
-  use_edit_page_button: true
-  use_issues_button: true
-  extra_footer: "Built with ❤️ by Ajai for Intermediate Macroeconomics"
-  announcement: "🚀 Interactive Vuoksi Macroeconomics Sim!"
-
-# Enable myst extensions for math and interactivity
+# Markdown/Math/Interactivity enhancements
 parse:
   myst_enable_extensions:
     - dollarmath

@@ -1,1 +1,10 @@
-{ "strip_sources": true, "template": "material" }
+{
+    "strip_sources": true,
+    "template": "material",
+    "theme": "light",
+    "enable_nbextensions": true,
+    "VoilaConfiguration": {
+      "voila_disable_nbextensions": false,
+      "enable_mathjax": true
+    }
+  }
