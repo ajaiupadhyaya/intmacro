@@ -1,14 +1,26 @@
-# Welcome to Intermediate Macroeconomics 🚀
+# 📘 Welcome to *Intermediate Macroeconomics*
 
-This site presents interactive, professional-grade visualizations, models, and walkthroughs for key topics in **Intermediate Macroeconomics**, inspired by *Charles I. Jones*, *UVA Econ 3020*, and *GrowthEcon.com*.
+This is an interactive project built by **Ajai Upadhyaya** using models and theory from:
 
-Explore topics like:
-- Solow Growth
-- Romer Ideas
-- Two-Period Consumption
-- AD-AS
-- Investment Theory
-- Balanced Growth
-- Convergence and Beyond!
+- *Charles I. Jones – Macroeconomics*
+- UVA Econ 3020: Intermediate Macroeconomics
+- GrowthEcon.com by Dietrich Vollrath
 
-Use the sidebar to dive into the models!
+Explore topics such as:
+
+- 📈 Solow Growth Model
+- 🧠 Romer Model of Ideas
+- 🏦 Two-Period Consumption and Savings
+- 🔄 AD-AS Dynamics
+- 💹 Real GDP, Investment, Productivity, and more
+
+Each section features:
+
+✅ Interactive visuals  
+✅ Live economic logic  
+✅ Clean math, intuitive models  
+✅ A clean interface (NYT-style)
+
+---
+
+🧠 Start learning below ⬇️  

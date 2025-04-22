@@ -1,14 +1,22 @@
-title: Intermediate Macroeconomics Interactive Guide
+title: intmacro
 author: Ajai Upadhyaya
-logo: ""
+logo: images/logo.png  # Optional if you add a logo
 only_build_toc_files: true
+
+execute:
+  execute_notebooks: auto
+
+launch_buttons:
+  notebook_interface: classic
+  colab_url: https://colab.research.google.com
+
 repository:
   url: https://github.com/ajaiupadhyaya/intmacro
-  branch: gh-pages
   path_to_book: macrobook
-  provider: github
-launch_buttons:
-  binderhub_url: ""
-  thebe: true
-execute:
-  execute_notebooks: "off"
+  branch: main
+
+html:
+  favicon: images/favicon.ico  # Optional
+  use_issues_button: true
+  use_repository_button: true
+  extra_navbar: Powered by Jupyter Book
