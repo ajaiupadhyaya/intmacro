@@ -19,7 +19,30 @@ repository:
   branch: main
 
 html:
+  theme:
+    name: sphinx_book_theme
+    options:
+      path_to_docs: "macrobook"
+      repository_url: https://github.com/ajaiupadhyaya/intmacro
+      use_repository_button: true
+      use_edit_page_button: true
+      use_issues_button: true
+      extra_navbar: ""
+      extra_footer: "Vuoksi Capital Macroeconomics | Built by Ajai Upadhyaya"
+      home_page_in_toc: true
+  favicon: "_static/favicon.ico"
+  logo: "_static/logo.png"
   favicon: images/favicon.ico  # Optional
   use_issues_button: true
   use_repository_button: true
   extra_navbar: Powered by Jupyter Book
+  html:
+  use_repository_button: true
+  use_issues_button: true
+  use_edit_page_button: true
+  extra_footer: "Made with 💙"
+  extra_navbar: "Vuoksi Macroeconomics"
+  announcement: "🚀 Welcome to the most beautiful macro book ever built!"
+  use_thebe: true
+  use_jupyeter_widgets: true
+  use_analytics: true
