@@ -1,5 +1,6 @@
 format: jb-book
 root: content/intro
+
 chapters:
   - file: content/2_period_consump
   - file: content/adas_model
@@ -14,7 +15,6 @@ chapters:
   - file: content/growth_acc
   - file: content/humancapital
   - file: content/hybrid_model
-  - file: content/index
   - file: content/is_curve_model
   - file: content/iscurve
   - file: content/labor_leisure_model

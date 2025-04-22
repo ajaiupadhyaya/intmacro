@@ -4,7 +4,10 @@ logo: images/logo.png  # Optional if you add a logo
 only_build_toc_files: true
 
 execute:
-  execute_notebooks: auto
+  execute_notebooks: "auto"
+  allow_errors: false
+  timeout: 120
+  exclude_patterns: []
 
 launch_buttons:
   notebook_interface: classic
