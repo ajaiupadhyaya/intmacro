@@ -1,44 +1,55 @@
 format: jb-book
 root: content/intro
 
-chapters:
-  - file: content/2_period_consump
-  - file: content/adas_model
-  - file: content/adassim
-  - file: content/cash_money
-  - file: content/cd_crsrevised
-  - file: content/cobb_d_prod
-  - file: content/convergence_hypo
-  - file: content/dynamicshock
-  - file: content/foundations_growth
-  - file: content/gabd
-  - file: content/growth_acc
-  - file: content/humancapital
-  - file: content/hybrid_model
-  - file: content/is_curve_model
-  - file: content/iscurve
-  - file: content/labor_leisure_model
-  - file: content/measuring_gdp
-  - file: content/mgcwrgdp
-  - file: content/mpk_tobin
-  - file: content/Preliminaries
-  - file: content/qGDP
-  - file: content/real_gdp_growth
-  - file: content/realgdpacross
-  - file: content/realvsnom
-  - file: content/robots
-  - file: content/romer_model
-  - file: content/romer_model_endogen
-  - file: content/romerendogenous
-  - file: content/scale_effects
-  - file: content/slowinggrowth
-  - file: content/solow_bgp
-  - file: content/solow_constantabar&l
-  - file: content/solow_model
-  - file: content/solow_pop&_tech_growth
-  - file: content/solow_romer_hybrid
-  - file: content/solow_transition
-  - file: content/solowmodel
-  - file: content/tobin_q_model
-  - file: content/two_goods_twoperiods
-  - file: content/two_period_model
+parts:
+  - caption: Fundamentals
+    chapters:
+      - file: content/measuring_gdp
+      - file: content/real_gdp_growth
+      - file: content/realvsnom
+      - file: content/qGDP
+      - file: content/mgcwrgdp
+
+  - caption: Consumption Theory
+    chapters:
+      - file: content/2_period_consump
+      - file: content/two_period_model
+      - file: content/two_goods_twoperiods
+
+  - caption: Investment & Capital
+    chapters:
+      - file: content/mpk_tobin
+      - file: content/tobin_q_model
+      - file: content/robots
+
+  - caption: Growth Models
+    chapters:
+      - file: content/solow_model
+      - file: content/solow_transition
+      - file: content/solow_bgp
+      - file: content/solow_pop&_tech_growth
+      - file: content/romer_model
+      - file: content/romer_model_endogen
+      - file: content/romerendogenous
+      - file: content/scale_effects
+      - file: content/slowinggrowth
+      - file: content/solow_romer_hybrid
+
+  - caption: IS Curve and AD-AS
+    chapters:
+      - file: content/is_curve_model
+      - file: content/adas_model
+      - file: content/adassim
+      - file: content/dynamicshock
+
+  - caption: Foundations & Context
+    chapters:
+      - file: content/foundations_growth
+      - file: content/convergence_hypo
+      - file: content/growth_acc
+      - file: content/gabd
+      - file: content/humancapital
+      - file: content/cd_crsrevised
+      - file: content/cobb_d_prod
+      - file: content/cash_money
+      - file: content/Preliminaries
