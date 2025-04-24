@@ -33,7 +33,7 @@ html:
   use_jupyter_widgets: true
   home_page_in_toc: true
   extra_navbar: ""
-  extra_footer: "<small>Vuoksi Capital | Created by Ajai Upadhyaya with ❤️</small>"
+  extra_footer: "<small>Created by Ajai Upadhyaya with ❤️</small>"
   theme:
     name: sphinx_book_theme
     options:
@@ -44,12 +44,13 @@ html:
       use_edit_page_button: true
       use_issues_button: true
       show_navbar_depth: 2
-      announcement: "🚀 Interactive Vuoksi Models. Built Beautifully."
+      announcement: "🚀 Interactive Models. Built Beautifully."
 
 # Notebook execution settings
 execute:
   execute_notebooks: force
   allow_errors: false
+  remove_code_source: false
 
 # Markdown/Math/Interactivity enhancements
 parse:
@@ -60,5 +61,4 @@ parse:
     - substitution
     - tasklist
     - deflist
-
-  
+    - toggle
