@@ -4,3 +4,6 @@ pandas
 ipywidgets
 matplotlib
 numpy
+seaborn
+plotly
+sympy
