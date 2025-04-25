@@ -9,7 +9,8 @@ author: Ajai Upadhyaya
 logo: _static/vuoksi_logo.png
 favicon: _static/favicon.ico
 root: content/intro
-format: jb-book
+
+only_build_toc_files: true
 
 # Repository buttons + source links
 repository:
