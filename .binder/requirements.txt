@@ -1,0 +1,6 @@
+jupyter-book
+scipy
+pandas
+ipywidgets
+matplotlib
+numpy
