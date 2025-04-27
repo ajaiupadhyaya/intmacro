@@ -34,7 +34,7 @@ html:
   use_jupyter_widgets: true
   home_page_in_toc: true
   extra_navbar: ""
-  extra_footer: "<small>Created by Ajai Upadhyaya with ❤️</small>"
+  extra_footer: "<small>Open-source project licensed under the MIT License. Built by Ajai Upadhyaya.</small>"  
   theme:
     name: sphinx_book_theme
     options:
