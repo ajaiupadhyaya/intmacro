@@ -1,5 +1,3 @@
-# intmacro
-
 # 📘 Econ 3020: Intermediate Macroeconomics
 ## Helpful Guide to Using This Site
 
