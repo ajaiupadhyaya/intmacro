@@ -53,3 +53,9 @@ parts:
       - file: content/cobb_d_prod
       - file: content/cash_money
       - file: content/Preliminaries
+  
+  - caption: Advanced Business Cycle Models
+    chapters:
+    - file: content/lucas_islands_model
+    - file: content/rbc_simulation
+    - file: content/equilibrium_model
