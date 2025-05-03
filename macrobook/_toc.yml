@@ -3,59 +3,96 @@ root: content/intro
 
 parts:
 - caption: Foundations & Context
-    chapters:
-      - file: content/Preliminaries
-      - file: content/foundations_growth
-      - file: content/convergence_hypo
-      - file: content/growth_acc
-      - file: content/gabd
-      - file: content/humancapital
-      - file: content/cd_crsrevised
-      - file: content/cobb_d_prod
-      - file: content/cash_money
+  chapters:
+    - file: content/Preliminaries
+      title: Preliminaries
+    - file: content/foundations_growth
+      title: Foundations of Growth
+    - file: content/convergence_hypo
+      title: Convergence Hypothesis
+    - file: content/growth_acc
+      title: Growth Accounting
+    - file: content/gabd
+      title: Global and Balanced Development
+    - file: content/humancapital
+      title: Human Capital
+    - file: content/cd_crsrevised
+      title: CD-CRS Revised
+    - file: content/cobb_d_prod
+      title: Cobb-Douglas Production
+    - file: content/cash_money
+      title: Cash and Money
 
-  - caption: Fundamentals
-    chapters:
-      - file: content/measuring_gdp
-      - file: content/real_gdp_growth
-      - file: content/realvsnom
-      - file: content/qGDP
-      - file: content/mgcwrgdp
+- caption: Measuring and Comparing GDP
+  chapters:
+    - file: content/measuring_gdp
+      title: Measuring GDP
+    - file: content/real_gdp_growth
+      title: Real GDP Growth
+    - file: content/realvsnom
+      title: Real vs. Nominal
+    - file: content/qGDP
+      title: Quarterly GDP
+    - file: content/mgcwrgdp
+      title: Marginal Growth Contributions
 
-  - caption: Consumption Theory
-    chapters:
-      - file: content/2_period_consump
-      - file: content/two_period_model
-      - file: content/two_goods_twoperiods
+- caption: Consumption Theory
+  chapters:
+    - file: content/2_period_consump
+      title: Two-Period Consumption
+    - file: content/two_period_model
+      title: Two-Period Model
+    - file: content/two_goods_twoperiods
+      title: Two Goods, Two Periods
 
-  - caption: Investment & Capital
-    chapters:
-      - file: content/mpk_tobin
-      - file: content/tobin_q_model
-      - file: content/robots
+- caption: Investment & Capital
+  chapters:
+    - file: content/mpk_tobin
+      title: MPK and Tobin's Q
+    - file: content/tobin_q_model
+      title: Tobin's Q Model
+    - file: content/robots
+      title: Robots and Capital
 
-  - caption: Growth Models
-    chapters:
-      - file: content/solow_model
-      - file: content/solow_transition
-      - file: content/solow_bgp
-      - file: content/solow_pop&_tech_growth
-      - file: content/romer_model
-      - file: content/romer_model_endogen
-      - file: content/romerendogenous
-      - file: content/scale_effects
-      - file: content/slowinggrowth
-      - file: content/solow_romer_hybrid
+- caption: Growth Models
+  chapters:
+    - file: content/solow_model
+      title: Solow Model
+    - file: content/solow_transition
+      title: Solow Transition
+    - file: content/solow_bgp
+      title: Solow Balanced Growth Path
+    - file: content/solow_pop&_tech_growth
+      title: Solow with Population & Technology Growth
+    - file: content/romer_model
+      title: Romer Model
+    - file: content/romer_model_endogen
+      title: Romer Endogenous Growth
+    - file: content/romerendogenous
+      title: Romer Endogenous Details
+    - file: content/scale_effects
+      title: Scale Effects
+    - file: content/slowinggrowth
+      title: Slowing Growth
+    - file: content/solow_romer_hybrid
+      title: Solow-Romer Hybrid
 
-  - caption: IS Curve and AD-AS
-    chapters:
-      - file: content/is_curve_model
-      - file: content/adas_model
-      - file: content/adassim
-      - file: content/dynamicshock
+- caption: IS Curve and AD-AS
+  chapters:
+    - file: content/is_curve_model
+      title: IS Curve Model
+    - file: content/adas_model
+      title: AD-AS Model
+    - file: content/adassim
+      title: AD-AS Simulation
+    - file: content/dynamicshock
+      title: Dynamic Shock Model
 
-  - caption: Advanced Business Cycle Models
-    chapters:
+- caption: Advanced Business Cycle Models
+  chapters:
     - file: content/lucas_island_model
+      title: Lucas Island Model
     - file: content/rbc_simulation
+      title: Real Business Cycle Simulation
     - file: content/equilibrium_model
+      title: Equilibrium Business Cycle Model
