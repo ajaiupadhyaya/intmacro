@@ -2,6 +2,18 @@ format: jb-book
 root: content/intro
 
 parts:
+- caption: Foundations & Context
+    chapters:
+      - file: content/Preliminaries
+      - file: content/foundations_growth
+      - file: content/convergence_hypo
+      - file: content/growth_acc
+      - file: content/gabd
+      - file: content/humancapital
+      - file: content/cd_crsrevised
+      - file: content/cobb_d_prod
+      - file: content/cash_money
+
   - caption: Fundamentals
     chapters:
       - file: content/measuring_gdp
@@ -42,18 +54,6 @@ parts:
       - file: content/adassim
       - file: content/dynamicshock
 
-  - caption: Foundations & Context
-    chapters:
-      - file: content/foundations_growth
-      - file: content/convergence_hypo
-      - file: content/growth_acc
-      - file: content/gabd
-      - file: content/humancapital
-      - file: content/cd_crsrevised
-      - file: content/cobb_d_prod
-      - file: content/cash_money
-      - file: content/Preliminaries
-  
   - caption: Advanced Business Cycle Models
     chapters:
     - file: content/lucas_island_model
