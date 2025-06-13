@@ -63,3 +63,34 @@ parse:
     - tasklist
     - deflist
     - toggle
+    - amsmath
+    - html_admonition
+
+# Math rendering configuration
+sphinx:
+  config:
+    mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+    mathjax3_config:
+      tex:
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        processEscapes: true
+        processEnvironments: true
+      options:
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+
+# Performance optimizations
+html_theme_options:
+  search_bar_text: "Search the book..."
+  search_bar_position: "navbar"
+  search_include_title: true
+  search_include_description: true
+  search_include_content: true
+  search_include_sidebar: true
+  search_include_navbar: true
+  search_include_footer: true
+  search_include_extra: true
+  search_include_math: true
+  search_include_code: true
+  search_include_raw: true
+  search_include_other: true
