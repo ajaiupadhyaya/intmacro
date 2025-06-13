@@ -1,0 +1,89 @@
+/* Custom styles for the macroeconomics textbook */
+
+/* Math formula styling */
+.math {
+    font-size: 1.1em;
+    line-height: 1.5;
+}
+
+/* Ensure proper spacing around math blocks */
+.math-block {
+    margin: 1.5em 0;
+    padding: 0.5em;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+/* Improve readability of inline math */
+.math-inline {
+    padding: 0 0.2em;
+}
+
+/* Responsive design improvements */
+@media (max-width: 768px) {
+    .math {
+        font-size: 1em;
+    }
+    
+    .math-block {
+        overflow-x: auto;
+    }
+}
+
+/* Interactive elements styling */
+.interactive {
+    margin: 2em 0;
+    padding: 1em;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+/* Improve code block readability */
+pre {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 1em;
+}
+
+/* Navigation improvements */
+.bd-sidebar {
+    background-color: #f8f9fa;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    margin: 1em 0;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 0.5em;
+    border: 1px solid #dee2e6;
+}
+
+th {
+    background-color: #f8f9fa;
+}
+
+/* Accessibility improvements */
+:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .math-block {
+        background-color: #2d2d2d;
+    }
+    
+    pre {
+        background-color: #2d2d2d;
+    }
+    
+    .bd-sidebar {
+        background-color: #2d2d2d;
+    }
+} 
