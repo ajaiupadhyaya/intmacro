@@ -1,31 +1,26 @@
-# ===========================
-# Vuoksi Macroeconomics - _config.yml
-# Clean. Interactive. Beautiful.
-# ===========================
-
 # Project metadata
-title: Econ 3020:Intermediate Macroeconomics
+title: "Econ 3020: Intermediate Macroeconomics"
 author: Ajai Upadhyaya
 logo: _static/vuoksi_logo.png
 favicon: _static/favicon.ico
+toc: _toc.yml
 root: content/intro
-
 only_build_toc_files: true
 
-# Repository buttons + source links
+# Repository configuration
 repository:
   url: https://github.com/ajaiupadhyaya/intmacro
   path_to_book: macrobook/
   branch: main
 
-# Launch + Interactivity
+# Launch buttons
 launch_buttons:
   thebe: true
   binderhub_url: https://mybinder.org
   notebook_interface: jupyterlab
   colab_url: https://colab.research.google.com
 
-# Enable Thebe + Widgets
+# HTML theme settings
 html:
   favicon: _static/favicon.ico
   logo: _static/vuoksi_logo.png
@@ -34,7 +29,7 @@ html:
   use_jupyter_widgets: true
   home_page_in_toc: true
   extra_navbar: ""
-  extra_footer: "<small>Open-source project licensed under the MIT License. Built by Ajai Upadhyaya.</small>"  
+  extra_footer: "<small>Open-source project licensed under the MIT License. Built by Ajai Upadhyaya.</small>"
   theme:
     name: sphinx_book_theme
     options:
@@ -46,20 +41,68 @@ html:
       use_issues_button: true
       show_navbar_depth: 2
       announcement: "🚀 Interactive Models. Built Beautifully."
+      single_page: false
+      expand_sections: true
+      navigation_depth: 3
+      show_toc_level: 2
+      use_download_button: true
+      use_fullscreen_button: true
+      use_source_button: true
 
-# Notebook execution settings
+# Math rendering
+mathjax_config:
+  TeX:
+    equationNumbers:
+      autoNumber: "AMS"
+    extensions:
+      - "AMSmath.js"
+      - "AMSsymbols.js"
+      - "noErrors.js"
+      - "noUndefined.js"
+  tex2jax:
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    processEscapes: true
+  "HTML-CSS":
+    availableFonts: ["STIX"]
+    linebreaks:
+      automatic: true
+    imageFont: null
+    minScaleAdjust: 100
+
+# Notebook execution
 execute:
   execute_notebooks: force
   allow_errors: false
   remove_code_source: false
+  timeout: 300
 
-# Markdown/Math/Interactivity enhancements
+# MyST parser settings
 parse:
-  myst_enable_extensions:
-    - dollarmath
-    - colon_fence
-    - linkify
-    - substitution
-    - tasklist
-    - deflist
-    - toggle
+  myst:
+    enable_extensions:
+      - dollarmath
+      - amsmath
+      - colon_fence
+      - linkify
+      - substitution
+      - deflist
+      - tasklist
+      - html_admonition
+      - html_image
+    update_mathjax: true
+    mathjax_classes:
+      - tex2jax_process
+      - MathJax_CHTML
+
+# Sphinx settings
+sphinx:
+  config:
+    html_theme_options:
+      navigation_depth: 3
+      show_toc_level: 2
+    intersphinx_mapping:
+      python: ('https://docs.python.org/3', None)
+      numpy: ('https://numpy.org/doc/stable/', None)
+      pandas: ('https://pandas.pydata.org/docs/', None)
+      matplotlib: ('https://matplotlib.org/stable/', None)
