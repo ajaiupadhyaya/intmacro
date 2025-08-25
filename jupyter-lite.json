@@ -1,0 +1,11 @@
+{
+    "jupyter-lite-schema-version": 0,
+    "jupyter-config-data": {
+      "appName": "International Macroeconomics",
+      "collaborative": false,
+      "disabledExtensions": [],
+      "mathjax": {
+        "url": "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+      }
+    }
+}

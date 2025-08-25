@@ -1,0 +1,29 @@
+# Book settings
+title: International Macroeconomics
+author: Ajai Upadhyaya
+logo: ""
+execute:
+  execute_notebooks: off
+
+# HTML-specific settings
+html:
+  use_repository_button: true
+  use_issues_button: true
+  use_edit_page_button: true
+  favicon: ""
+
+# Launch button settings
+repository:
+  url: https://github.com/ajaiupadhyaya/intmacro
+  branch: polished-models-update
+
+# Math settings
+parse:
+  myst_enable_extensions:
+    - amsmath
+    - dollarmath
+    - linkify
+
+sphinx:
+  config:
+    mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

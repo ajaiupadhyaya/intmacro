@@ -1,0 +1,34 @@
+# Table of contents
+format: jb-book
+root: content/Preliminaries
+chapters:
+- file: content/measuring_gdp
+- file: content/realvsnom
+- file: content/realgdpacross
+- file: content/convergence_hypo
+- file: content/slowinggrowth
+- file: content/foundations_growth
+- file: content/solow_model
+- file: content/solow_bgp
+- file: content/solow_transition
+- file: content/solow_pop&_tech_growth
+- file: content/cobb_d_prod
+- file: content/growth_acc
+- file: content/romer_model
+- file: content/scale_effects
+- file: content/humancapital
+- file: content/robots
+- file: content/2_period_consump
+- file: content/two_goods_twoperiods
+- file: content/two_period_model
+- file: content/labor_leisure_model
+- file: content/is_curve_model
+- file: content/equilibrium_model
+- file: content/hybrid_model
+- file: content/lucas_island_model
+- file: content/dynamicshock
+- file: content/adas_model
+- file: content/adassim
+- file: content/cash_money
+- file: content/tobin_q_model
+- file: content/rbc_simulation
