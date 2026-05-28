@@ -1,0 +1,36 @@
+{
+  "steady state": {
+    "short": "The level where a variable stops changing over time. In Solow, where investment exactly offsets depreciation + dilution, so k\u0307 = 0.",
+    "aka": [
+      "k*",
+      "balanced growth path"
+    ]
+  },
+  "depreciation": {
+    "short": "The fraction of the capital stock that wears out each period, denoted \u03b4.",
+    "aka": []
+  },
+  "savings rate": {
+    "short": "The constant fraction s of output that households save and firms invest each period.",
+    "aka": [
+      "s"
+    ]
+  },
+  "capital per effective worker": {
+    "short": "Capital divided by labor measured in efficiency units, k\u0303 = K/(AL). The variable that converges in Solow.",
+    "aka": [
+      "k-tilde"
+    ]
+  },
+  "diminishing returns": {
+    "short": "Each additional unit of capital adds less output than the last \u2014 the force that pulls the economy to a steady state.",
+    "aka": []
+  },
+  "total factor productivity": {
+    "short": "The efficiency term A multiplying the production function; its growth rate g sets long-run per-capita growth.",
+    "aka": [
+      "TFP",
+      "A"
+    ]
+  }
+}

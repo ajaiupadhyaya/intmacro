@@ -1,0 +1,96 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - "index.qmd"
+    - "content/*.qmd"
+    - "content/*.ipynb"
+    - "tracks/*.qmd"
+    - "_glossary.qmd"
+    - "!content/_archive/**"
+    - "!content/MODELS.md"
+
+website:
+  title: "International Macroeconomics"
+  description: "An interactive dashboard of macroeconomic models for self-study."
+  search:
+    location: navbar
+    type: overlay
+  repo-url: https://github.com/ajaiupadhyaya/intmacro
+  repo-actions: [edit, issue]
+  page-navigation: true
+  navbar:
+    background: light
+    pinned: true
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "Glossary"
+        href: _glossary.qmd
+      - text: "Tracks"
+        menu:
+          - text: "Growth & Long-Run Dynamics"
+            href: tracks/growth.qmd
+  sidebar:
+    style: floating
+    collapse-level: 2
+    contents:
+      - section: "Foundations"
+        contents:
+          - content/Preliminaries.ipynb
+      - section: "Measurement & National Accounts"
+        contents:
+          - content/measuring_gdp.ipynb
+          - content/realvsnom.ipynb
+          - content/cash_money.ipynb
+          - content/two_goods_twoperiods.ipynb
+          - content/realgdpacross.ipynb
+      - section: "Growth & Long-Run Dynamics"
+        contents:
+          - content/foundations_growth.ipynb
+          - content/cobb_d_prod.ipynb
+          - content/solow_intro.qmd
+          - content/solow_transition.ipynb
+          - "content/solow_pop&_tech_growth.ipynb"
+          - content/humancapital.ipynb
+          - content/solow_model.ipynb
+          - content/romer_model.ipynb
+          - content/scale_effects.ipynb
+          - content/hybrid_model.ipynb
+          - content/growth_acc.ipynb
+          - content/convergence_hypo.ipynb
+          - content/slowinggrowth.ipynb
+          - content/robots.ipynb
+      - section: "Intertemporal Choice & Labor"
+        contents:
+          - content/2_period_consump.ipynb
+          - content/two_period_model.ipynb
+          - content/labor_leisure_model.ipynb
+          - content/tobin_q_model.ipynb
+      - section: "Business Cycles & Policy Dynamics"
+        contents:
+          - content/is_curve_model.ipynb
+          - content/adassim.ipynb
+          - content/dynamicshock.ipynb
+          - content/adas_model.ipynb
+          - content/lucas_island_model.ipynb
+          - content/equilibrium_model.ipynb
+          - content/rbc_simulation.ipynb
+
+format:
+  html:
+    theme:
+      light: [theme/intmacro-light.scss, theme/components.scss]
+      dark: [theme/intmacro-dark.scss, theme/components.scss]
+    toc: true
+    toc-depth: 2
+    code-tools: true
+    include-in-header:
+      - text: |
+          <link rel="preconnect" href="https://fonts.googleapis.com">
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=STIX+Two+Math&display=swap" rel="stylesheet">
+    include-after-body:
+      - theme/glossary-tooltips.js
+
+execute:
+  freeze: auto

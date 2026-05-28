@@ -1,0 +1,43 @@
+---
+title: "International Macroeconomics"
+subtitle: "An interactive dashboard of macroeconomic models for self-study"
+toc: false
+---
+
+A dashboard of working macroeconomic models — built for intermediate macro at UVA, free to reuse. Each chapter has clean math, a **live in-browser simulator**, and self-check questions.
+
+::: {.callout-tip}
+## New here?
+Start with the **[Math Primer](content/Preliminaries.ipynb)** — growth rates and the log approximation underpin nearly every chapter.
+:::
+
+## Browse by track
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+### 📐 Foundations
+The shared mathematical vocabulary. → [Math Primer](content/Preliminaries.ipynb)
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### 📊 Measurement & National Accounts
+GDP, real vs. nominal, PPP. → [Measuring GDP](content/measuring_gdp.ipynb)
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### 🌱 Growth & Long-Run Dynamics
+Solow, Romer, growth accounting, convergence. → [The Solow Model](content/solow_intro.qmd)
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### ⏳ Intertemporal Choice & Labor
+Two-period consumption, labor-leisure, Tobin's q. → [Two-Period Consumption](content/2_period_consump.ipynb)
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### 📈 Business Cycles & Policy Dynamics
+IS curve, dynamic AD-AS, Lucas Island, RBC. → [Dynamic AD-AS](content/adassim.ipynb)
+:::
+
+:::

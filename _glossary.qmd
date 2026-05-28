@@ -1,0 +1,30 @@
+---
+title: "Glossary"
+---
+
+Key terms used across the book. Each links back to the chapter where it first appears.
+
+
+### capital per effective worker _(also: k-tilde)_
+
+Capital divided by labor measured in efficiency units, k̃ = K/(AL). The variable that converges in Solow. — [↪ first used in solow_intro](content/solow_intro.html)
+
+### depreciation
+
+The fraction of the capital stock that wears out each period, denoted δ. — [↪ first used in solow_intro](content/solow_intro.html)
+
+### diminishing returns
+
+Each additional unit of capital adds less output than the last — the force that pulls the economy to a steady state. — [↪ first used in cobb_d_prod](content/cobb_d_prod.html)
+
+### savings rate _(also: s)_
+
+The constant fraction s of output that households save and firms invest each period. — [↪ first used in solow_intro](content/solow_intro.html)
+
+### steady state _(also: k*, balanced growth path)_
+
+The level where a variable stops changing over time. In Solow, where investment exactly offsets depreciation + dilution, so k̇ = 0. — [↪ first used in solow_intro](content/solow_intro.html)
+
+### total factor productivity _(also: TFP, A)_
+
+The efficiency term A multiplying the production function; its growth rate g sets long-run per-capita growth. — [↪ first used in solow_intro](content/solow_intro.html)

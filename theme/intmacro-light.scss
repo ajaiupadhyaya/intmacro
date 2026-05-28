@@ -1,0 +1,30 @@
+/*-- scss:defaults --*/
+@import "_brand";
+
+$body-bg:    #fcfcfb;
+$body-color: #0f172a;
+$link-color: #5b6cff;
+$navbar-bg:  #ffffff;
+
+// Component color tokens consumed in components.scss
+:root {
+  --im-bg-page: #fcfcfb;
+  --im-bg-surface: #ffffff;
+  --im-bg-elevated: #fafafa;
+  --im-fg-primary: #0f172a;
+  --im-fg-secondary: #475569;
+  --im-fg-muted: #94a3b8;
+  --im-border: #e5e7eb;
+  --im-accent: #5b6cff;
+  --im-accent-soft: #eef0ff;
+  --im-sim: #10b981;
+  --im-sim-soft: #ecfdf5;
+  --im-warn: #f59e0b;
+  --im-warn-soft: #fffbeb;
+  --im-danger: #ef4444;
+  --im-danger-soft: #fef2f2;
+}
+
+/*-- scss:rules --*/
+body { font-family: $font-ui; line-height: 1.6; }
+.math, mjx-container { font-family: $font-math; }

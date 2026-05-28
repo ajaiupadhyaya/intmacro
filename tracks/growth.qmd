@@ -1,0 +1,17 @@
+---
+title: "Growth & Long-Run Dynamics — Track Map"
+---
+
+How the growth chapters build on each other. Click a node to jump there.
+
+```{mermaid}
+graph LR
+  FG[Levels vs Growth Rates] --> CD[Cobb-Douglas]
+  CD --> SI[Solow Model]
+  SI --> ST[Solow Transition]
+  SI --> SP[Solow + Pop/Tech]
+  click FG "../content/foundations_growth.html"
+  click CD "../content/cobb_d_prod.html"
+  click SI "../content/solow_intro.html"
+  click ST "../content/solow_transition.html"
+```
