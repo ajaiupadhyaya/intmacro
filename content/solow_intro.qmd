@@ -58,3 +58,36 @@ Plot.plot({
 
 The dashed green line is the **steady state** `k*`. The curve is the economy's path starting from a low capital stock.
 :::
+
+## Core intuition
+
+Picture a country that saves a fixed slice of its income every year. Some of that investment just replaces machines that wore out (depreciation) and equips new workers (population growth). Whatever's left is *net* new capital. But capital has [diminishing returns]{.im-glossary-term} — the more you have, the less each new unit produces. Eventually new investment only just covers replacement, and capital per worker stops rising. That resting point is the [steady state]{.im-glossary-term}.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full derivation)</summary>
+
+Output per [capital per effective worker]{.im-glossary-term} $\tilde k = K/(AL)$ follows
+$$\tilde y = \tilde k^{\alpha}.$$
+Capital accumulates as investment minus effective depreciation:
+$$\dot{\tilde k} = s\,\tilde k^{\alpha} - (n + g + \delta)\,\tilde k.$$
+Setting $\dot{\tilde k}=0$ and solving:
+$$\tilde k^{*} = \left(\frac{s}{n+g+\delta}\right)^{\frac{1}{1-\alpha}}, \qquad \tilde y^{*} = (\tilde k^{*})^{\alpha}.$$
+Per-capita output $y = A\tilde y$ grows at rate $g$ in steady state — independent of $s$.
+
+</details>
+:::
+
+## What the simulator showed
+
+When you raised **s**, the dashed `k*` line jumped *up* and the curve climbed to a higher plateau — a richer economy. But the *slope* of the long-run plateau never changed. That's the model's central lesson: savings sets the **level**, while long-run growth is pinned to **g**, the rate of [total factor productivity]{.im-glossary-term} growth.
+
+## Common confusions
+
+::: {.im-confusion}
+**"Higher savings means faster growth."** Only *during the transition* to the new steady state. Once there, growth returns to `g`. Saving more buys a one-time level gain, not permanently faster growth.
+:::
+
+::: {.im-confusion}
+**"The steady state means the economy stops growing."** No — `k̃` stops growing, but total output still grows at `n + g` (and per-capita output at `g`). The *ratios* stabilize, not the absolute levels.
+:::
