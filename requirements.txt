@@ -1,45 +1,51 @@
 # Core Jupyter Book and scientific computing
-jupyter-book>=0.15.1
-jupyterlab>=4.0.0
-notebook>=6.5.0
-ipywidgets>=8.0.0
-widgetsnbextension>=4.0.0
+# Pin to v1 — v2 (released 2025-2026) introduced a new CLI that drops
+# --warningiserror, reorganizes commands, and changes config schema.
+# The book is configured for v1. Migration to v2 is a planned follow-up.
+jupyter-book>=1.0,<2.0
+
+# Pin Sphinx <8 because jupyter-book 1.x is not compatible with Sphinx 8+.
+sphinx>=5.0,<8.0
+# myst-parser <4 and myst-nb <1.2 also match jupyter-book 1.x ecosystem.
+myst-parser>=2.0.0,<4.0
+myst-nb>=0.17.0,<1.2
+
+jupyterlab>=4.0.0,<5.0
+notebook>=6.5.0,<8.0
+ipywidgets>=8.0.0,<9.0
+widgetsnbextension>=4.0.0,<5.0
 
 # Scientific computing and visualization
-numpy>=1.24.0
-pandas>=2.0.0
-matplotlib>=3.7.0
-plotly>=5.15.0
-scipy>=1.10.0
-seaborn>=0.12.0
-sympy>=1.12
-statsmodels>=0.14.0
+numpy>=1.24.0,<3.0
+pandas>=2.0.0,<3.0
+matplotlib>=3.7.0,<4.0
+plotly>=5.15.0,<7.0
+scipy>=1.10.0,<2.0
+seaborn>=0.12.0,<1.0
+sympy>=1.12,<2.0
+statsmodels>=0.14.0,<1.0
 
-# Interactive widgets and visualization
-ipywidgets>=8.0.0
-plotly>=5.15.0
-bokeh>=3.0.0
-altair>=5.0.0
-bqplot>=0.12.0
+# Interactive widgets and visualization (versions pinned above for ipywidgets/plotly)
+bokeh>=3.0.0,<4.0
+altair>=5.0.0,<7.0
+bqplot>=0.12.0,<1.0
 
 # Sphinx extensions for enhanced functionality
-sphinx-togglebutton>=0.3.0
-sphinx-copybutton>=0.5.0
-sphinx-external-toc>=0.3.0
-sphinx-thebe>=0.2.0
-sphinx-comments>=0.0.3
-sphinx-multitoc-numbering>=0.1.3
-sphinx-design>=0.5.0
-sphinxext-opengraph>=0.8.0
+sphinx-togglebutton>=0.3.0,<1.0
+sphinx-copybutton>=0.5.0,<1.0
+sphinx-external-toc>=0.3.0,<2.0
+sphinx-thebe>=0.2.0,<1.0
+sphinx-comments>=0.0.3,<1.0
+sphinx-multitoc-numbering>=0.1.3,<1.0
+sphinx-design>=0.5.0,<1.0
+sphinxext-opengraph>=0.8.0,<1.0
 
 # Additional tools
-myst-parser>=2.0.0
-myst-nb>=0.17.0
-ghp-import>=2.1.0
+ghp-import>=2.1.0,<3.0
 
 # JupyterLite — in-browser kernel for student-facing interactivity
-jupyterlite-core>=0.4.0
-jupyterlite-pyodide-kernel>=0.4.0
+jupyterlite-core>=0.4.0,<1.0
+jupyterlite-pyodide-kernel>=0.4.0,<1.0
 
 # Development tools
 black>=23.0.0
