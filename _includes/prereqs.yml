@@ -19,3 +19,18 @@ solow_transition:
   title: "Solow Transition Dynamics"
   tldr: "Below steady state, capital grows faster than replacement, so the economy converges upward along a predictable path."
   prereqs: [solow_intro]
+two_period_consumption:
+  track: intertemporal
+  title: "Two-Period Consumption"
+  tldr: "A forward-looking agent splits lifetime wealth between today and tomorrow; the interest rate tilts the optimal split."
+  prereqs: []
+labor_leisure:
+  track: intertemporal
+  title: "The Labor-Leisure Choice"
+  tldr: "How agents trade consumption against leisure given the real wage."
+  prereqs: [two_period_consumption]
+tobin_q:
+  track: intertemporal
+  title: "Investment and Tobin's q"
+  tldr: "Firms invest when the market value of capital exceeds its replacement cost."
+  prereqs: [two_period_consumption]

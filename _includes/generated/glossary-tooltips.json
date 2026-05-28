@@ -32,5 +32,19 @@
       "TFP",
       "A"
     ]
+  },
+  "intertemporal budget constraint": {
+    "short": "All (c\u2081,c\u2082) bundles whose present value equals lifetime wealth: c\u2081 + c\u2082/(1+r) = W.",
+    "aka": [
+      "IBC"
+    ]
+  },
+  "Euler equation": {
+    "short": "The optimality condition for consumption over time: marginal utility today equals (1+r)\u00b7\u03b2\u00b7marginal utility tomorrow. Here: c\u2082 = \u03b2(1+r)c\u2081.",
+    "aka": []
+  },
+  "consumption smoothing": {
+    "short": "The tendency of forward-looking agents to even out consumption across periods rather than match it to income timing.",
+    "aka": []
   }
 }
