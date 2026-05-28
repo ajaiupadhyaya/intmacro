@@ -1,0 +1,34 @@
+# Jupyter Book build artifacts
+_build/
+.jupyter_cache/
+
+# JupyterLite build artifacts
+_output/
+.jupyterlite.doit.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local secrets (none expected, but defensive)
+.env
+.env.local
