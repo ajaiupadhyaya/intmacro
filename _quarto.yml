@@ -70,7 +70,7 @@ website:
       - section: "Business Cycles & Policy Dynamics"
         contents:
           - content/is_curve_model.ipynb
-          - content/adassim.ipynb
+          - content/adassim.qmd
           - content/dynamicshock.ipynb
           - content/adas_model.ipynb
           - content/lucas_island_model.ipynb
