@@ -91,3 +91,35 @@ When you raised **s**, the dashed `k*` line jumped *up* and the curve climbed to
 ::: {.im-confusion}
 **"The steady state means the economy stops growing."** No — `k̃` stops growing, but total output still grows at `n + g` (and per-capita output at `g`). The *ratios* stabilize, not the absolute levels.
 :::
+
+## Self-check
+
+::: {.im-mcq}
+::: {.im-q-label}
+Q1 · concept
+:::
+A country permanently doubles its savings rate. In the long run, which is true?
+
+<details><summary>a) Its growth rate doubles</summary>
+No — long-run growth is set by `g`, not `s`. Growth rises only during the transition.
+</details>
+<details><summary>b) Its steady-state capital per worker rises</summary>
+✅ Correct. `k* = (s/(n+g+δ))^{1/(1−α)}` rises with `s` — a higher *level*, reached via temporarily faster growth.
+</details>
+<details><summary>c) Nothing changes</summary>
+No — the level changes even though the long-run growth rate doesn't.
+</details>
+:::
+
+::: {.im-mcq}
+::: {.im-q-label}
+Q2 · simulator challenge
+:::
+Using the simulator above, set **s = 0.30, n = 0.02, g = 0.02, δ = 0.05, α = ⅓**. What steady-state `k*` does the dashed line show?
+
+<details><summary>Reveal answer</summary>
+`k* = (0.30/0.09)^{1.5} = (3.333)^{1.5} ≈ 6.09`. The dashed line should read **k* ≈ 6.09**.
+</details>
+:::
+
+{{< include ../_includes/generated/solow_intro-related.md >}}
