@@ -9,6 +9,10 @@ Key terms used across the book. Each links back to the chapter where it first ap
 
 Capital divided by labor measured in efficiency units, k̃ = K/(AL). The variable that converges in Solow. — [↪ first used in solow_intro](content/solow_intro.html)
 
+### consumption smoothing
+
+The tendency of forward-looking agents to even out consumption across periods rather than match it to income timing. — [↪ first used in two_period_consumption](content/two_period_consumption.html)
+
 ### depreciation
 
 The fraction of the capital stock that wears out each period, denoted δ. — [↪ first used in solow_intro](content/solow_intro.html)
@@ -17,6 +21,22 @@ The fraction of the capital stock that wears out each period, denoted δ. — [�
 
 Each additional unit of capital adds less output than the last — the force that pulls the economy to a steady state. — [↪ first used in cobb_d_prod](content/cobb_d_prod.html)
 
+### Euler equation
+
+The optimality condition for consumption over time: marginal utility today equals (1+r)·β·marginal utility tomorrow. Here: c₂ = β(1+r)c₁. — [↪ first used in two_period_consumption](content/two_period_consumption.html)
+
+### expectations-augmented Phillips curve _(also: AS curve)_
+
+Inflation equals expected inflation plus a term in the output gap: π = πᵉ + λ(Y − Ȳ). — [↪ first used in adassim](content/adassim.html)
+
+### intertemporal budget constraint _(also: IBC)_
+
+All (c₁,c₂) bundles whose present value equals lifetime wealth: c₁ + c₂/(1+r) = W. — [↪ first used in two_period_consumption](content/two_period_consumption.html)
+
+### output gap
+
+The deviation of output from potential, Y − Ȳ. Positive gaps push inflation up via the Phillips curve. — [↪ first used in adassim](content/adassim.html)
+
 ### savings rate _(also: s)_
 
 The constant fraction s of output that households save and firms invest each period. — [↪ first used in solow_intro](content/solow_intro.html)
@@ -24,6 +44,14 @@ The constant fraction s of output that households save and firms invest each per
 ### steady state _(also: k*, balanced growth path)_
 
 The level where a variable stops changing over time. In Solow, where investment exactly offsets depreciation + dilution, so k̇ = 0. — [↪ first used in solow_intro](content/solow_intro.html)
+
+### Taylor principle
+
+For stability the policy response must be more than one-for-one with inflation (φπ > 1); otherwise inflation gaps are self-reinforcing. — [↪ first used in adassim](content/adassim.html)
+
+### Taylor rule
+
+A monetary-policy rule: the central bank raises the real rate above neutral when inflation exceeds target — rₜ = r̄ + φπ(πₜ₋₁ − π*). — [↪ first used in adassim](content/adassim.html)
 
 ### total factor productivity _(also: TFP, A)_
 

@@ -22,3 +22,31 @@
   short: "The efficiency term A multiplying the production function; its growth rate g sets long-run per-capita growth."
   first_mention: solow_intro
   aka: ["TFP", "A"]
+- term: intertemporal budget constraint
+  short: "All (c₁,c₂) bundles whose present value equals lifetime wealth: c₁ + c₂/(1+r) = W."
+  first_mention: two_period_consumption
+  aka: ["IBC"]
+- term: Euler equation
+  short: "The optimality condition for consumption over time: marginal utility today equals (1+r)·β·marginal utility tomorrow. Here: c₂ = β(1+r)c₁."
+  first_mention: two_period_consumption
+  aka: []
+- term: consumption smoothing
+  short: "The tendency of forward-looking agents to even out consumption across periods rather than match it to income timing."
+  first_mention: two_period_consumption
+  aka: []
+- term: Taylor rule
+  short: "A monetary-policy rule: the central bank raises the real rate above neutral when inflation exceeds target — rₜ = r̄ + φπ(πₜ₋₁ − π*)."
+  first_mention: adassim
+  aka: []
+- term: Taylor principle
+  short: "For stability the policy response must be more than one-for-one with inflation (φπ > 1); otherwise inflation gaps are self-reinforcing."
+  first_mention: adassim
+  aka: []
+- term: output gap
+  short: "The deviation of output from potential, Y − Ȳ. Positive gaps push inflation up via the Phillips curve."
+  first_mention: adassim
+  aka: []
+- term: expectations-augmented Phillips curve
+  short: "Inflation equals expected inflation plus a term in the output gap: π = πᵉ + λ(Y − Ȳ)."
+  first_mention: adassim
+  aka: ["AS curve"]
