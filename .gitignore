@@ -42,5 +42,3 @@ Thumbs.db
 
 # Quarto build artifacts
 _site/
-_includes/generated/
-_glossary.qmd

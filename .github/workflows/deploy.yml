@@ -46,7 +46,12 @@ jobs:
       - name: Run script unit tests
         run: python -m pytest tests/ -q
 
-      - name: Render site (pre-render hooks generate nav + glossary)
+      - name: Generate navigation partials + glossary
+        run: |
+          python scripts/build_nav.py --includes _includes --out _includes/generated
+          python scripts/build_glossary.py --glossary _includes/glossary.yml --out _glossary.qmd
+
+      - name: Render site
         run: quarto render
 
       - name: Copy tooltip JSON to site root

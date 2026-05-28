@@ -1,9 +1,6 @@
 project:
   type: website
   output-dir: _site
-  pre-render:
-    - scripts/build_nav.py
-    - scripts/build_glossary.py
   render:
     - "index.qmd"
     - "content/*.qmd"
