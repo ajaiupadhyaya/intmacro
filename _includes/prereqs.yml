@@ -39,3 +39,18 @@ tobin_q_model:
   title: "Investment and Tobin's q"
   tldr: "Firms invest when the market value of capital exceeds its replacement cost."
   prereqs: [two_period_consumption]
+is_curve_model:
+  track: business_cycles
+  title: "The IS Curve"
+  tldr: "Combinations of the interest rate and output that clear the goods market; higher r lowers demand and output."
+  prereqs: []
+adassim:
+  track: business_cycles
+  title: "Dynamic AD-AS with a Taylor Rule"
+  tldr: "IS + Phillips curve + Taylor rule generate output and inflation dynamics; the Taylor principle (φπ>1) is what makes them converge."
+  prereqs: [is_curve_model]
+dynamicshock:
+  track: business_cycles
+  title: "AD-AS Shocks & Adjustment"
+  tldr: "How the dynamic AD-AS economy responds to one-off demand and supply shocks."
+  prereqs: [adassim]

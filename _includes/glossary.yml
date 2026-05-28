@@ -34,3 +34,19 @@
   short: "The tendency of forward-looking agents to even out consumption across periods rather than match it to income timing."
   first_mention: two_period_consumption
   aka: []
+- term: Taylor rule
+  short: "A monetary-policy rule: the central bank raises the real rate above neutral when inflation exceeds target — rₜ = r̄ + φπ(πₜ₋₁ − π*)."
+  first_mention: adassim
+  aka: []
+- term: Taylor principle
+  short: "For stability the policy response must be more than one-for-one with inflation (φπ > 1); otherwise inflation gaps are self-reinforcing."
+  first_mention: adassim
+  aka: []
+- term: output gap
+  short: "The deviation of output from potential, Y − Ȳ. Positive gaps push inflation up via the Phillips curve."
+  first_mention: adassim
+  aka: []
+- term: expectations-augmented Phillips curve
+  short: "Inflation equals expected inflation plus a term in the output gap: π = πᵉ + λ(Y − Ȳ)."
+  first_mention: adassim
+  aka: ["AS curve"]

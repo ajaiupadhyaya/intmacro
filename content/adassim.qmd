@@ -1,0 +1,149 @@
+---
+title: "Dynamic AD-AS with a Taylor Rule"
+subtitle: "How monetary policy stabilizes output and inflation — and when it fails"
+---
+
+{{< include ../_includes/generated/adassim-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — Three equations (demand, supply, policy) generate joint output/inflation dynamics. An IS curve links the real interest rate to output; an expectations-augmented Phillips curve links the output gap to inflation; and a Taylor rule sets the interest rate in response to inflation. Whether the system settles down hinges on the **Taylor principle**: φπ > 1 ensures the central bank raises rates more than one-for-one with inflation, making the dynamics self-correcting.
+:::
+
+## You'll be able to
+
+- Trace how a Taylor-rule interest rate feeds through the IS curve into output, and then through the Phillips curve into inflation.
+- Explain why φπ > 1 (the Taylor principle) is necessary for the inflation path to converge.
+- Read a time-series chart of the dynamic AD-AS model and identify convergent versus oscillatory/divergent paths.
+
+## 🚀 Try it first
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — the output, inflation, and interest-rate paths update live
+:::
+
+```{ojs}
+//| echo: false
+viewof pi_e    = Inputs.range([0, 5], {value: 3.0, step: 0.1, label: "expected inflation πᵉ"})
+viewof pi_star = Inputs.range([0, 5], {value: 2.0, step: 0.1, label: "target inflation π*"})
+viewof phi_pi  = Inputs.range([0, 3], {value: 1.5, step: 0.1, label: "Taylor coefficient φπ"})
+viewof alpha   = Inputs.range([1, 10], {value: 5.0, step: 0.5, label: "IS sensitivity α"})
+viewof lamb    = Inputs.range([0.05, 1], {value: 0.2, step: 0.05, label: "Phillips slope λ"})
+viewof T       = Inputs.range([10, 60], {value: 25, step: 5, label: "periods T"})
+
+sim = {
+  const Ybar = 100, rbar = 2;
+  const pi = [], Y = [], r = [];
+  pi[0] = pi_e;
+  r[0]  = rbar + phi_pi * (pi[0] - pi_star);
+  Y[0]  = Ybar - alpha * (r[0] - rbar);
+  for (let t = 1; t < T; t++) {
+    r[t]  = rbar + phi_pi * (pi[t-1] - pi_star);
+    Y[t]  = Ybar - alpha * (r[t] - rbar);
+    pi[t] = pi_e + lamb * (Y[t] - Ybar);
+  }
+  const rows = [];
+  for (let t = 0; t < T; t++) {
+    rows.push({t, value: pi[t],        series: "inflation π"});
+    rows.push({t, value: Y[t] - Ybar,  series: "output gap (Y − Ȳ)"});
+    rows.push({t, value: r[t],         series: "interest rate r"});
+  }
+  return rows;
+}
+
+Plot.plot({
+  marginLeft: 50, height: 340,
+  color: {legend: true},
+  x: {label: "time (periods) →"},
+  y: {grid: true, label: "level / gap"},
+  marks: [
+    Plot.ruleY([0], {stroke: "#cccccc"}),
+    Plot.line(sim, {x: "t", y: "value", stroke: "series", strokeWidth: 2})
+  ]
+})
+```
+
+Watch what happens as you lower φπ below 1 — the Taylor principle fails and the paths stop converging.
+:::
+
+## Core intuition
+
+The model has three moving parts that interact every period. The [Taylor rule]{.im-glossary-term} sets the central bank's interest rate: if last period's inflation was above target, the bank raises rates. That higher real rate discourages spending through the IS curve, pulling output below potential and creating a negative [output gap]{.im-glossary-term}. The negative gap in turn pushes inflation down through the [expectations-augmented Phillips curve]{.im-glossary-term}. If the rate response is aggressive enough (φπ > 1, the [Taylor principle]{.im-glossary-term}), this loop is self-correcting: each over-shoot in inflation is met with a rate hike large enough to bring inflation back.
+
+The key institutional detail is the **lag** in the Taylor rule: the central bank responds to *last period's* inflation, not this period's. This one-period delay is realistic (central banks observe lagged data) and is what gives the model its dynamic character — the economy cannot jump instantly to equilibrium.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full model + stability condition)</summary>
+
+**Three equations, simulated period-by-period:**
+
+Taylor rule (responds to *lagged* inflation):
+$$r_t = \bar{r} + \varphi_\pi\,(\pi_{t-1} - \pi^*)$$
+
+IS curve (demand):
+$$Y_t = \bar{Y} - \alpha\,(r_t - \bar{r})$$
+
+Expectations-augmented Phillips curve (AS / supply):
+$$\pi_t = \pi^e + \lambda\,(Y_t - \bar{Y})$$
+
+**Initial period** $t = 0$: set $\pi_0 = \pi^e$, then $r_0 = \bar{r} + \varphi_\pi(\pi_0 - \pi^*)$, and $Y_0 = \bar{Y} - \alpha(r_0 - \bar{r})$.
+
+**Parity check** (defaults: $\pi^e = 3$, $\pi^* = 2$, $\bar{Y} = 100$, $\bar{r} = 2$, $\alpha = 5$, $\varphi_\pi = 1.5$, $\lambda = 0.2$):
+$$\pi_0 = 3, \quad r_0 = 2 + 1.5(3 - 2) = 3.5, \quad Y_0 = 100 - 5(3.5 - 2) = 92.5.$$
+$$r_1 = 2 + 1.5(3 - 2) = 3.5, \quad Y_1 = 92.5, \quad \pi_1 = 3 + 0.2(92.5 - 100) = 1.5.$$
+
+**Stability (the Taylor principle).** Substituting the IS and Taylor rules into the Phillips curve gives a first-order difference equation in the inflation gap $\tilde\pi_t = \pi_t - \pi^*$:
+$$\tilde\pi_t = -\lambda\alpha\,\varphi_\pi\,\tilde\pi_{t-1} + \text{const}.$$
+For convergence the coefficient on $\tilde\pi_{t-1}$ must have absolute value less than 1:
+$$|\lambda\alpha\,\varphi_\pi| < 1.$$
+With default $\lambda = 0.2$, $\alpha = 5$: $\lambda\alpha = 1.0$, so the condition reduces to $\varphi_\pi < 1$ for *divergence* and $\varphi_\pi > 1$ for *convergence*. This is the Taylor principle — a positive inflation gap must trigger a more-than-proportionate rate hike to be self-correcting.
+
+</details>
+:::
+
+## What the simulator showed
+
+At the default φπ = 1.5 the three series (inflation, output gap, interest rate) oscillate and converge toward a fixed point. Notice that with πᵉ = 3 ≠ π* = 2 in the default setup, the economy starts out of equilibrium and the adjustment plays out over several periods — inflation does not jump to target instantly. The long-run resting point depends on both π* and πᵉ; if you set πᵉ = π* = 2 you will see the economy converge cleanly to zero output gap and inflation at target.
+
+When you lower φπ below 1 — try φπ = 0.5 — the output gap and inflation paths fail to converge: each period's correction is too small to offset the gap, and the oscillations grow or persist rather than decay. This is the Taylor principle in action.
+
+## Common confusions
+
+::: {.im-confusion}
+**"The central bank can hit the target instantly."** No — the Taylor rule responds to *lagged* inflation, so even perfect policy (φπ > 1) takes several periods of adjustment before inflation reaches its long-run level. The one-period lag is baked into the model structure and reflects real-world data lags and policy transmission delays.
+:::
+
+::: {.im-confusion}
+**"Any positive φπ stabilizes the economy."** No — the Taylor principle requires φπ > 1. If the central bank raises rates by *less* than one percentage point for each percentage point of excess inflation (φπ < 1), the real rate response is too weak: inflation gaps become self-reinforcing rather than self-correcting, and the economy oscillates or diverges.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+What does the Taylor principle require, and why does it matter for stability?
+
+<details><summary>a) φπ > 0 — any positive response to inflation is stabilizing</summary>
+No — a positive response is necessary but not sufficient. If φπ < 1 the central bank raises rates by less than the inflation gap, leaving the real interest rate adjustment too small to close the gap. Inflation deviations feed on themselves.
+</details>
+<details><summary>b) φπ > 1 — the rate response must exceed the inflation gap one-for-one</summary>
+✅ Correct. With φπ > 1 each unit of excess inflation triggers a more-than-proportionate rate hike, which cuts output via the IS curve, which reduces inflation via the Phillips curve — a self-correcting loop. Below 1, the loop amplifies rather than dampens.
+</details>
+<details><summary>c) φπ = 1 exactly — the rate response must match inflation one-for-one</summary>
+No — at φπ = 1 the economy is on the boundary: the feedback coefficient equals 1 in absolute value (with λα = 1) and the inflation gap neither grows nor shrinks. You need strict inequality φπ > 1 for convergence.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Set φπ = 0.5 in the simulator (keep all other defaults: πᵉ = 3, π* = 2, α = 5, λ = 0.2, T = 25). Describe what happens to the inflation path.
+
+<details><summary>Reveal answer</summary>
+With φπ = 0.5 the Taylor principle is violated. The inflation path oscillates with growing or non-decaying amplitude — it does not converge to a fixed level. The central bank's rate response is too weak: each period the inflation gap closes by less than it opened, so deviations persist and may amplify over time. Contrast this with φπ = 1.5 where the same gap shrinks geometrically each period.
+</details>
+</div>
+
+{{< include ../_includes/generated/adassim-related.md >}}
