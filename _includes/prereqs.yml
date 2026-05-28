@@ -1,0 +1,21 @@
+# chapter_id (filename stem) -> metadata
+solow_intro:
+  track: growth
+  title: "The Solow Growth Model"
+  tldr: "Raise the savings rate and you get a richer country, not a faster-growing one — long-run growth is set by technology."
+  prereqs: [cobb_d_prod, foundations_growth]
+cobb_d_prod:
+  track: growth
+  title: "Cobb-Douglas Production"
+  tldr: "Output from capital and labor with constant returns to scale; exponents are factor income shares."
+  prereqs: [foundations_growth]
+foundations_growth:
+  track: growth
+  title: "Levels vs. Growth Rates"
+  tldr: "The level of GDP per capita and its growth rate are different things — and often move oppositely across countries."
+  prereqs: []
+solow_transition:
+  track: growth
+  title: "Solow Transition Dynamics"
+  tldr: "Below steady state, capital grows faster than replacement, so the economy converges upward along a predictable path."
+  prereqs: [solow_intro]
