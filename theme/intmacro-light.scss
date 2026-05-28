@@ -1,30 +1,55 @@
 /*-- scss:defaults --*/
 @import "_brand";
 
-$body-bg:    #fcfcfb;
+$body-bg:    #f7f8fb;
 $body-color: #0f172a;
-$link-color: #5b6cff;
-$navbar-bg:  #ffffff;
+$link-color: #4f46e5;
+$navbar-bg:  rgba(255,255,255,0.72);
 
 // Component color tokens consumed in components.scss
 :root {
-  --im-bg-page: #fcfcfb;
+  --im-bg-page: #f7f8fb;
   --im-bg-surface: #ffffff;
-  --im-bg-elevated: #fafafa;
+  --im-bg-elevated: #fbfcfe;
   --im-fg-primary: #0f172a;
   --im-fg-secondary: #475569;
   --im-fg-muted: #94a3b8;
-  --im-border: #e5e7eb;
-  --im-accent: #5b6cff;
+  --im-border: #e7e9f0;
+  --im-border-strong: #d4d8e3;
+  --im-accent: #4f46e5;
+  --im-accent-2: #7c6cff;
+  --im-accent-contrast: #ffffff;
   --im-accent-soft: #eef0ff;
-  --im-sim: #10b981;
-  --im-sim-soft: #ecfdf5;
-  --im-warn: #f59e0b;
+  --im-sim: #0d9488;
+  --im-sim-soft: #ecfdf8;
+  --im-warn: #d97706;
   --im-warn-soft: #fffbeb;
-  --im-danger: #ef4444;
+  --im-danger: #dc2626;
   --im-danger-soft: #fef2f2;
+
+  // Surfaces & effects
+  --im-glass: rgba(255,255,255,0.72);
+  --im-grid-line: rgba(15,23,42,0.04);
+  --im-shadow-sm: 0 1px 2px rgba(15,23,42,0.04), 0 1px 3px rgba(15,23,42,0.06);
+  --im-shadow-md: 0 4px 12px rgba(15,23,42,0.06), 0 2px 4px rgba(15,23,42,0.04);
+  --im-shadow-lg: 0 18px 40px -12px rgba(15,23,42,0.18), 0 8px 16px -8px rgba(15,23,42,0.10);
+  --im-ring: 0 0 0 3px rgba(79,70,229,0.18);
+
+  // Gradients
+  --im-grad-accent: linear-gradient(135deg, #4f46e5 0%, #7c6cff 55%, #a78bfa 100%);
+  --im-grad-hero: radial-gradient(1200px 500px at 12% -10%, rgba(124,108,255,0.18), transparent 60%),
+                  radial-gradient(900px 480px at 92% 0%, rgba(13,148,136,0.12), transparent 55%);
+  --im-hero-fg: #0f172a;
+  --im-hero-fg-soft: #475569;
+
+  // Geometry / motion
+  --im-radius-sm: 8px;
+  --im-radius-md: 12px;
+  --im-radius-lg: 18px;
+  --im-radius-xl: 24px;
+  --im-ease: cubic-bezier(0.16,1,0.3,1);
 }
 
 /*-- scss:rules --*/
-body { font-family: $font-ui; line-height: 1.6; }
+body { font-family: $font-ui; line-height: 1.65; }
 .math, mjx-container { font-family: $font-math; }
