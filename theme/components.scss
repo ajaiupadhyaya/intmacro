@@ -1,0 +1,92 @@
+/*-- scss:rules --*/
+
+// Prereq chips
+.im-prereq-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.im-prereq-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.78rem; padding: 3px 10px; border-radius: 12px;
+  background: var(--im-bg-elevated); color: var(--im-fg-secondary);
+  border: 1px solid var(--im-border); text-decoration: none;
+  transition: background 120ms cubic-bezier(0.16,1,0.3,1);
+}
+.im-prereq-chip:hover { background: var(--im-accent-soft); color: var(--im-accent); }
+
+// TL;DR
+.im-tldr {
+  background: var(--im-accent-soft);
+  border-left: 3px solid var(--im-accent);
+  padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 16px 0;
+}
+
+// Simulator hero
+.im-sim-hero {
+  background: var(--im-sim-soft);
+  border: 2px solid var(--im-sim);
+  border-radius: 12px; padding: 20px; margin: 20px 0;
+}
+.im-sim-hero .im-sim-label {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+  color: var(--im-sim); text-transform: uppercase;
+}
+.im-sim-hero .ojs-inputs { display: flex; flex-wrap: wrap; gap: 16px; margin: 12px 0; }
+
+// Math toggle (Quarto renders <details> for collapsible callouts; style them)
+.im-math-toggle > summary {
+  cursor: pointer; font-weight: 600; color: var(--im-fg-secondary);
+  list-style: none; padding: 8px 0;
+}
+.im-math-toggle > summary::before { content: "▶ "; font-size: 0.8em; }
+.im-math-toggle[open] > summary::before { content: "▼ "; }
+
+// Common confusions
+.im-confusion {
+  background: var(--im-danger-soft);
+  border-left: 3px solid var(--im-danger);
+  padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 10px 0;
+}
+.im-confusion::before { content: "⚠ "; }
+
+// MCQ
+.im-mcq {
+  background: var(--im-warn-soft);
+  border: 1px solid var(--im-warn);
+  border-radius: 10px; padding: 14px 16px; margin: 12px 0;
+}
+.im-mcq .im-q-label {
+  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em;
+  font-weight: 700; color: var(--im-warn); margin-bottom: 6px;
+}
+.im-mcq details { margin-top: 6px; }
+.im-mcq summary { cursor: pointer; }
+
+// Related-chapters footer
+.im-related-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 24px 0;
+}
+@media (max-width: 600px) { .im-related-cards { grid-template-columns: 1fr; } }
+.im-related-card {
+  background: var(--im-bg-surface); border: 1px solid var(--im-border);
+  border-radius: 10px; padding: 12px 14px; text-decoration: none;
+  color: var(--im-fg-primary); transition: border-color 120ms;
+}
+.im-related-card:hover { border-color: var(--im-accent); }
+.im-related-card .im-role {
+  font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--im-fg-muted);
+}
+
+// Glossary term
+.im-glossary-term {
+  border-bottom: 1px dotted var(--im-accent); cursor: help;
+}
+.im-glossary-tooltip {
+  position: absolute; z-index: 1000; max-width: 280px;
+  background: var(--im-bg-surface); color: var(--im-fg-primary);
+  border: 1px solid var(--im-border); border-radius: 8px;
+  padding: 8px 12px; font-size: 0.82rem; line-height: 1.45;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
