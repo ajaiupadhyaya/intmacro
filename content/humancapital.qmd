@@ -1,0 +1,145 @@
+---
+title: "Human Capital"
+subtitle: "A second engine of accumulation — augmenting Solow with the stock of skills and education"
+---
+
+{{< include ../_includes/generated/humancapital-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — The augmented Solow model (Mankiw–Romer–Weil) treats education and skills as an *accumulable stock* $h$, just like physical capital $k$. Output now leans on two reproducible factors, $y = k^{\alpha}h^{\beta}$. Raising the human-capital saving rate $s_h$ permanently lifts steady-state income, and because income depends on *two* things you can build up, the response of income to saving is amplified relative to plain Solow. Long-run *growth* is still zero without exogenous technology — what changes is the *level*.
+:::
+
+## You'll be able to
+
+- Trace the joint paths of physical capital $k$, human capital $h$, and output $y$ as they converge to their steady states.
+- Explain why human capital acts as a *second reproducible factor* rather than as raw labor.
+- Predict how a change in the human-capital saving rate $s_h$ shifts steady-state income — and why that response is larger than in the one-factor model.
+
+## 🚀 Try it first
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Change the two saving rates and watch both capital stocks climb toward their targets
+:::
+
+```{ojs}
+//| echo: false
+viewof skHc    = Inputs.range([0.05, 0.5], {value: 0.25, step: 0.01, label: "physical saving s_k"})
+viewof shHc    = Inputs.range([0.05, 0.5], {value: 0.25, step: 0.01, label: "human saving s_h"})
+viewof alphaHc = Inputs.range([0.15, 0.45], {value: 0.33, step: 0.01, label: "physical share α"})
+viewof betaHc  = Inputs.range([0.15, 0.45], {value: 0.33, step: 0.01, label: "human share β"})
+viewof deltaHc = Inputs.range([0.01, 0.2], {value: 0.05, step: 0.01, label: "depreciation δ"})
+viewof k0Hc    = Inputs.range([0.1, 20], {value: 1.0, step: 0.1, label: "initial physical k₀"})
+viewof h0Hc    = Inputs.range([0.1, 20], {value: 1.0, step: 0.1, label: "initial human h₀"})
+viewof THc     = Inputs.range([20, 200], {value: 100, step: 5, label: "time horizon"})
+
+denomHc = Math.max(1 - alphaHc - betaHc, 0.001)
+
+kstarHc = Math.pow(Math.pow(skHc, 1 - betaHc) * Math.pow(shHc, betaHc) / deltaHc, 1 / denomHc)
+hstarHc = Math.pow(Math.pow(skHc, alphaHc) * Math.pow(shHc, 1 - alphaHc) / deltaHc, 1 / denomHc)
+ystarHc = Math.pow(kstarHc, alphaHc) * Math.pow(hstarHc, betaHc)
+
+pathHc = {
+  const T = THc, rows = [];
+  let k = k0Hc, h = h0Hc;
+  for (let t = 0; t < T; t++) {
+    const y = Math.pow(k, alphaHc) * Math.pow(h, betaHc);
+    rows.push({t, k, h, y});
+    k = Math.max(k + skHc * y - deltaHc * k, 1e-9);
+    h = Math.max(h + shHc * y - deltaHc * h, 1e-9);
+  }
+  return rows;
+}
+
+Plot.plot({
+  marginLeft: 50,
+  x: {label: "time →"},
+  y: {label: "level", grid: true},
+  marks: [
+    Plot.ruleY([kstarHc], {stroke: "var(--im-accent)", strokeDasharray: "3 3", opacity: 0.5}),
+    Plot.ruleY([hstarHc], {stroke: "var(--im-danger)", strokeDasharray: "3 3", opacity: 0.5}),
+    Plot.ruleY([ystarHc], {stroke: "var(--im-sim)", strokeDasharray: "3 3", opacity: 0.5}),
+    Plot.line(pathHc, {x: "t", y: "k", stroke: "var(--im-accent)", strokeWidth: 2.5}),
+    Plot.line(pathHc, {x: "t", y: "h", stroke: "var(--im-danger)", strokeWidth: 2.5}),
+    Plot.line(pathHc, {x: "t", y: "y", stroke: "var(--im-sim)", strokeWidth: 2.5}),
+    Plot.text([{t: THc * 0.5, y: kstarHc}], {text: d => `k* = ${kstarHc.toFixed(1)}`, dy: -8, fill: "var(--im-accent)"}),
+    Plot.text([{t: THc * 0.5, y: hstarHc}], {text: d => `h* = ${hstarHc.toFixed(1)}`, dy: -8, fill: "var(--im-danger)"}),
+    Plot.text([{t: THc * 0.5, y: ystarHc}], {text: d => `y* = ${ystarHc.toFixed(1)}`, dy: -8, fill: "var(--im-sim)"})
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+md`**Steady-state targets** — physical capital $k^{*}$ = **${kstarHc.toFixed(2)}**, human capital $h^{*}$ = **${hstarHc.toFixed(2)}**, output per worker $y^{*}$ = **${ystarHc.toFixed(2)}**. ${(alphaHc + betaHc >= 0.97) ? "⚠️ With α + β near 1 the model approaches endogenous-growth-like sensitivity: tiny changes in saving move the steady state enormously." : ""}`
+```
+
+The blue line is physical capital, the red line is human capital, and the green line is output — each converging to its dashed target. Try nudging $s_h$ up by a little and watch *all three* lines lift: more schooling feeds back into more output, which finances more of *both* stocks.
+:::
+
+## Core intuition
+
+Plain Solow has one thing you can build up: physical capital. The augmented model adds a second — [human capital]{.im-glossary-term}, the stock of skills and education embodied in workers. Both are *reproducible*: each is accumulated by saving a slice of current output and erodes through depreciation. Output uses both, $y = k^{\alpha}h^{\beta}$, with $\alpha + \beta < 1$ so each factor still faces [diminishing returns]{.im-glossary-term}.
+
+The two stocks reinforce each other. More physical capital raises output, which finances more investment in *both* $k$ and $h$; more human capital does the same. The economy settles at a [steady state]{.im-glossary-term} where each stock's investment just covers its own depreciation. Because income now rests on two factors you can grow, raising a saving rate has a *larger* level effect than in one-factor Solow — and as $\alpha + \beta \to 1$, that effect grows without bound, approaching the knife-edge of endogenous growth.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math</summary>
+
+Output per worker depends on both reproducible stocks:
+$$y = k^{\alpha}\,h^{\beta}, \qquad \alpha + \beta < 1.$$
+Each stock accumulates from its own saving rate and shares the depreciation rate $\delta$:
+$$k_{t+1} = k_t + s_k\,y_t - \delta k_t, \qquad h_{t+1} = h_t + s_h\,y_t - \delta h_t.$$
+Setting both changes to zero and solving simultaneously gives the steady state
+$$k^{*} = \left(\frac{s_k^{\,1-\beta}\, s_h^{\,\beta}}{\delta}\right)^{\frac{1}{1-\alpha-\beta}}, \qquad
+h^{*} = \left(\frac{s_k^{\,\alpha}\, s_h^{\,1-\alpha}}{\delta}\right)^{\frac{1}{1-\alpha-\beta}},$$
+$$y^{*} = (k^{*})^{\alpha}(h^{*})^{\beta}.$$
+The exponent $\tfrac{1}{1-\alpha-\beta}$ is what amplifies the response of income to saving: as $\alpha+\beta \to 1$ it explodes, so the level effect of saving becomes arbitrarily large.
+
+</details>
+:::
+
+## What the simulator showed
+
+Starting from small stocks, all three lines climbed steeply and then bent over toward their dashed targets — the familiar curved convergence, but now with *two* capital lines moving in tandem. Pushing $s_h$ up lifted $h^{*}$ directly and dragged $k^{*}$ and $y^{*}$ up with it, because the extra human capital raises output, which finances more physical investment too. The lift in $y^{*}$ from a given change in saving was bigger than plain Solow would predict — the two-factor structure amplifies it. And cranking $\alpha + \beta$ toward 1 made the steady state shoot up dramatically, the simulator's window into endogenous-growth-like sensitivity.
+
+## Common confusions
+
+::: {.im-confusion}
+**"Human capital is just labor."** No — raw labor $L$ is a fixed (or exogenously growing) input, while human capital $h$ is an *accumulable stock* built by investing output, exactly like physical capital. That is precisely why it acts as a *second engine* of accumulation rather than a background factor.
+:::
+
+::: {.im-confusion}
+**"Adding human capital changes the long-run growth rate."** No — just like plain Solow, the long-run growth of output per worker is still *zero* without exogenous technological progress. Once both stocks reach their steady states, $y$ stops growing. Human capital raises the steady-state *level* of income, not its long-run growth rate.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+Two countries share identical $s_k$, $\delta$, $\alpha$, $\beta$, and technology, but one has a higher human-capital saving rate $s_h$. In the long run, the high-$s_h$ country has:
+
+<details><summary>a) A higher steady-state level of income, but the same long-run growth rate</summary>
+✅ Correct. A higher $s_h$ raises $h^{*}$ (and pulls up $k^{*}$ and $y^{*}$ with it), so income is permanently *higher*. But once stocks settle, growth of $y$ is zero in both countries — like Solow, saving sets the level, not the long-run growth rate.
+</details>
+<details><summary>b) A permanently higher growth rate of output per worker</summary>
+No — without exogenous technological progress, long-run growth of $y$ is zero regardless of $s_h$. Saving changes the level, not the perpetual growth rate.
+</details>
+<details><summary>c) The same steady-state income, since human capital is just relabeled labor</summary>
+No — human capital is an accumulable stock, not raw labor. A higher $s_h$ genuinely raises $h^{*}$ and therefore $y^{*}$.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Set **s_k = s_h = 0.25, δ = 0.05, α = β = 1/3**. What are the steady-state stocks $k^{*}$ and $h^{*}$, and steady-state output $y^{*}$?
+
+<details><summary>Reveal answer</summary>
+With $s_k = s_h = s$ and $\alpha = \beta$, the formulas collapse to $k^{*} = h^{*} = \left(s/\delta\right)^{1/(1-\alpha-\beta)} = (0.25/0.05)^{1/(1/3)} = 5^{3} = \mathbf{125}$. Then $y^{*} = (125)^{1/3}(125)^{1/3} = 125^{2/3} \approx \mathbf{25}$. The dashed $k^{*}$ and $h^{*}$ lines sit at **125** and the $y^{*}$ line near **25**.
+</details>
+</div>
+
+{{< include ../_includes/generated/humancapital-related.md >}}

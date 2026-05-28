@@ -51,14 +51,14 @@ website:
           - content/cobb_d_prod.qmd
           - content/solow_intro.qmd
           - content/solow_transition.qmd
-          - "content/solow_pop&_tech_growth.ipynb"
-          - content/humancapital.ipynb
+          - "content/solow_pop&_tech_growth.qmd"
+          - content/humancapital.qmd
+          - content/convergence_hypo.qmd
           - content/solow_model.ipynb
           - content/romer_model.ipynb
           - content/scale_effects.ipynb
           - content/hybrid_model.ipynb
           - content/growth_acc.ipynb
-          - content/convergence_hypo.ipynb
           - content/slowinggrowth.ipynb
           - content/robots.ipynb
       - section: "Intertemporal Choice & Labor"

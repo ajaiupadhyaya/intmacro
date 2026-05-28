@@ -19,6 +19,21 @@ solow_transition:
   title: "Solow Transition Dynamics"
   tldr: "Below steady state, capital grows faster than replacement, so the economy converges upward along a predictable path."
   prereqs: [solow_intro]
+solow_pop&_tech_growth:
+  track: growth
+  title: "Population & Technology Growth"
+  tldr: "Per-effective-worker variables settle at a steady state; living standards then grow only at the rate of technology, while faster population growth dilutes capital."
+  prereqs: [solow_intro]
+humancapital:
+  track: growth
+  title: "Human Capital"
+  tldr: "A second accumulable factor alongside physical capital; raising human-capital investment lifts the steady-state level of income."
+  prereqs: [solow_intro]
+convergence_hypo:
+  track: growth
+  title: "The Convergence Hypothesis"
+  tldr: "Economies sharing the same parameters converge to the same steady state (absolute); with different parameters they converge only to their own (conditional)."
+  prereqs: [solow_transition]
 two_period_consumption:
   track: intertemporal
   title: "Two-Period Consumption"

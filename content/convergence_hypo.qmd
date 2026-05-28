@@ -1,0 +1,162 @@
+---
+title: "The Convergence Hypothesis"
+subtitle: "When do poor countries catch up to rich ones — and when do they not?"
+---
+
+{{< include ../_includes/generated/convergence_hypo-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — The Solow model says an economy grows faster the further it sits *below* its own steady state. If two countries share the same $s$, $\delta$, $n$, $\alpha$, the poorer one grows faster and *catches up* (**absolute convergence**). If their parameters differ, each races toward its *own* steady state — they converge, but not to each other (**conditional convergence**).
+:::
+
+## You'll be able to
+
+- Distinguish **absolute** convergence (same parameters → same $k^{*}$ → the gap closes) from **conditional** convergence (different parameters → different $k^{*}$ → the gap need not close).
+- Explain the empirical signature of convergence: a *negative* relationship between initial income and subsequent growth, holding steady-state determinants constant.
+- Predict, for two economies, whether and how fast the income gap between them will shrink.
+
+## 🚀 Try it first
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Two economies, one poor and one rich — watch whether the gap between them closes
+:::
+
+```{ojs}
+//| echo: false
+viewof sCv      = Inputs.range([0.05, 0.5], {value: 0.20, step: 0.01, label: "savings rate s (Country A)"})
+viewof deltaCv  = Inputs.range([0.01, 0.2], {value: 0.05, step: 0.01, label: "depreciation δ"})
+viewof nCv      = Inputs.range([0.0, 0.05], {value: 0.0, step: 0.005, label: "population growth n"})
+viewof alphaCv  = Inputs.range([0.2, 0.5], {value: 0.33, step: 0.01, label: "capital share α"})
+viewof k0aCv    = Inputs.range([0.1, 4], {value: 0.5, step: 0.1, label: "initial capital k₀ — Country A (poor)"})
+viewof k0bCv    = Inputs.range([4, 16], {value: 9, step: 0.1, label: "initial capital k₀ — Country B (rich)"})
+viewof condCv   = Inputs.toggle({label: "Conditional convergence (give B a higher savings rate)", value: false})
+viewof sBCv     = Inputs.range([0.05, 0.5], {value: 0.35, step: 0.01, label: "savings rate s (Country B, only used if toggled)"})
+viewof TCv      = Inputs.range([20, 150], {value: 80, step: 5, label: "time horizon"})
+
+sB_Cv = condCv ? sBCv : sCv
+
+kstarA_Cv = Math.pow(sCv / (deltaCv + nCv), 1 / (1 - alphaCv))
+kstarB_Cv = Math.pow(sB_Cv / (deltaCv + nCv), 1 / (1 - alphaCv))
+ystarA_Cv = Math.pow(kstarA_Cv, alphaCv)
+ystarB_Cv = Math.pow(kstarB_Cv, alphaCv)
+
+simCv = {
+  const T = TCv, A = [], B = [];
+  let kA = k0aCv, kB = k0bCv;
+  for (let t = 0; t < T; t++) {
+    const yA = Math.pow(kA, alphaCv);
+    const yB = Math.pow(kB, alphaCv);
+    A.push({t, k: kA, y: yA, country: "A (poor)"});
+    B.push({t, k: kB, y: yB, country: "B (rich)"});
+    kA = kA + sCv  * yA - (deltaCv + nCv) * kA;
+    kB = kB + sB_Cv * yB - (deltaCv + nCv) * kB;
+  }
+  return {A, B};
+}
+
+Plot.plot({
+  marginLeft: 50,
+  x: {label: "time →"},
+  y: {label: "output per worker  y", grid: true, domain: [0, Math.max(ystarA_Cv, ystarB_Cv) * 1.15]},
+  marks: [
+    Plot.ruleY([ystarA_Cv], {stroke: "var(--im-accent)", strokeDasharray: "3 3", opacity: 0.5}),
+    Plot.ruleY([ystarB_Cv], {stroke: "var(--im-sim)",    strokeDasharray: "3 3", opacity: 0.5}),
+    Plot.line(simCv.A, {x: "t", y: "y", stroke: "var(--im-accent)", strokeWidth: 2.5}),
+    Plot.line(simCv.B, {x: "t", y: "y", stroke: "var(--im-sim)",    strokeWidth: 2.5}),
+    Plot.text([{t: TCv * 0.5, y: ystarA_Cv}], {text: d => `y*₍A₎ = ${ystarA_Cv.toFixed(2)}`, dy: 10, fill: "var(--im-accent)"}),
+    Plot.text([{t: TCv * 0.5, y: ystarB_Cv}], {text: d => `y*₍B₎ = ${ystarB_Cv.toFixed(2)}`, dy: -8, fill: "var(--im-sim)"})
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+growthCv = {
+  // current (last-period) growth rate of y for each country
+  const A = simCv.A, B = simCv.B, last = A.length - 1;
+  const gA = Math.log(A[last].y / A[last - 1].y);
+  const gB = Math.log(B[last].y / B[last - 1].y);
+  // early growth (first 5 years), where the gap is widest
+  const eA = Math.log(A[Math.min(5, last)].y / A[0].y) / Math.min(5, last);
+  const eB = Math.log(B[Math.min(5, last)].y / B[0].y) / Math.min(5, last);
+  return {gA, gB, eA, eB};
+}
+
+md`**Country A** (poor) starts at $y_0 = ${simCv.A[0].y.toFixed(2)}$ and heads for $y^{*} = ${ystarA_Cv.toFixed(2)}$.
+**Country B** (rich) starts at $y_0 = ${simCv.B[0].y.toFixed(2)}$ and heads for $y^{*} = ${ystarB_Cv.toFixed(2)}$.
+
+Early-period growth: **A ≈ ${(growthCv.eA * 100).toFixed(2)}%/yr**, **B ≈ ${(growthCv.eB * 100).toFixed(2)}%/yr** — ${growthCv.eA > growthCv.eB ? "the poorer country grows faster, so the gap is closing." : "the richer country grows at least as fast — no catch-up."} ${condCv ? "Because B saves more, the two aim at **different** steady states (conditional convergence)." : "Both share the same parameters, so they aim at the **same** steady state (absolute convergence) — A catches up to B."}`
+```
+:::
+
+## Core intuition
+
+The whole convergence story rides on [diminishing returns]{.im-glossary-term}. When a country has little capital per worker, each new machine produces a lot of extra output, so investment $s y$ easily beats the replacement cost $(\delta + n)k$ and capital piles up fast. As capital accumulates, the marginal product shrinks, investment and break-even drift together, and growth slows. The resting point — where $s y = (\delta+n)k$ — is the [steady state]{.im-glossary-term} $k^{*}$.
+
+The key consequence: an economy's growth rate depends on its *distance below its own steady state*. This is the engine of [convergence]{.im-glossary-term}. But "its own steady state" is the crucial qualifier:
+
+- **Absolute convergence.** If two economies share $s$, $\delta$, $n$, $\alpha$, they share the *same* $k^{*}$. The poorer one starts further below it, grows faster, and the income gap *closes*. Everyone ends equally rich.
+- **Conditional convergence.** If parameters differ, each economy converges to its *own* $k^{*}$. A poor country with a low saving rate may grow slowly because it is already near its (low) steady state — it converges, but the gap to a rich, high-saving country need not shrink at all.
+
+The empirical fingerprint of convergence is therefore a *negative* relationship between a country's initial income $\ln y_0$ and its later growth rate — but only **holding the determinants of the steady state constant**. Run that regression on raw world data and the relationship is roughly flat (absolute convergence fails); control for $s$, $n$, schooling, institutions, and a clear negative slope appears (conditional convergence holds).
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math</summary>
+
+Per-worker law of motion (with population growth $n$, technology $A=1$):
+$$k_{t+1} = k_t + s\,k_t^{\alpha} - (\delta + n)\,k_t, \qquad y = k^{\alpha}.$$
+Setting the change to zero gives the steady state
+$$k^{*} = \left(\frac{s}{\delta+n}\right)^{\frac{1}{1-\alpha}}, \qquad y^{*} = (k^{*})^{\alpha}.$$
+
+Linearizing around the steady state, the growth rate of output is approximately proportional to the **log gap** to its own target:
+$$g \;\approx\; \lambda\,\bigl(\ln y^{*} - \ln y\bigr), \qquad \lambda = (1-\alpha)(\delta+n).$$
+So $\lambda$ is the **speed of convergence**: the larger it is, the faster the gap closes (half-life $\approx \ln 2 / \lambda$). Two economies with the *same* $y^{*}$ but different $y$ both obey this with the same $\lambda$, so the lower-$y$ one grows faster and catches up. Two economies with *different* $y^{*}$ each shrink the gap to their *own* target — the cross-country gap need not close.
+
+</details>
+:::
+
+## What the simulator showed
+
+With both countries sharing parameters, the two output paths chased the *same* dashed steady-state line: the poor country (blue) shot up steeply while the rich one (green) barely moved, and the gap between them narrowed period by period — absolute convergence in action, with the poorer economy posting the higher growth rate. Flip on the conditional-convergence toggle and Country B aims at a *higher* dashed target: now both still "converge," each to its own $y^{*}$, but the poor country never catches the rich one — the gap can even stay constant or widen. Same model, opposite headline, depending entirely on whether the steady states match.
+
+## Common confusions
+
+::: {.im-confusion}
+**"All poor countries should be catching up to rich ones."** No — that is *absolute* convergence, which the Solow model predicts only when economies share the same steady-state determinants ($s$, $n$, $\delta$, $\alpha$, technology). In world data those parameters differ wildly, so raw growth-vs-initial-income shows little catch-up. The model predicts only *conditional* convergence: catch-up among countries headed for the *same* steady state.
+:::
+
+::: {.im-confusion}
+**"Convergence means every country ends up equally rich."** Only if they share parameters. Convergence means each economy approaches *its own* steady state. A low-saving country converges to a low $y^{*}$; a high-saving country converges to a high $y^{*}$. Both have "converged," yet they are permanently unequal.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+Country A is poor with savings rate $s=0.1$; Country B is rich with $s=0.3$. All other parameters are identical. The Solow model predicts:
+
+<details><summary>a) A grows faster and catches up to B (absolute convergence)</summary>
+No — A and B have *different* steady states because their saving rates differ. A heads for a low $y^{*}$, so it need not catch B at all.
+</details>
+<details><summary>b) Each converges to its own steady state; A need not catch B (conditional convergence)</summary>
+✅ Correct. With different $s$, the two have different $k^{*}$. Each converges to its *own* target, so the income gap between them need not close. This is conditional convergence.
+</details>
+<details><summary>c) Neither converges because their parameters differ</summary>
+No — different parameters don't prevent convergence; they just give each country a *different* steady state to converge toward.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Set **s = 0.20, δ = 0.05, n = 0, α = 0.33** (the same for both countries). What is the shared steady-state capital $k^{*}$, and roughly $y^{*}$?
+
+<details><summary>Reveal answer</summary>
+$k^{*} = \bigl(s/(\delta+n)\bigr)^{1/(1-\alpha)} = (0.20/0.05)^{1/0.67} = 4^{1.49} \approx 7.9$, and $y^{*} = (k^{*})^{0.33} \approx 7.9^{0.33} \approx 1.97$. Both dashed lines sit on top of each other at **y\* ≈ 1.97** — absolute convergence, so A catches up to B.
+</details>
+</div>
+
+{{< include ../_includes/generated/convergence_hypo-related.md >}}
