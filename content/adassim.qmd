@@ -15,7 +15,7 @@ subtitle: "How monetary policy stabilizes output and inflation — and when it f
 - Explain why φπ > 1 (the Taylor principle) is necessary for the inflation path to converge.
 - Read a time-series chart of the dynamic AD-AS model and identify convergent versus oscillatory/divergent paths.
 
-## 🚀 Try it first
+## Explore the model
 
 ::: {.im-sim-hero}
 ::: {.im-sim-label}
@@ -129,7 +129,7 @@ What does the Taylor principle require, and why does it matter for stability?
 No — a positive response is necessary but not sufficient. If φπ < 1 the central bank raises rates by less than the inflation gap, leaving the real interest rate adjustment too small to close the gap. Inflation deviations feed on themselves.
 </details>
 <details><summary>b) φπ > 1 — the rate response must exceed the inflation gap one-for-one</summary>
-✅ Correct. With φπ > 1 each unit of excess inflation triggers a more-than-proportionate rate hike, which cuts output via the IS curve, which reduces inflation via the Phillips curve — a self-correcting loop. Below 1, the loop amplifies rather than dampens.
+**Correct**. With φπ > 1 each unit of excess inflation triggers a more-than-proportionate rate hike, which cuts output via the IS curve, which reduces inflation via the Phillips curve — a self-correcting loop. Below 1, the loop amplifies rather than dampens.
 </details>
 <details><summary>c) φπ = 1 exactly — the rate response must match inflation one-for-one</summary>
 No — at φπ = 1 the economy is on the boundary: the feedback coefficient equals 1 in absolute value (with λα = 1) and the inflation gap neither grows nor shrinks. You need strict inequality φπ > 1 for convergence.

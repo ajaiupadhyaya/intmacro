@@ -15,7 +15,7 @@ subtitle: "Why only technological progress — not saving harder or breeding fas
 - Explain why per-worker living standards grow at $g$ while aggregate output grows at $n+g$.
 - Predict that faster population growth *lowers* steady-state capital per effective worker.
 
-## 🚀 Try it first
+## Explore the model
 
 ::: {.im-sim-hero}
 ::: {.im-sim-label}
@@ -114,7 +114,7 @@ From any starting $\tilde k_0$, both lines bent toward the dashed targets and fl
 In the steady state, at what rate does output **per worker** ($y = A\tilde y$) grow?
 
 <details><summary>a) g (the technology growth rate)</summary>
-✅ Correct. Per-effective-worker output $\tilde y$ is constant at steady state, so $y = A\tilde y$ grows at the rate of $A$, which is $g$. Only technological progress raises living standards in the long run.
+**Correct**. Per-effective-worker output $\tilde y$ is constant at steady state, so $y = A\tilde y$ grows at the rate of $A$, which is $g$. Only technological progress raises living standards in the long run.
 </details>
 <details><summary>b) n + g</summary>
 No — that's the growth rate of *aggregate* output $Y = AL\tilde y$, which also picks up labor-force growth $n$. Per-*worker* output grows only at $g$.

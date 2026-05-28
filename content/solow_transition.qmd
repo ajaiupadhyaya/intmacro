@@ -15,7 +15,7 @@ subtitle: "How an economy actually travels to its steady state — fast at first
 - Explain why convergence is fast far from $k^{*}$ and slow near it.
 - Predict what happens when an economy starts *above* its steady state.
 
-## 🚀 Try it first
+## Explore the model
 
 ::: {.im-sim-hero}
 ::: {.im-sim-label}
@@ -106,7 +106,7 @@ Starting from a tiny $k_0$, both lines shot up steeply, then bent over and level
 Two economies have identical $s$, $\delta$, $\alpha$, $A$ but different starting capital: one far below $k^{*}$, one just below it. Which grows faster initially?
 
 <details><summary>a) The one far below k*</summary>
-✅ Correct. The further below $k^{*}$, the larger the gap between investment and depreciation, so the faster capital grows. This is the convergence mechanism.
+**Correct**. The further below $k^{*}$, the larger the gap between investment and depreciation, so the faster capital grows. This is the convergence mechanism.
 </details>
 <details><summary>b) The one just below k*</summary>
 No — near $k^{*}$ investment and depreciation nearly balance, so growth is slow.

@@ -15,7 +15,7 @@ subtitle: "Turning capital and labor into output — with diminishing returns an
 - Distinguish the marginal product (MPK) from the average product (APK), and use $MPK = \alpha\cdot APK$.
 - State what constant returns to scale means and why this functional form guarantees it.
 
-## 🚀 Try it first
+## Explore the model
 
 ::: {.im-sim-hero}
 ::: {.im-sim-label}
@@ -102,7 +102,7 @@ With $Y = A K^{\alpha} L^{1-\alpha}$ and $\alpha = 0.33$, you double **only** ca
 No — doubling only one input gives less than double, because of diminishing returns. Output rises by a factor of $2^{0.33} \approx 1.26$.
 </details>
 <details><summary>b) rises by about 26%</summary>
-✅ Correct. $Y$ scales by $2^{\alpha} = 2^{0.33} \approx 1.26$ — a 26% gain, not 100%.
+**Correct**. $Y$ scales by $2^{\alpha} = 2^{0.33} \approx 1.26$ — a 26% gain, not 100%.
 </details>
 <details><summary>c) more than doubles</summary>
 No — a single factor with exponent below 1 gives diminishing, not increasing, returns.

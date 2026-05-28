@@ -15,7 +15,7 @@ subtitle: "A second engine of accumulation — augmenting Solow with the stock o
 - Explain why human capital acts as a *second reproducible factor* rather than as raw labor.
 - Predict how a change in the human-capital saving rate $s_h$ shifts steady-state income — and why that response is larger than in the one-factor model.
 
-## 🚀 Try it first
+## Explore the model
 
 ::: {.im-sim-hero}
 ::: {.im-sim-label}
@@ -122,7 +122,7 @@ Starting from small stocks, all three lines climbed steeply and then bent over t
 Two countries share identical $s_k$, $\delta$, $\alpha$, $\beta$, and technology, but one has a higher human-capital saving rate $s_h$. In the long run, the high-$s_h$ country has:
 
 <details><summary>a) A higher steady-state level of income, but the same long-run growth rate</summary>
-✅ Correct. A higher $s_h$ raises $h^{*}$ (and pulls up $k^{*}$ and $y^{*}$ with it), so income is permanently *higher*. But once stocks settle, growth of $y$ is zero in both countries — like Solow, saving sets the level, not the long-run growth rate.
+**Correct**. A higher $s_h$ raises $h^{*}$ (and pulls up $k^{*}$ and $y^{*}$ with it), so income is permanently *higher*. But once stocks settle, growth of $y$ is zero in both countries — like Solow, saving sets the level, not the long-run growth rate.
 </details>
 <details><summary>b) A permanently higher growth rate of output per worker</summary>
 No — without exogenous technological progress, long-run growth of $y$ is zero regardless of $s_h$. Saving changes the level, not the perpetual growth rate.

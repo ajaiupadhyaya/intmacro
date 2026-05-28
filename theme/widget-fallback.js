@@ -28,12 +28,12 @@
     notice.className = "im-model-pending";
     var label = document.createElement("span");
     label.className = "im-model-pending-label";
-    label.textContent = "Interactive model being rebuilt";
+    label.textContent = "Interactive simulator in preparation";
     notice.appendChild(label);
     notice.appendChild(
       document.createTextNode(
-        "This chapter's simulator is being upgraded to run live in your " +
-          "browser. The walkthrough below still covers the economics in full."
+        "The model and its intuition are explained in full below. An " +
+          "in-browser interactive version of this chapter is being added."
       )
     );
 
@@ -41,6 +41,14 @@
     first.parentNode.insertBefore(notice, first);
     deadCells.forEach(function (cell) {
       cell.style.display = "none";
+    });
+
+    // This is a legacy notebook page (dead widgets present). Besides the
+    // executed cells (already hidden via echo:false), these chapters also carry
+    // Python snippets embedded in their markdown — implementation detail, not
+    // economics. Hide those too so the page reads as a clean explanation.
+    document.querySelectorAll("div.sourceCode").forEach(function (block) {
+      block.style.display = "none";
     });
   }
 

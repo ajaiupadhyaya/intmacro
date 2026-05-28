@@ -15,7 +15,7 @@ subtitle: "When do poor countries catch up to rich ones — and when do they not
 - Explain the empirical signature of convergence: a *negative* relationship between initial income and subsequent growth, holding steady-state determinants constant.
 - Predict, for two economies, whether and how fast the income gap between them will shrink.
 
-## 🚀 Try it first
+## Explore the model
 
 ::: {.im-sim-hero}
 ::: {.im-sim-label}
@@ -142,7 +142,7 @@ Country A is poor with savings rate $s=0.1$; Country B is rich with $s=0.3$. All
 No — A and B have *different* steady states because their saving rates differ. A heads for a low $y^{*}$, so it need not catch B at all.
 </details>
 <details><summary>b) Each converges to its own steady state; A need not catch B (conditional convergence)</summary>
-✅ Correct. With different $s$, the two have different $k^{*}$. Each converges to its *own* target, so the income gap between them need not close. This is conditional convergence.
+**Correct**. With different $s$, the two have different $k^{*}$. Each converges to its *own* target, so the income gap between them need not close. This is conditional convergence.
 </details>
 <details><summary>c) Neither converges because their parameters differ</summary>
 No — different parameters don't prevent convergence; they just give each country a *different* steady state to converge toward.

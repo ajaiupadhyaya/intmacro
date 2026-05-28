@@ -1,105 +1,73 @@
 ---
-pagetitle: "Intermediate Macroeconomics — Interactive Dashboard"
+title: "Intermediate Macroeconomics"
+subtitle: "Interactive models for self-study"
+pagetitle: "Intermediate Macroeconomics"
 toc: false
-page-layout: full
 ---
 
-```{=html}
-<section class="im-hero">
-  <span class="im-hero-eyebrow">UVA · Intermediate Macroeconomics</span>
-  <div class="im-hero-title">Macro models you can <span class="grad">actually play with.</span></div>
-  <p class="im-hero-sub">
-    A self-study dashboard of working macroeconomic models. Every chapter pairs clean,
-    derivable math with a <strong>live in-browser simulator</strong> and self-check questions —
-    so you can build intuition by moving the sliders, not just reading the algebra.
-  </p>
+This site is an interactive companion to an intermediate macroeconomics course.
+Each chapter develops one model — its assumptions, key equations, and intuition —
+and pairs it with a simulator you can adjust directly in your browser, alongside
+worked explanations and self-check questions. It is built for self-study: read
+through a model, then change its parameters and watch how the results respond.
 
-  <div class="im-hero-cta">
-    <a class="im-btn im-btn-primary" href="content/solow_intro.html">Open the Solow simulator →</a>
-    <a class="im-btn im-btn-ghost" href="content/Preliminaries.html">Start with the math primer</a>
-  </div>
+The chapters are organized into five tracks. If you are starting fresh, begin
+with **Foundations**; otherwise, jump to whatever you are working on. Key terms
+appear as hover definitions throughout and are collected in the
+[Glossary](_glossary.qmd).
 
-  <div class="im-stats">
-    <div class="im-stat"><div class="im-stat-num">30+</div><div class="im-stat-label">Models</div></div>
-    <div class="im-stat"><div class="im-stat-num">5</div><div class="im-stat-label">Tracks</div></div>
-    <div class="im-stat"><div class="im-stat-num">3</div><div class="im-stat-label">Live simulators</div></div>
-    <div class="im-stat"><div class="im-stat-num">100%</div><div class="im-stat-label">Runs in-browser</div></div>
-  </div>
-</section>
+## Foundations
 
-<div class="im-section-label">Featured · interactive</div>
-<div class="im-track-grid">
+*The mathematical toolkit the rest of the course assumes.*
 
-  <a class="im-track-card" href="content/solow_intro.html">
-    <div class="im-track-icon">🌱</div>
-    <span class="im-live-badge">Live simulator</span>
-    <h3>The Solow Growth Model</h3>
-    <p>Move savings, population growth, and depreciation — watch the economy converge to its steady state in real time.</p>
-    <div class="im-track-meta"><span>Growth track</span><span class="im-track-go">Explore →</span></div>
-  </a>
+- [Mathematical Preliminaries](content/Preliminaries.ipynb) — growth rates, compounding, and the log approximation used throughout.
 
-  <a class="im-track-card" href="content/two_period_consumption.html">
-    <div class="im-track-icon">⏳</div>
-    <span class="im-live-badge">Live simulator</span>
-    <h3>Two-Period Consumption</h3>
-    <p>Shift income and interest rates across the budget line and indifference curves to see borrowing vs. saving emerge.</p>
-    <div class="im-track-meta"><span>Intertemporal track</span><span class="im-track-go">Explore →</span></div>
-  </a>
+## Measurement & National Accounts
 
-  <a class="im-track-card" href="content/adassim.html">
-    <div class="im-track-icon">📈</div>
-    <span class="im-live-badge">Live simulator</span>
-    <h3>Dynamic AD–AS</h3>
-    <p>Tune the Taylor rule and shock the economy — trace inflation, the output gap, and the path back to equilibrium.</p>
-    <div class="im-track-meta"><span>Business cycles track</span><span class="im-track-go">Explore →</span></div>
-  </a>
+*How raw economic activity becomes the numbers we analyze.*
 
-</div>
+- [Measuring GDP: The Expenditure Approach](content/measuring_gdp.ipynb) — output as the sum of consumption, investment, government, and net exports.
+- [Real vs. Nominal GDP Over Time](content/realvsnom.ipynb) — separating genuine output changes from price changes.
+- [Deflators and Price Indices](content/cash_money.ipynb) — how a price index is built and why we deflate.
+- [Real GDP with Changing Prices](content/two_goods_twoperiods.ipynb) — base-year versus chain-weighted measures of real output.
+- [Comparing GDP Across Countries](content/realgdpacross.ipynb) — purchasing-power-parity adjustments for cross-country comparison.
 
-<div class="im-section-label">Browse by track</div>
-<div class="im-track-grid">
+## Growth & Long-Run Dynamics
 
-  <a class="im-track-card" href="content/Preliminaries.html">
-    <div class="im-track-icon">📐</div>
-    <h3>Foundations</h3>
-    <p>The shared mathematical vocabulary — growth rates, the log approximation, and the tools every later chapter leans on.</p>
-    <div class="im-track-meta"><span>1 chapter</span><span class="im-track-go">Start here →</span></div>
-  </a>
+*What makes economies rich over the long run, from Solow to endogenous growth.*
 
-  <a class="im-track-card" href="content/measuring_gdp.html">
-    <div class="im-track-icon">📊</div>
-    <h3>Measurement &amp; National Accounts</h3>
-    <p>GDP, real vs. nominal, price indices, and comparing output across countries with PPP.</p>
-    <div class="im-track-meta"><span>5 chapters</span><span class="im-track-go">Explore →</span></div>
-  </a>
+- [Levels vs. Growth Rates](content/foundations_growth.qmd) — why how rich a country is and how fast it grows are distinct.
+- [Cobb–Douglas Production](content/cobb_d_prod.qmd) — output from capital and labor, diminishing returns, and factor shares.
+- [The Solow Growth Model](content/solow_intro.qmd) — saving, depreciation, and the steady state.
+- [Solow Transition Dynamics](content/solow_transition.qmd) — the path an economy travels toward its steady state.
+- [Population & Technology Growth](content/solow_pop&_tech_growth.qmd) — Solow with a growing workforce and advancing technology.
+- [Human Capital](content/humancapital.qmd) — adding a second accumulable factor to the Solow framework.
+- [The Convergence Hypothesis](content/convergence_hypo.qmd) — when poorer economies do, and do not, catch up.
+- [Solow Model: Exercises & Case Studies](content/solow_model.ipynb) — applied problems built on the Solow framework.
+- [The Romer Model of Endogenous Growth](content/romer_model.ipynb) — ideas, nonrivalry, and growth driven from within.
+- [Scale Effects in the Romer Model](content/scale_effects.ipynb) — how population size influences the rate of innovation.
+- [The Solow–Romer Hybrid Model](content/hybrid_model.ipynb) — combining capital accumulation with endogenous ideas.
+- [Growth Accounting](content/growth_acc.ipynb) — decomposing output growth into capital, labor, and total factor productivity.
+- [Slowing Growth and Declining TFP](content/slowinggrowth.ipynb) — what a falling rate of technological advance implies.
+- [Robots vs. Labor](content/robots.ipynb) — automation and substitution in a CES production model.
 
-  <a class="im-track-card" href="content/solow_intro.html">
-    <div class="im-track-icon">🌱</div>
-    <h3>Growth &amp; Long-Run Dynamics</h3>
-    <p>Solow, Romer, human capital, growth accounting, convergence, and the economics of automation.</p>
-    <div class="im-track-meta"><span>14 chapters</span><span class="im-track-go">Explore →</span></div>
-  </a>
+## Intertemporal Choice & Labor
 
-  <a class="im-track-card" href="content/two_period_consumption.html">
-    <div class="im-track-icon">⏳</div>
-    <h3>Intertemporal Choice &amp; Labor</h3>
-    <p>Two-period consumption, the labor–leisure trade-off, and Tobin's q theory of investment.</p>
-    <div class="im-track-meta"><span>4 chapters</span><span class="im-track-go">Explore →</span></div>
-  </a>
+*Forward-looking decisions about consumption, labor, and investment.*
 
-  <a class="im-track-card" href="content/adassim.html">
-    <div class="im-track-icon">📉</div>
-    <h3>Business Cycles &amp; Policy Dynamics</h3>
-    <p>The IS curve, dynamic AD–AS, the Lucas island model, and real business cycle simulation.</p>
-    <div class="im-track-meta"><span>7 chapters</span><span class="im-track-go">Explore →</span></div>
-  </a>
+- [The Two-Period Consumption Model](content/two_period_consumption.qmd) — splitting lifetime resources between today and tomorrow.
+- [The Two-Period Model: Extensions](content/two_period_model.ipynb) — a more general treatment of intertemporal choice.
+- [The Labor–Leisure Choice](content/labor_leisure_model.ipynb) — trading consumption against time given the real wage.
+- [Investment and Tobin's q](content/tobin_q_model.ipynb) — when the value of capital justifies new investment.
 
-  <a class="im-track-card" href="_glossary.html">
-    <div class="im-track-icon">📖</div>
-    <h3>Glossary</h3>
-    <p>Every key term, defined in one place — with hover tooltips wired throughout the chapters.</p>
-    <div class="im-track-meta"><span>Reference</span><span class="im-track-go">Open →</span></div>
-  </a>
+## Business Cycles & Policy Dynamics
 
-</div>
-```
+*Short-run fluctuations, monetary policy, and the models that explain them.*
+
+- [The IS Curve](content/is_curve_model.ipynb) — interest rates, demand, and goods-market equilibrium.
+- [Dynamic AD–AS with a Taylor Rule](content/adassim.qmd) — inflation and output dynamics under a policy rule.
+- [AD–AS Shocks and Adjustment](content/dynamicshock.ipynb) — how the economy responds to demand and supply shocks.
+- [AD–AS: Exercises & Case Studies](content/adas_model.ipynb) — applied problems using the AD–AS framework.
+- [The Lucas Island Model](content/lucas_island_model.ipynb) — imperfect information and the source of real fluctuations.
+- [Equilibrium Business Cycles with Persistence](content/equilibrium_model.ipynb) — propagation that stretches shocks over time.
+- [The Real Business Cycle Model](content/rbc_simulation.ipynb) — fluctuations as the efficient response to productivity shocks.
