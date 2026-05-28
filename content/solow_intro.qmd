@@ -1,0 +1,16 @@
+---
+title: "The Solow Growth Model"
+subtitle: "Why saving more makes you richer, not faster-growing"
+---
+
+{{< include ../_includes/generated/solow_intro-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — Raise the savings rate and you'll get a *richer* country, not a *faster-growing* one. In the long run an economy's growth rate is whatever rate technology improves at; savings only sets the *level* of the steady state.
+:::
+
+## You'll be able to
+
+- Predict how the savings rate, population growth, tech growth, and depreciation shift the steady state.
+- Explain why the *level* of income and the *growth rate* of income are different things.
+- Read empirical convergence patterns through the model's lens.
