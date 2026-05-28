@@ -1,0 +1,11 @@
+---
+title: "Redirecting…"
+format:
+  html:
+    include-in-header:
+      text: |
+        <meta http-equiv="refresh" content="0; url=solow_intro.html">
+        <link rel="canonical" href="solow_intro.html">
+---
+
+This chapter moved to [The Solow Growth Model](solow_intro.html).
