@@ -24,9 +24,11 @@ def build_prereq_partial(chap_id: str, data: dict) -> str:
     meta = data[chap_id]
     prereqs = meta.get("prereqs", []) or []
     if not prereqs:
-        return '<div class="im-prereq-chips"><span class="im-prereq-chip">core model</span></div>\n'
-    chips = "\n".join(chip(p, data[p]) for p in prereqs if p in data)
-    return f'<div class="im-prereq-chips">\n{chips}\n</div>\n'
+        inner = '<div class="im-prereq-chips"><span class="im-prereq-chip">core model</span></div>\n'
+    else:
+        chips = "\n".join(chip(p, data[p]) for p in prereqs if p in data)
+        inner = f'<div class="im-prereq-chips">\n{chips}\n</div>\n'
+    return '```{=html}\n' + inner + '```\n'
 
 def related_card(role: str, chap_id: str, meta: dict) -> str:
     title = html.escape(meta.get("title", chap_id))
@@ -49,7 +51,8 @@ def build_related_partial(chap_id: str, data: dict) -> str:
         cards.append(related_card("sibling", siblings[0], data[siblings[0]]))
     if nexts:
         cards.append(related_card("next", nexts[0], data[nexts[0]]))
-    return f'<div class="im-related-cards">\n' + "\n".join(cards) + "\n</div>\n"
+    inner = f'<div class="im-related-cards">\n' + "\n".join(cards) + "\n</div>\n"
+    return '```{=html}\n' + inner + '```\n'
 
 def main() -> int:
     ap = argparse.ArgumentParser()

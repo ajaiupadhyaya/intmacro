@@ -54,6 +54,13 @@ def test_generates_related_partial_with_roles(tmp_path):
     related = (tmp_path / "generated" / "solow_intro-related.md").read_text()
     assert "prereq" in related and "Cobb-Douglas Production" in related
     assert "next" in related and "Solow Transition" in related
+    # Raw-HTML wrapper must be present so pandoc does not reprocess the markup
+    assert related.lstrip().startswith("```{=html}"), (
+        f"related partial must start with ```{{=html}} fence; got: {related[:80]!r}"
+    )
+    assert "```" in related[len("```{=html}"):], (
+        "related partial must contain a closing ``` fence"
+    )
 
 def test_related_partial_includes_sibling_role(tmp_path):
     # 4-chapter growth track: solow_intro has a prereq (cobb_d_prod), a next
