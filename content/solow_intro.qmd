@@ -14,3 +14,47 @@ subtitle: "Why saving more makes you richer, not faster-growing"
 - Predict how the savings rate, population growth, tech growth, and depreciation shift the steady state.
 - Explain why the *level* of income and the *growth rate* of income are different things.
 - Read empirical convergence patterns through the model's lens.
+
+## 🚀 Try it first
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — the steady state and transition path update live
+:::
+
+```{ojs}
+//| echo: false
+viewof s     = Inputs.range([0.05, 0.6], {value: 0.20, step: 0.01, label: "savings rate s"})
+viewof nval  = Inputs.range([0.00, 0.05], {value: 0.01, step: 0.005, label: "pop. growth n"})
+viewof gval  = Inputs.range([0.00, 0.05], {value: 0.02, step: 0.005, label: "tech growth g"})
+viewof delta = Inputs.range([0.02, 0.15], {value: 0.05, step: 0.01, label: "depreciation δ"})
+viewof alpha = Inputs.range([0.20, 0.50], {value: 0.333, step: 0.001, label: "capital share α"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+kstar = Math.pow(s / (nval + gval + delta), 1 / (1 - alpha))
+
+path = {
+  const T = 200, k0 = 0.5;
+  const pts = [];
+  let k = k0;
+  for (let t = 0; t < T; t++) {
+    pts.push({t, k});
+    k = k + s * Math.pow(k, alpha) - (nval + gval + delta) * k;
+  }
+  return pts;
+}
+
+Plot.plot({
+  marginLeft: 50,
+  x: {label: "time →"},
+  y: {label: "capital per effective worker k̃", grid: true},
+  marks: [
+    Plot.ruleY([kstar], {stroke: "var(--im-sim)", strokeDasharray: "4 4"}),
+    Plot.text([{t: 150, k: kstar}], {text: d => `k* = ${kstar.toFixed(2)}`, dy: -8, fill: "var(--im-sim)"}),
+    Plot.line(path, {x: "t", y: "k", stroke: "var(--im-accent)", strokeWidth: 2})
+  ]
+})
+```
+
+The dashed green line is the **steady state** `k*`. The curve is the economy's path starting from a low capital stock.
+:::
