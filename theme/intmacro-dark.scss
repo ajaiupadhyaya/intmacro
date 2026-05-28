@@ -1,0 +1,29 @@
+/*-- scss:defaults --*/
+@import "_brand";
+
+$body-bg:    #0b0d12;
+$body-color: #e6e8ee;
+$link-color: #7aa2f7;
+$navbar-bg:  #14171f;
+
+:root {
+  --im-bg-page: #0b0d12;
+  --im-bg-surface: #14171f;
+  --im-bg-elevated: #1a1e29;
+  --im-fg-primary: #e6e8ee;
+  --im-fg-secondary: #a3a8b8;
+  --im-fg-muted: #6b7280;
+  --im-border: #1f2433;
+  --im-accent: #7aa2f7;
+  --im-accent-soft: #1a2240;
+  --im-sim: #34d399;
+  --im-sim-soft: #062e22;
+  --im-warn: #fbbf24;
+  --im-warn-soft: #2a1f08;
+  --im-danger: #f87171;
+  --im-danger-soft: #2c1314;
+}
+
+/*-- scss:rules --*/
+body { font-family: $font-ui; line-height: 1.6; }
+.math, mjx-container { font-family: $font-math; }
