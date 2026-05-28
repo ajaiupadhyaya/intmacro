@@ -22,3 +22,15 @@
   short: "The efficiency term A multiplying the production function; its growth rate g sets long-run per-capita growth."
   first_mention: solow_intro
   aka: ["TFP", "A"]
+- term: intertemporal budget constraint
+  short: "All (c₁,c₂) bundles whose present value equals lifetime wealth: c₁ + c₂/(1+r) = W."
+  first_mention: two_period_consumption
+  aka: ["IBC"]
+- term: Euler equation
+  short: "The optimality condition for consumption over time: marginal utility today equals (1+r)·β·marginal utility tomorrow. Here: c₂ = β(1+r)c₁."
+  first_mention: two_period_consumption
+  aka: []
+- term: consumption smoothing
+  short: "The tendency of forward-looking agents to even out consumption across periods rather than match it to income timing."
+  first_mention: two_period_consumption
+  aka: []

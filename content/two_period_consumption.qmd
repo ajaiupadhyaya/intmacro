@@ -1,0 +1,149 @@
+---
+title: "The Two-Period Consumption Model"
+subtitle: "Consumption smoothing, the Euler equation, and why interest rates tilt the path"
+---
+
+{{< include ../_includes/generated/two_period_consumption-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — A forward-looking agent splits *lifetime wealth* between today and tomorrow. The interest rate sets the price of today vs tomorrow; a patient agent (β close to 1) smooths more evenly. The optimal split is $c_1^* = W/(1+\beta)$ where $W = y_1 + y_2/(1+r)$.
+:::
+
+## You'll be able to
+
+- Compute lifetime wealth $W$ and the closed-form optimal consumption pair $(c_1^*, c_2^*)$.
+- Explain why the agent is a *saver* (c₁ < y₁) vs a *borrower* (c₁ > y₁) depending on parameters.
+- Decompose an interest-rate change into a substitution effect and an income effect, and predict which dominates for savers vs borrowers.
+
+## 🚀 Try it first
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — the budget line and indifference curve update live
+:::
+
+```{ojs}
+//| echo: false
+viewof y1   = Inputs.range([20, 150], {value: 80, step: 5, label: "income today y₁"})
+viewof y2   = Inputs.range([20, 150], {value: 120, step: 5, label: "income tomorrow y₂"})
+viewof r    = Inputs.range([0, 0.5], {value: 0.10, step: 0.01, label: "interest rate r"})
+viewof beta = Inputs.range([0.5, 1.0], {value: 1.0, step: 0.01, label: "discount factor β"})
+
+W = y1 + y2 / (1 + r)
+c1star = W / (1 + beta)
+c2star = beta * (1 + r) * c1star
+Ustar = Math.log(c1star) + beta * Math.log(c2star)
+
+budget = {
+  const pts = [];
+  const n = 80;
+  for (let i = 0; i <= n; i++) {
+    const c1 = (W * i) / n;
+    pts.push({c1, c2: (1 + r) * (W - c1)});
+  }
+  return pts;
+}
+
+indiff = {
+  const pts = [];
+  const n = 120;
+  for (let i = 1; i <= n; i++) {
+    const c1 = (1.8 * W * i) / n;
+    const c2 = Math.exp((Ustar - Math.log(c1)) / beta);
+    if (c2 > 0 && c2 < 2.2 * W) pts.push({c1, c2});
+  }
+  return pts;
+}
+
+Plot.plot({
+  marginLeft: 55,
+  x: {label: "consumption today c₁ →", domain: [0, 1.6 * W]},
+  y: {label: "consumption tomorrow c₂", grid: true, domain: [0, 1.8 * W]},
+  marks: [
+    Plot.line(budget, {x: "c1", y: "c2", stroke: "var(--im-accent)", strokeWidth: 2}),
+    Plot.line(indiff, {x: "c1", y: "c2", stroke: "var(--im-sim)", strokeWidth: 2}),
+    Plot.dot([{c1: y1, c2: y2}], {r: 5, fill: "var(--im-warn)", symbol: "square"}),
+    Plot.text([{c1: y1, c2: y2}], {text: ["endowment (y₁,y₂)"], dy: -12, fill: "var(--im-warn)"}),
+    Plot.dot([{c1: c1star, c2: c2star}], {r: 5, fill: "var(--im-accent)"}),
+    Plot.text([{c1: c1star, c2: c2star}], {text: d => [`optimum (${c1star.toFixed(1)}, ${c2star.toFixed(1)})`], dy: -12, fill: "var(--im-accent)"})
+  ]
+})
+```
+
+**Blue line** = intertemporal budget constraint; **green curve** = indifference curve at the optimum; **yellow square** = endowment point (y₁, y₂); **blue dot** = optimal bundle (c₁\*, c₂\*).
+:::
+
+## Core intuition
+
+An agent lives two periods. They receive income $y_1$ today and $y_2$ tomorrow, and can borrow or lend at interest rate $r$. Saving a dollar today earns $(1+r)$ tomorrow; borrowing a dollar today costs $(1+r)$ tomorrow. All affordable pairs satisfy the [intertemporal budget constraint]{.im-glossary-term}: $c_1 + c_2/(1+r) = W$.
+
+The budget line is drawn in $(c_1, c_2)$ space with slope $-(1+r)$ and passes through the endowment point $(y_1, y_2)$. When $r$ rises, the line *rotates* about that endowment point — steeper slope, same pivot. [Consumption smoothing]{.im-glossary-term} is the force pulling the agent away from the endowment: with log utility the agent prefers a balanced bundle over an extreme one, so they trade across time until the [Euler equation]{.im-glossary-term} holds at the tangency.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full derivation)</summary>
+
+**Setup.** Maximize $U(c_1, c_2) = \ln c_1 + \beta \ln c_2$ subject to the [intertemporal budget constraint]{.im-glossary-term}:
+$$c_1 + \frac{c_2}{1+r} = y_1 + \frac{y_2}{1+r} \equiv W.$$
+
+**Optimality.** The MRS between $c_1$ and $c_2$ is
+$$\text{MRS} = \frac{\partial U/\partial c_1}{\partial U/\partial c_2} = \frac{1/c_1}{\beta/c_2} = \frac{c_2}{\beta c_1}.$$
+Setting MRS $= 1+r$ (slope of budget line, in absolute value) gives the [Euler equation]{.im-glossary-term}:
+$$\frac{c_2}{\beta c_1} = 1+r \implies c_2 = \beta(1+r)\, c_1.$$
+
+**Closed form.** Substitute $c_2 = \beta(1+r)c_1$ into the budget constraint:
+$$c_1 + \frac{\beta(1+r)c_1}{1+r} = W \implies c_1(1+\beta) = W \implies c_1^* = \frac{W}{1+\beta}.$$
+Then $c_2^* = \beta(1+r)\,c_1^*$.
+
+**Parity check** ($y_1=80$, $y_2=120$, $r=0.10$, $\beta=1$):
+$$W = 80 + \frac{120}{1.1} \approx 189.09, \quad c_1^* = \frac{189.09}{2} \approx 94.55, \quad c_2^* = 1.1 \times 94.55 \approx 104.0.$$
+Since $c_1^* = 94.55 > y_1 = 80$, the agent is a **borrower** in period 1.
+
+</details>
+:::
+
+## What the simulator showed
+
+When you raised **r**, the budget line rotated *clockwise* about the endowment square — a higher return to saving makes tomorrow's consumption cheaper relative to today's. For a *saver* (c₁ < y₁), the substitution effect pushes c₁ down further and the income effect pushes it up (they earn more on their existing savings), so the net effect is ambiguous. For a *borrower* (c₁ > y₁), both effects reduce today's consumption.
+
+When you made the agent more patient (β → 1), the optimum shifted left toward equal consumption across periods — the hallmark of [consumption smoothing]{.im-glossary-term}.
+
+## Common confusions
+
+::: {.im-confusion}
+**"A higher interest rate always raises or always lowers consumption today."** It depends on whether the agent is a saver or a borrower, and on whether the substitution effect dominates the income effect. For a lender, higher r raises the return on savings (income effect ↑ c₁) but also makes future consumption relatively cheaper (substitution effect ↓ c₁). The two pull in opposite directions, and neither must dominate.
+:::
+
+::: {.im-confusion}
+**"The optimal choice is to consume your income each period."** No — the agent re-optimizes. The endowment point (y₁, y₂) only fixes *where the budget line pivots*; the actual choice is wherever the indifference curve is tangent to the budget line, which generally differs from the endowment unless the Euler equation happens to hold there by coincidence.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+Suppose the agent is currently a **lender** (c₁ < y₁). The real interest rate rises. Which statement is correct about the effect on c₁?
+
+<details><summary>a) c₁ must fall — the substitution effect dominates</summary>
+Not necessarily. The substitution effect does push toward saving more (lower c₁), but the income effect — the lender earns more on existing savings — pushes c₁ up. The net direction is ambiguous.
+</details>
+<details><summary>b) c₁ is ambiguous — substitution and income effects offset each other</summary>
+✅ Correct. For a lender, a higher r creates a substitution effect (future consumption cheaper → save more → lower c₁) and a positive income effect (higher return on savings → richer → higher c₁). Standard theory does not pin the sign.
+</details>
+<details><summary>c) c₁ must rise — the income effect always dominates for lenders</summary>
+No — the income effect works in that direction, but it need not dominate the substitution effect.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Set **y₁ = 80, y₂ = 120, r = 0.10, β = 1** in the simulator above. What is c₁\*, and is the agent a saver or a borrower?
+
+<details><summary>Reveal answer</summary>
+Lifetime wealth: $W = 80 + 120/1.1 \approx 189.09$. Optimal: $c_1^* = 189.09/2 \approx 94.5$. Since $c_1^* = 94.5 > y_1 = 80$, the agent **borrows** in period 1 (consumes more than today's income). The simulator optimum dot should show approximately **(94.5, 104.0)**.
+</details>
+</div>
+
+{{< include ../_includes/generated/two_period_consumption-related.md >}}
