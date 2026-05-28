@@ -1,29 +1,107 @@
 # Book settings
 title: International Macroeconomics
 author: Ajai Upadhyaya
+copyright: "2026"
 logo: ""
-execute:
-  execute_notebooks: off
 
-# HTML-specific settings
+# Notebooks ship with pre-executed outputs (see clean_notebooks.py + CI guardrails).
+execute:
+  execute_notebooks: "off"
+
+# HTML chrome
 html:
   use_repository_button: true
   use_issues_button: true
   use_edit_page_button: true
+  use_download_button: true
+  use_fullscreen_button: true
+  home_page_in_navbar: true
+  show_navbar_depth: 1
   favicon: ""
+  extra_css:
+    - "_static/custom.css"
 
-# Launch button settings
+# Repository (used by edit/issue/repo buttons)
 repository:
   url: https://github.com/ajaiupadhyaya/intmacro
-  branch: polished-models-update
+  path_to_book: ""
+  branch: main
 
-# Math settings
+# Launch buttons (top-right per page).
+# JupyterLite gives in-browser execution with no server (see jupyter-lite.json
+# and the Phase 3 CI step that ships the JupyterLite app alongside the book).
+# Thebe + Binder + Colab remain as fallbacks for chapters that need heavier deps.
+launch_buttons:
+  notebook_interface: jupyterlab
+  binderhub_url: "https://mybinder.org"
+  colab_url: "https://colab.research.google.com"
+  thebe: true
+  jupyterhub_url: ""
+
+# MyST markdown extensions
 parse:
   myst_enable_extensions:
     - amsmath
+    - colon_fence
+    - deflist
     - dollarmath
+    - html_admonition
+    - html_image
     - linkify
+    - replacements
+    - smartquotes
+    - substitution
+    - tasklist
 
+# Sphinx extensions + config
 sphinx:
+  extra_extensions:
+    - sphinx_togglebutton
+    - sphinx_copybutton
+    - sphinx_external_toc
+    - sphinx_thebe
+    - sphinx_comments
+    - sphinx_multitoc_numbering
+    - sphinx_design
   config:
+    # MathJax for LaTeX rendering
     mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+    mathjax3_config:
+      tex:
+        inlineMath: [['$', '$'], ['\(', '\)']]
+        displayMath: [['$$', '$$'], ['\[', '\]']]
+        processEscapes: true
+        processEnvironments: true
+        macros:
+          RR: "\\mathbb{R}"
+          bold: ["\\mathbf{#1}", 1]
+      options:
+        ignoreHtmlClass: "tex2jax_ignore|mathjax_ignore"
+        processHtmlClass: "tex2jax_process|mathjax_process"
+      loader:
+        load: ['[tex]/ams', '[tex]/newcommand', '[tex]/configmacros']
+    # Numbering + cross-references
+    numfig: true
+    numfig_secnum_depth: 2
+    math_number_all: false
+    math_eqref_format: "Eq. {number}"
+    # Code-block UX
+    pygments_style: sphinx
+    copybutton_prompt_text: ">>> "
+    copybutton_only_copy_prompt_lines: false
+    # Theme behavior
+    html_theme_options:
+      repository_url: https://github.com/ajaiupadhyaya/intmacro
+      repository_branch: main
+      use_repository_button: true
+      use_edit_page_button: true
+      use_issues_button: true
+      use_download_button: true
+      show_toc_level: 2
+      show_navbar_depth: 1
+      home_page_in_navbar: true
+      use_sidenotes: true
+      launch_buttons:
+        binderhub_url: "https://mybinder.org"
+        colab_url: "https://colab.research.google.com"
+        thebe: true
