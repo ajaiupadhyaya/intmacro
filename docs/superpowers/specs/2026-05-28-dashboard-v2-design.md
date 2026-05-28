@@ -130,8 +130,11 @@ Validation gate: deploy the 3 to a preview URL; user walks one as a student; ite
 
 ## Section 7 — Migration & deploy
 
+> **Revised 2026-05-28 after technical verification.** `ipywidgets.interact()` requires a live Python kernel and does **not** run in static Quarto/quarto-live output (confirmed by Quarto team + quarto-live maintainers). The interactivity layer is therefore reimplemented in **Observable JS (OJS) + Plotly**, which is fully client-side, instant, and theme-aware. The economic model (equations, parameters, behavior) is retained; only the widget/render layer changes language from Python+ipywidgets to JS+OJS. This satisfies the "retain the models, may edit for clarity" constraint.
+
 - **Quarto setup**: install via `quarto-dev/quarto-actions/setup@v2` (Quarto is a binary, not a pip package), pinned ≥ 1.5.
-- **In-browser execution**: `quarto-live` extension; notebooks with `engine: jupyter` get a "Run in browser" toggle; Pyodide preloads numpy/matplotlib/ipywidgets. Drops the standalone `/lite/` JupyterLite.
+- **In-browser interactivity**: each simulator is an OJS block — `viewof` `Inputs.range(...)` sliders driving a reactive `Plot`/Plotly figure. No kernel, no Pyodide, no separate tab. Showcase chapters are authored as `.qmd` (OJS lives natively in `.qmd`); the original `.ipynb` moves to `content/_archive/` with a provenance note (per the established archive policy).
+- **Static-output notebooks**: the 27 non-showcase chapters keep rendering their committed `.ipynb` plot output statically in this milestone; their OJS conversion is a later plan. JupyterLite at `/lite/` is retained for now as the "run the original Python" escape hatch for those, and removed once all chapters are converted.
 - **Deploy workflow** (`.github/workflows/deploy.yml`): setup Quarto → `pip install -r requirements.txt` → `python scripts/check_toc.py` → `python scripts/build_glossary.py` → `quarto render` (→ `_site/`) → `configure-pages@v5` + `upload-pages-artifact@v3` + `deploy-pages@v4`.
 - **Redirects**: meta-refresh + canonical-link pages at old URLs (e.g., `/content/Preliminaries_new.html` → `/`, `/content/solow_bgp.html` → `/content/solow_intro.html`).
 - **Branch**: single `v2/dashboard-rebuild`; PR to `main` after showcase validation.
@@ -140,10 +143,11 @@ Validation gate: deploy the 3 to a preview URL; user walks one as a student; ite
 
 | Risk | Mitigation |
 |---|---|
-| `quarto-live` mis-renders an ipywidgets-heavy simulator | Test on `adassim` (heaviest) before committing to migration; fall back to `/lite/` JupyterLite if it fails. |
-| MathJax differences break an equation | `scripts/check_math.py` renders each chapter and flags parse failures. |
+| OJS reimplementation of a simulator diverges numerically from the original Python model | Port the model's closed-form/iterative equations 1:1; add a check that spot-values (e.g., Solow k* at known params) match the Python original within tolerance. Document the source equation next to the OJS code. |
+| A simulator is too complex to port to OJS cleanly (e.g., adassim's multi-panel dynamics) | Showcase order is Solow first (simplest), then 2-period, then adassim. If adassim resists OJS, fall back to static plot + JupyterLite "run live" button for that one chapter only. |
+| MathJax/KaTeX differences break an equation | `scripts/check_math.py` renders each page and flags math that fails to parse. |
 | 30-chapter restructure → merge conflicts | Single-author work on one feature branch; merge once; README banner during rebuild. |
-| Dark mode mismatches baked-in plot colors | Pre-render hook re-styles cached outputs by theme; or accept that only static plot screenshots mismatch (live sims are theme-aware). |
+| Dark mode mismatches baked-in plot colors on static (non-showcase) chapters | OJS/Plotly sims in showcase chapters are theme-aware by construction. Static `.ipynb` plots may mismatch in dark mode — accepted for now; resolved when each chapter is converted to OJS. |
 | Glossary tooltips become noise | Curate `glossary.yml` to ~40-60 key concepts, not every noun. |
 
 ## Success criteria
