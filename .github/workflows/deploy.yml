@@ -40,6 +40,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Validate TOC ↔ filesystem ↔ MODELS.md consistency
+        run: python scripts/check_toc.py
+
       - name: Clean previous builds
         run: jupyter-book clean . --all
 

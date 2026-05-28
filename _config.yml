@@ -8,6 +8,33 @@ logo: ""
 execute:
   execute_notebooks: "off"
 
+# Skip everything outside the book sources. Without this, Sphinx walks any
+# local virtualenvs, _build/, etc. and tries to render their READMEs as
+# chapters.
+exclude_patterns:
+  - ".venv"
+  - ".venv/**"
+  - "venv"
+  - "venv/**"
+  - "env/**"
+  - "_build"
+  - "_build/**"
+  - "_output"
+  - "_output/**"
+  - "**/.ipynb_checkpoints"
+  - "**/__pycache__"
+  - "node_modules"
+  - "scripts"
+  - "README.md"
+  - "CONTRIBUTING.md"
+  - "docs/**"
+  # Archive notebooks have provenance notes pointing back to canonical pages
+  # but are not part of the active TOC.
+  - "content/_archive"
+  - "content/_archive/**"
+  # Internal manifest (contributors only) — not a chapter.
+  - "content/MODELS.md"
+
 # HTML chrome
 html:
   use_repository_button: true
@@ -64,6 +91,9 @@ sphinx:
     - sphinx_multitoc_numbering
     - sphinx_design
   config:
+    # myst-parser legitimately augments MathJax classes; suppress the noisy
+    # "config is being overridden" notice so --warningiserror passes in CI.
+    suppress_warnings: ["myst.mathjax"]
     # MathJax for LaTeX rendering
     mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
     mathjax3_config:
@@ -99,7 +129,6 @@ sphinx:
       use_download_button: true
       show_toc_level: 2
       show_navbar_depth: 1
-      home_page_in_navbar: true
       use_sidenotes: true
       launch_buttons:
         binderhub_url: "https://mybinder.org"
