@@ -1,0 +1,119 @@
+---
+title: "Levels vs. Growth Rates"
+subtitle: "How rich you are and how fast you're getting richer are two different things"
+---
+
+{{< include ../_includes/generated/foundations_growth-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — The *level* of GDP per capita (how rich a country is now) and its *growth rate* (how fast it's getting richer) are distinct, and often move in opposite directions across countries. A poor country can grow fast; a rich country can crawl.
+:::
+
+## You'll be able to
+
+- Separate the *level* of a variable from its *growth rate* — and explain why a high level doesn't imply fast growth.
+- Read a time path and identify which of two economies is richer vs. which is catching up.
+- Connect this distinction to the convergence pattern you'll see in later chapters.
+
+## 🚀 Try it first
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag the sliders — the two paths update live
+:::
+
+```{ojs}
+//| echo: false
+viewof levelA = Inputs.range([1, 10], {value: 2.0, step: 0.5, label: "start level — A"})
+viewof gA     = Inputs.range([-0.05, 0.5], {value: 0.20, step: 0.01, label: "growth rate — A"})
+viewof levelB = Inputs.range([1, 10], {value: 6.0, step: 0.5, label: "start level — B"})
+viewof gB     = Inputs.range([-0.05, 0.5], {value: 0.00, step: 0.01, label: "growth rate — B"})
+viewof Tyears = Inputs.range([1, 30], {value: 12, step: 1, label: "years"})
+
+series = {
+  const rows = [];
+  for (let t = 0; t <= Tyears; t++) {
+    rows.push({t, value: levelA * Math.pow(1 + gA, t), who: "A"});
+    rows.push({t, value: levelB * Math.pow(1 + gB, t), who: "B"});
+  }
+  return rows;
+}
+
+Plot.plot({
+  marginLeft: 50, marginRight: 60,
+  x: {label: "year →"},
+  y: {label: "level of the variable", grid: true},
+  marks: [
+    Plot.line(series.filter(d => d.who === "A"), {x: "t", y: "value", stroke: "var(--im-accent)", strokeWidth: 2.5}),
+    Plot.line(series.filter(d => d.who === "B"), {x: "t", y: "value", stroke: "var(--im-sim)", strokeWidth: 2.5, strokeDasharray: "5 4"}),
+    Plot.text([{t: Tyears, value: levelA * Math.pow(1 + gA, Tyears)}], {text: d => `A: ${d.value.toFixed(1)}`, dx: 8, fill: "var(--im-accent)"}),
+    Plot.text([{t: Tyears, value: levelB * Math.pow(1 + gB, Tyears)}], {text: d => `B: ${d.value.toFixed(1)}`, dx: 8, fill: "var(--im-sim)"})
+  ]
+})
+```
+
+The solid blue line is economy **A**; the dashed green line is economy **B**. Set A to a low level with a high growth rate and B to a high level with zero growth — then watch A overtake B.
+:::
+
+## Core intuition
+
+Think of a child and an adult. The child is *short* (low level) but *growing fast* (high growth rate). The adult is *tall* (high level) but no longer growing (zero growth rate). Snap a photo today and the adult is taller; wait fifteen years and the child may tower over them.
+
+Countries work the same way. The level tells you how rich a place is *right now*; the growth rate tells you how the gap is *changing*. A rich country growing at 1.8% a year and a poor country growing at 8% are on a collision course — even though the rich one is far ahead today. That gap-closing is exactly the [convergence]{.im-glossary-term} story growth models try to explain.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math</summary>
+
+A variable growing at a constant rate $g$ from a starting level $x_0$ follows
+$$x_t = x_0\,(1+g)^t.$$
+Two economies $A$ and $B$ cross when $x_{A,0}(1+g_A)^t = x_{B,0}(1+g_B)^t$. Solving for the crossover year,
+$$t^{*} = \frac{\ln(x_{B,0}/x_{A,0})}{\ln\!\big((1+g_A)/(1+g_B)\big)}.$$
+As long as $g_A > g_B$, the lower-level economy *always* catches up eventually — the only question is when.
+
+</details>
+:::
+
+## What the simulator showed
+
+With A starting low but growing fast and B starting high but flat, the two lines crossed: A's growth rate beat B's head start. Raising B's growth rate to match A's pushes the crossover off to infinity — they stay parallel and the initial gap never closes. **Levels set where you start; growth rates decide who wins the race.**
+
+## Common confusions
+
+::: {.im-confusion}
+**"A richer country must be growing faster."** No — level and growth rate are independent. The richest economies usually grow *slowly*; the fastest growers are often catching up from a low base.
+:::
+
+::: {.im-confusion}
+**"A negative growth rate means a low level."** No — an economy can be at a high level and still shrink (negative growth), or sit at a low level and boom. The two axes are separate.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+Country X has GDP per capita of \$40,000 growing at 1%. Country Y has \$5,000 growing at 7%. Which is true?
+
+<details><summary>a) X will always be richer — it has the higher level</summary>
+No — Y's far higher growth rate means it closes the gap and eventually overtakes X.
+</details>
+<details><summary>b) Y is catching up and will overtake X given enough time</summary>
+✅ Correct. A higher growth rate compounds; the level head-start is finite, so Y eventually passes X.
+</details>
+<details><summary>c) They grow at the same speed since growth is just level times rate</summary>
+No — growth *rate* is independent of the level. Y's 7% beats X's 1% regardless of who is richer now.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Set **A: level = 2, g = 0.20** and **B: level = 6, g = 0.00**. Roughly what year does A overtake B?
+
+<details><summary>Reveal answer</summary>
+Solve $2(1.2)^t = 6 \Rightarrow t = \ln(3)/\ln(1.2) \approx 6.0$. A passes B around **year 6** — confirm it on the chart.
+</details>
+</div>
+
+{{< include ../_includes/generated/foundations_growth-related.md >}}

@@ -47,10 +47,10 @@ website:
           - content/realgdpacross.ipynb
       - section: "Growth & Long-Run Dynamics"
         contents:
-          - content/foundations_growth.ipynb
-          - content/cobb_d_prod.ipynb
+          - content/foundations_growth.qmd
+          - content/cobb_d_prod.qmd
           - content/solow_intro.qmd
-          - content/solow_transition.ipynb
+          - content/solow_transition.qmd
           - "content/solow_pop&_tech_growth.ipynb"
           - content/humancapital.ipynb
           - content/solow_model.ipynb
