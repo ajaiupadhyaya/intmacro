@@ -24,12 +24,17 @@ two_period_consumption:
   title: "Two-Period Consumption"
   tldr: "A forward-looking agent splits lifetime wealth between today and tomorrow; the interest rate tilts the optimal split."
   prereqs: []
-labor_leisure:
+labor_leisure_model:
   track: intertemporal
   title: "The Labor-Leisure Choice"
   tldr: "How agents trade consumption against leisure given the real wage."
   prereqs: [two_period_consumption]
-tobin_q:
+two_period_model:
+  track: intertemporal
+  title: "The Two-Period Model (General)"
+  tldr: "A general treatment of the two-period intertemporal optimization problem."
+  prereqs: [two_period_consumption]
+tobin_q_model:
   track: intertemporal
   title: "Investment and Tobin's q"
   tldr: "Firms invest when the market value of capital exceeds its replacement cost."
