@@ -1,43 +1,105 @@
 ---
-title: "International Macroeconomics"
-subtitle: "An interactive dashboard of macroeconomic models for self-study"
+pagetitle: "Intermediate Macroeconomics — Interactive Dashboard"
 toc: false
+page-layout: full
 ---
 
-A dashboard of working macroeconomic models — built for intermediate macro at UVA, free to reuse. Each chapter has clean math, a **live in-browser simulator**, and self-check questions.
+```{=html}
+<section class="im-hero">
+  <span class="im-hero-eyebrow">UVA · Intermediate Macroeconomics</span>
+  <div class="im-hero-title">Macro models you can <span class="grad">actually play with.</span></div>
+  <p class="im-hero-sub">
+    A self-study dashboard of working macroeconomic models. Every chapter pairs clean,
+    derivable math with a <strong>live in-browser simulator</strong> and self-check questions —
+    so you can build intuition by moving the sliders, not just reading the algebra.
+  </p>
 
-::: {.callout-tip}
-## New here?
-Start with the **[Math Primer](content/Preliminaries.ipynb)** — growth rates and the log approximation underpin nearly every chapter.
-:::
+  <div class="im-hero-cta">
+    <a class="im-btn im-btn-primary" href="content/solow_intro.html">Open the Solow simulator →</a>
+    <a class="im-btn im-btn-ghost" href="content/Preliminaries.html">Start with the math primer</a>
+  </div>
 
-## Browse by track
+  <div class="im-stats">
+    <div class="im-stat"><div class="im-stat-num">30+</div><div class="im-stat-label">Models</div></div>
+    <div class="im-stat"><div class="im-stat-num">5</div><div class="im-stat-label">Tracks</div></div>
+    <div class="im-stat"><div class="im-stat-num">3</div><div class="im-stat-label">Live simulators</div></div>
+    <div class="im-stat"><div class="im-stat-num">100%</div><div class="im-stat-label">Runs in-browser</div></div>
+  </div>
+</section>
 
-::: {.grid}
+<div class="im-section-label">Featured · interactive</div>
+<div class="im-track-grid">
 
-::: {.g-col-12 .g-col-md-6}
-### 📐 Foundations
-The shared mathematical vocabulary. → [Math Primer](content/Preliminaries.ipynb)
-:::
+  <a class="im-track-card" href="content/solow_intro.html">
+    <div class="im-track-icon">🌱</div>
+    <span class="im-live-badge">Live simulator</span>
+    <h3>The Solow Growth Model</h3>
+    <p>Move savings, population growth, and depreciation — watch the economy converge to its steady state in real time.</p>
+    <div class="im-track-meta"><span>Growth track</span><span class="im-track-go">Explore →</span></div>
+  </a>
 
-::: {.g-col-12 .g-col-md-6}
-### 📊 Measurement & National Accounts
-GDP, real vs. nominal, PPP. → [Measuring GDP](content/measuring_gdp.ipynb)
-:::
+  <a class="im-track-card" href="content/two_period_consumption.html">
+    <div class="im-track-icon">⏳</div>
+    <span class="im-live-badge">Live simulator</span>
+    <h3>Two-Period Consumption</h3>
+    <p>Shift income and interest rates across the budget line and indifference curves to see borrowing vs. saving emerge.</p>
+    <div class="im-track-meta"><span>Intertemporal track</span><span class="im-track-go">Explore →</span></div>
+  </a>
 
-::: {.g-col-12 .g-col-md-6}
-### 🌱 Growth & Long-Run Dynamics
-Solow, Romer, growth accounting, convergence. → [The Solow Model](content/solow_intro.qmd)
-:::
+  <a class="im-track-card" href="content/adassim.html">
+    <div class="im-track-icon">📈</div>
+    <span class="im-live-badge">Live simulator</span>
+    <h3>Dynamic AD–AS</h3>
+    <p>Tune the Taylor rule and shock the economy — trace inflation, the output gap, and the path back to equilibrium.</p>
+    <div class="im-track-meta"><span>Business cycles track</span><span class="im-track-go">Explore →</span></div>
+  </a>
 
-::: {.g-col-12 .g-col-md-6}
-### ⏳ Intertemporal Choice & Labor
-Two-period consumption, labor-leisure, Tobin's q. → [Two-Period Consumption](content/2_period_consump.ipynb)
-:::
+</div>
 
-::: {.g-col-12 .g-col-md-6}
-### 📈 Business Cycles & Policy Dynamics
-IS curve, dynamic AD-AS, Lucas Island, RBC. → [Dynamic AD-AS](content/adassim.ipynb)
-:::
+<div class="im-section-label">Browse by track</div>
+<div class="im-track-grid">
 
-:::
+  <a class="im-track-card" href="content/Preliminaries.html">
+    <div class="im-track-icon">📐</div>
+    <h3>Foundations</h3>
+    <p>The shared mathematical vocabulary — growth rates, the log approximation, and the tools every later chapter leans on.</p>
+    <div class="im-track-meta"><span>1 chapter</span><span class="im-track-go">Start here →</span></div>
+  </a>
+
+  <a class="im-track-card" href="content/measuring_gdp.html">
+    <div class="im-track-icon">📊</div>
+    <h3>Measurement &amp; National Accounts</h3>
+    <p>GDP, real vs. nominal, price indices, and comparing output across countries with PPP.</p>
+    <div class="im-track-meta"><span>5 chapters</span><span class="im-track-go">Explore →</span></div>
+  </a>
+
+  <a class="im-track-card" href="content/solow_intro.html">
+    <div class="im-track-icon">🌱</div>
+    <h3>Growth &amp; Long-Run Dynamics</h3>
+    <p>Solow, Romer, human capital, growth accounting, convergence, and the economics of automation.</p>
+    <div class="im-track-meta"><span>14 chapters</span><span class="im-track-go">Explore →</span></div>
+  </a>
+
+  <a class="im-track-card" href="content/two_period_consumption.html">
+    <div class="im-track-icon">⏳</div>
+    <h3>Intertemporal Choice &amp; Labor</h3>
+    <p>Two-period consumption, the labor–leisure trade-off, and Tobin's q theory of investment.</p>
+    <div class="im-track-meta"><span>4 chapters</span><span class="im-track-go">Explore →</span></div>
+  </a>
+
+  <a class="im-track-card" href="content/adassim.html">
+    <div class="im-track-icon">📉</div>
+    <h3>Business Cycles &amp; Policy Dynamics</h3>
+    <p>The IS curve, dynamic AD–AS, the Lucas island model, and real business cycle simulation.</p>
+    <div class="im-track-meta"><span>7 chapters</span><span class="im-track-go">Explore →</span></div>
+  </a>
+
+  <a class="im-track-card" href="_glossary.html">
+    <div class="im-track-icon">📖</div>
+    <h3>Glossary</h3>
+    <p>Every key term, defined in one place — with hover tooltips wired throughout the chapters.</p>
+    <div class="im-track-meta"><span>Reference</span><span class="im-track-go">Open →</span></div>
+  </a>
+
+</div>
+```

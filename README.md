@@ -1,4 +1,4 @@
-# International Macroeconomics — Interactive Dashboard
+# Intermediate Macroeconomics — Interactive Dashboard
 
 A Jupyter Book of working macroeconomic models, originally built for the intermediate macroeconomics course at the University of Virginia. Each chapter is a self-contained notebook with the relevant math, an interactive simulator, and a short economic interpretation.
 
