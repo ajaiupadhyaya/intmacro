@@ -1,0 +1,129 @@
+---
+title: "Solow Transition Dynamics"
+subtitle: "How an economy actually travels to its steady state — fast at first, then slower"
+---
+
+{{< include ../_includes/generated/solow_transition-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — Below its steady state, an economy's capital grows because investment outruns depreciation — but the gap closes at a *decreasing* rate, so growth is rapid when you're poor and crawls as you approach $k^{*}$. Start *above* $k^{*}$ and capital shrinks back down. Either way, you converge.
+:::
+
+## You'll be able to
+
+- Trace the path of capital and output over time toward the steady state.
+- Explain why convergence is fast far from $k^{*}$ and slow near it.
+- Predict what happens when an economy starts *above* its steady state.
+
+## 🚀 Try it first
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Change the starting capital and watch how fast it converges
+:::
+
+```{ojs}
+//| echo: false
+viewof Atr     = Inputs.range([0.5, 2.0], {value: 1.0, step: 0.1, label: "TFP A"})
+viewof str     = Inputs.range([0.05, 0.5], {value: 0.20, step: 0.01, label: "savings rate s"})
+viewof deltatr = Inputs.range([0.01, 0.2], {value: 0.05, step: 0.01, label: "depreciation δ"})
+viewof alphatr = Inputs.range([0.2, 0.5], {value: 0.33, step: 0.01, label: "capital share α"})
+viewof k0tr    = Inputs.range([0.1, 12], {value: 0.5, step: 0.1, label: "initial capital k₀"})
+viewof Ttr     = Inputs.range([20, 100], {value: 60, step: 5, label: "time horizon"})
+
+kstar = Math.pow(str * Atr / deltatr, 1 / (1 - alphatr))
+ystar = Atr * Math.pow(kstar, alphatr)
+
+trpath = {
+  const T = Ttr, rows = [];
+  let k = k0tr;
+  for (let t = 0; t < T; t++) {
+    const y = Atr * Math.pow(k, alphatr);
+    rows.push({t, k, y});
+    k = k + str * y - deltatr * k;
+  }
+  return rows;
+}
+
+Plot.plot({
+  marginLeft: 50,
+  x: {label: "time →"},
+  y: {label: "level", grid: true},
+  marks: [
+    Plot.ruleY([kstar], {stroke: "var(--im-accent)", strokeDasharray: "3 3", opacity: 0.5}),
+    Plot.ruleY([ystar], {stroke: "var(--im-sim)", strokeDasharray: "3 3", opacity: 0.5}),
+    Plot.line(trpath, {x: "t", y: "k", stroke: "var(--im-accent)", strokeWidth: 2.5}),
+    Plot.line(trpath, {x: "t", y: "y", stroke: "var(--im-sim)", strokeWidth: 2.5}),
+    Plot.text([{t: Ttr * 0.5, y: kstar}], {text: d => `k* = ${kstar.toFixed(2)}`, dy: -8, fill: "var(--im-accent)"}),
+    Plot.text([{t: Ttr * 0.5, y: ystar}], {text: d => `y* = ${ystar.toFixed(2)}`, dy: -8, fill: "var(--im-sim)"})
+  ]
+})
+```
+
+The blue line is capital per worker, green is output per worker, and the dashed lines are their steady-state targets. Try a tiny $k_0$ (rapid catch-up) versus a $k_0$ *above* $k^{*}$ (the economy shrinks down).
+:::
+
+## Core intuition
+
+Each period the economy invests a slice $s$ of its output and loses a slice $\delta$ of its capital to wear and tear. When capital is low, output is high *relative to* the capital stock (high average product), so investment easily beats depreciation and capital piles up fast. As capital grows, [diminishing returns]{.im-glossary-term} shrink the extra output each unit brings, investment and depreciation drift toward each other, and growth peters out.
+
+The resting point is where they exactly balance: $s A k^{\alpha} = \delta k$. That's the [steady state]{.im-glossary-term} $k^{*}$. Crucially, the *further* you are below it, the faster you move toward it — which is the engine behind the [convergence]{.im-glossary-term} prediction that poor economies should grow faster than rich ones.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math</summary>
+
+With constant $A$ and $L$, capital evolves as
+$$\dot{k} = s A k^{\alpha} - \delta k.$$
+Setting $\dot k = 0$ gives the steady state
+$$k^{*} = \left(\frac{sA}{\delta}\right)^{\frac{1}{1-\alpha}}, \qquad y^{*} = A (k^{*})^{\alpha}.$$
+The growth rate of capital is
+$$\frac{\dot k}{k} = sA k^{\alpha - 1} - \delta,$$
+which *falls* as $k$ rises (since $\alpha - 1 < 0$) — convergence slows as you approach $k^{*}$, and reverses sign if you start above it.
+
+</details>
+:::
+
+## What the simulator showed
+
+Starting from a tiny $k_0$, both lines shot up steeply, then bent over and leveled off at the dashed targets — fast growth early, slow growth late. Starting from a $k_0$ *above* $k^{*}$, the lines came *down* to the same targets: too much capital depreciates faster than it's replaced. The steady state is an attractor from both directions, and the speed of approach depends only on how far away you are.
+
+## Common confusions
+
+::: {.im-confusion}
+**"An economy above its steady state keeps growing."** No — if $k_0 > k^{*}$, depreciation outweighs investment and capital *falls* back to $k^{*}$. Steady state is reached from above as well as below.
+:::
+
+::: {.im-confusion}
+**"Convergence speed is constant."** No — growth is fastest when farthest below $k^{*}$ and slows continuously as you approach. The path is curved, not a straight ramp.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+Two economies have identical $s$, $\delta$, $\alpha$, $A$ but different starting capital: one far below $k^{*}$, one just below it. Which grows faster initially?
+
+<details><summary>a) The one far below k*</summary>
+✅ Correct. The further below $k^{*}$, the larger the gap between investment and depreciation, so the faster capital grows. This is the convergence mechanism.
+</details>
+<details><summary>b) The one just below k*</summary>
+No — near $k^{*}$ investment and depreciation nearly balance, so growth is slow.
+</details>
+<details><summary>c) They grow at the same rate since the parameters match</summary>
+No — growth rate depends on the *distance* from $k^{*}$, not just the parameters.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Set **A = 1, s = 0.20, δ = 0.05, α = 0.33**. What is the steady-state capital $k^{*}$?
+
+<details><summary>Reveal answer</summary>
+$k^{*} = (sA/\delta)^{1/(1-\alpha)} = (0.20/0.05)^{1/0.67} = 4^{1.49} \approx 7.9$. The dashed blue line should sit near **k* ≈ 7.9**.
+</details>
+</div>
+
+{{< include ../_includes/generated/solow_transition-related.md >}}

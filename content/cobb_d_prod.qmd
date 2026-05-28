@@ -1,0 +1,122 @@
+---
+title: "Cobb-Douglas Production"
+subtitle: "Turning capital and labor into output — with diminishing returns and constant returns to scale"
+---
+
+{{< include ../_includes/generated/cobb_d_prod-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — $Y = A\,K^{\alpha}L^{1-\alpha}$ converts capital and labor into output. Add more of *one* input and you get diminishing returns; scale *both* by the same factor and output scales by exactly that factor (constant returns to scale). The exponent $\alpha$ is capital's share of income.
+:::
+
+## You'll be able to
+
+- Read the production function as a curve and explain why it flattens (diminishing marginal product of capital).
+- Distinguish the marginal product (MPK) from the average product (APK), and use $MPK = \alpha\cdot APK$.
+- State what constant returns to scale means and why this functional form guarantees it.
+
+## 🚀 Try it first
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Move capital and watch the slope (MPK) shrink
+:::
+
+```{ojs}
+//| echo: false
+viewof Acd     = Inputs.range([0.5, 3.0], {value: 1.0, step: 0.1, label: "TFP A"})
+viewof Lcd     = Inputs.range([10, 300], {value: 100, step: 10, label: "labor L"})
+viewof alphacd = Inputs.range([0.05, 0.95], {value: 0.33, step: 0.01, label: "capital share α"})
+viewof Kcd     = Inputs.range([10, 300], {value: 100, step: 10, label: "capital K (the marked point)"})
+
+Ycd = (k) => Acd * Math.pow(k, alphacd) * Math.pow(Lcd, 1 - alphacd)
+Ypoint = Ycd(Kcd)
+MPK = alphacd * Ypoint / Kcd
+APK = Ypoint / Kcd
+
+curve = d3.range(1, 301, 2).map(k => ({k, Y: Ycd(k)}))
+tangent = [{k: Math.max(1, Kcd - 60), Y: Ypoint - MPK * 60}, {k: Kcd + 60, Y: Ypoint + MPK * 60}]
+
+Plot.plot({
+  marginLeft: 55,
+  x: {label: "capital K →", domain: [0, 300]},
+  y: {label: "output Y", grid: true},
+  marks: [
+    Plot.line(curve, {x: "k", y: "Y", stroke: "var(--im-accent)", strokeWidth: 2.5}),
+    Plot.line(tangent, {x: "k", y: "Y", stroke: "var(--im-sim)", strokeDasharray: "4 4"}),
+    Plot.dot([{k: Kcd, Y: Ypoint}], {x: "k", y: "Y", fill: "var(--im-danger)", r: 5}),
+    Plot.text([{k: Kcd, Y: Ypoint}], {text: d => `MPK = ${MPK.toFixed(2)}`, dy: -14, fill: "var(--im-sim)"})
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+md`At **K = ${Kcd}, L = ${Lcd}**: output **Y = ${Ypoint.toFixed(0)}**, marginal product **MPK = ${MPK.toFixed(2)}**, average product **APK = ${APK.toFixed(2)}**. Notice **MPK = α · APK** — and the dashed tangent gets flatter as you slide K right.`
+```
+:::
+
+## Core intuition
+
+Output comes from combining capital and labor. Hold labor fixed and pour in more capital: each new machine adds output, but *less* than the one before it, because there are only so many workers to operate them. That's [diminishing returns]{.im-glossary-term} — the curve rises but flattens, and its slope (the [marginal product of capital]{.im-glossary-term}) falls.
+
+Now scale *both* inputs together — double the workers *and* the machines — and output exactly doubles. That's [constant returns to scale]{.im-glossary-term}, and it's baked into this form because the exponents $\alpha$ and $1-\alpha$ sum to one. The same $\alpha$ that controls the curvature also equals capital's share of national income.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math</summary>
+
+The marginal product of capital is the derivative holding $L$ fixed:
+$$MPK = \frac{\partial Y}{\partial K} = \alpha A K^{\alpha-1} L^{1-\alpha} = \alpha\,\frac{Y}{K} = \alpha\cdot APK.$$
+Since $\alpha < 1$, $MPK$ falls as $K$ rises — diminishing returns.
+
+For constant returns to scale, scale both inputs by $\lambda$:
+$$A(\lambda K)^{\alpha}(\lambda L)^{1-\alpha} = \lambda^{\alpha+1-\alpha}\,A K^{\alpha}L^{1-\alpha} = \lambda Y.$$
+Output scales by exactly $\lambda$ because the exponents sum to one.
+
+</details>
+:::
+
+## What the simulator showed
+
+Sliding **K** to the right raised output but the dashed tangent line — the slope, i.e. MPK — kept flattening: more capital, less bang per unit. Raising **A** or **L** shifted the whole curve up. And at every point the readout confirmed $MPK = \alpha\cdot APK$. The curvature is governed entirely by $\alpha$: push it toward 1 and capital barely diminishes; push it toward 0 and it diminishes fast.
+
+## Common confusions
+
+::: {.im-confusion}
+**"Diminishing returns means output falls."** No — output keeps *rising* with more capital; it just rises by smaller and smaller amounts. The level increases; the *marginal* product decreases.
+:::
+
+::: {.im-confusion}
+**"Constant returns to scale contradicts diminishing returns."** They're about different experiments. Diminishing returns = adding *one* input. Constant returns to scale = adding *all* inputs proportionally. Both hold here at once.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+With $Y = A K^{\alpha} L^{1-\alpha}$ and $\alpha = 0.33$, you double **only** capital $K$. Output...
+
+<details><summary>a) doubles</summary>
+No — doubling only one input gives less than double, because of diminishing returns. Output rises by a factor of $2^{0.33} \approx 1.26$.
+</details>
+<details><summary>b) rises by about 26%</summary>
+✅ Correct. $Y$ scales by $2^{\alpha} = 2^{0.33} \approx 1.26$ — a 26% gain, not 100%.
+</details>
+<details><summary>c) more than doubles</summary>
+No — a single factor with exponent below 1 gives diminishing, not increasing, returns.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Set **A = 1, L = 100, α = 0.33, K = 100**. What is output Y (to the nearest whole number)?
+
+<details><summary>Reveal answer</summary>
+$Y = 1\cdot 100^{0.33}\cdot 100^{0.67} = 100^{1} = 100$. The readout should show **Y ≈ 100** (and APK ≈ 1, MPK ≈ 0.33).
+</details>
+</div>
+
+{{< include ../_includes/generated/cobb_d_prod-related.md >}}
