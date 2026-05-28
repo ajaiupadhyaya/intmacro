@@ -11,12 +11,12 @@ Run automatically by Quarto via project.pre-render. Also runnable standalone:
   python scripts/build_nav.py --includes _includes --out _includes/generated
 """
 from __future__ import annotations
-import argparse, json, pathlib, sys
+import argparse, html, json, pathlib, sys
 import yaml
 
 def chip(chap_id: str, meta: dict) -> str:
-    title = meta.get("title", chap_id)
-    tldr = (meta.get("tldr", "") or "").replace('"', "&quot;")
+    title = html.escape(meta.get("title", chap_id))
+    tldr = html.escape(meta.get("tldr", "") or "")
     return (f'<a class="im-prereq-chip" href="{chap_id}.html" '
             f'title="{tldr}">requires: {title}</a>')
 
@@ -29,9 +29,10 @@ def build_prereq_partial(chap_id: str, data: dict) -> str:
     return f'<div class="im-prereq-chips">\n{chips}\n</div>\n'
 
 def related_card(role: str, chap_id: str, meta: dict) -> str:
+    title = html.escape(meta.get("title", chap_id))
     return (f'<a class="im-related-card" href="{chap_id}.html">'
             f'<div class="im-role">{role}</div>'
-            f'<strong>{meta.get("title", chap_id)}</strong></a>')
+            f'<strong>{title}</strong></a>')
 
 def build_related_partial(chap_id: str, data: dict) -> str:
     meta = data[chap_id]

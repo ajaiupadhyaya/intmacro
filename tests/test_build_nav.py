@@ -98,6 +98,34 @@ def test_related_partial_includes_sibling_role(tmp_path):
     )
 
 
+def test_titles_are_html_escaped(tmp_path):
+    # Titles with & and < must be escaped in generated HTML; raw chars must not appear.
+    (tmp_path / "prereqs.yml").write_text(textwrap.dedent("""
+        islm_model:
+          track: short_run
+          title: "IS/LM Model"
+          tldr: "Goods & money markets together."
+          prereqs: [ad_as_ext]
+        ad_as_ext:
+          track: short_run
+          title: "AD & AS <Extended>"
+          tldr: "Aggregate demand & supply with extensions."
+          prereqs: []
+    """))
+    (tmp_path / "glossary.yml").write_text("[]\n")
+    r = run_build_nav(tmp_path)
+    assert r.returncode == 0, r.stderr
+    partial = (tmp_path / "generated" / "islm_model-prereqs.md").read_text()
+    # Escaped forms must be present
+    assert "AD &amp; AS &lt;Extended&gt;" in partial, (
+        f"escaped title not found in prereq chip; got: {partial!r}"
+    )
+    # Raw unescaped characters must NOT appear
+    assert "& AS <Extended>" not in partial, (
+        f"raw unescaped title found in prereq chip; got: {partial!r}"
+    )
+
+
 def test_generates_tooltip_json(tmp_path):
     (tmp_path / "prereqs.yml").write_text("solow_intro: {track: growth, title: S, tldr: t, prereqs: []}\n")
     (tmp_path / "glossary.yml").write_text(textwrap.dedent("""
