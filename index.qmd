@@ -1,5 +1,5 @@
 ---
-pagetitle: "International Macroeconomics — Interactive Dashboard"
+pagetitle: "Intermediate Macroeconomics — Interactive Dashboard"
 toc: false
 page-layout: full
 ---

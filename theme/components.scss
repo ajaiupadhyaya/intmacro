@@ -61,10 +61,8 @@ h1 { font-weight: 720; letter-spacing: -0.028em; }
   padding-top: 0.55rem; padding-bottom: 0.55rem;
 }
 .navbar .navbar-brand {
-  font-weight: 720; letter-spacing: -0.02em;
-  background: var(--im-grad-accent);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent; color: transparent;
+  font-weight: 700; letter-spacing: -0.02em;
+  color: var(--im-fg-primary);
 }
 .navbar .nav-link {
   color: var(--im-fg-secondary) !important;
@@ -193,30 +191,23 @@ code:not(.sourceCode), p code, li code {
   margin: 18px 0; font-size: 1.02rem;
 }
 
-// Simulator hero — the premium centerpiece
+// Simulator hero — the chapter centerpiece (clean bordered panel)
 .im-sim-hero {
   position: relative;
-  background:
-    linear-gradient(var(--im-bg-surface), var(--im-bg-surface)) padding-box,
-    var(--im-grad-accent) border-box;
-  border: 2px solid transparent;
-  border-radius: var(--im-radius-lg);
-  padding: 22px 24px; margin: 26px 0;
-  box-shadow: var(--im-shadow-lg);
+  background: var(--im-bg-surface);
+  border: 1px solid var(--im-border);
+  border-top: 3px solid var(--im-sim);
+  border-radius: var(--im-radius-md);
+  padding: 20px 22px; margin: 24px 0;
+  box-shadow: var(--im-shadow-sm);
 }
-.im-sim-hero::before {
-  content: ""; position: absolute; inset: 0;
-  border-radius: inherit; pointer-events: none;
-  background: radial-gradient(600px 220px at 100% 0%, var(--im-sim-soft), transparent 70%);
-  opacity: 0.6;
-}
-.im-sim-hero > * { position: relative; }
 .im-sim-hero .im-sim-label {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em;
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
   color: var(--im-sim); text-transform: uppercase;
-  padding: 3px 10px; border-radius: 999px;
-  background: var(--im-sim-soft); border: 1px solid var(--im-sim);
+}
+.im-sim-hero .im-sim-label::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--im-sim);
 }
 .im-sim-hero .ojs-inputs {
   display: flex; flex-wrap: wrap; gap: 14px 22px; margin: 14px 0;
@@ -276,10 +267,10 @@ details.im-math-toggle {
   display: block;
   background: var(--im-bg-surface); border: 1px solid var(--im-border);
   border-radius: var(--im-radius-md); padding: 14px 16px; text-decoration: none;
-  color: var(--im-fg-primary); box-shadow: var(--im-shadow-sm);
-  transition: transform 160ms var(--im-ease), box-shadow 160ms var(--im-ease), border-color 160ms var(--im-ease);
+  color: var(--im-fg-primary);
+  transition: border-color 150ms var(--im-ease), box-shadow 150ms var(--im-ease);
 }
-.im-related-card:hover { transform: translateY(-3px); box-shadow: var(--im-shadow-md); border-color: var(--im-accent); }
+.im-related-card:hover { box-shadow: var(--im-shadow-sm); border-color: var(--im-accent); }
 .im-related-card .im-role {
   font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.08em;
   color: var(--im-accent); font-weight: 700;
@@ -301,42 +292,22 @@ details.im-math-toggle {
 // =====================================================================
 .im-hero {
   position: relative;
-  margin: -1rem 0 2.4rem;
-  padding: clamp(2rem, 5vw, 3.6rem) clamp(1.4rem, 4vw, 3rem);
-  border-radius: var(--im-radius-xl);
-  border: 1px solid var(--im-border);
-  background-color: var(--im-bg-surface);
-  background-image: var(--im-grad-hero);
-  box-shadow: var(--im-shadow-md);
-  overflow: hidden;
+  margin: -0.5rem 0 2.2rem;
+  padding: clamp(1.6rem, 3.5vw, 2.6rem) 0 1.8rem;
+  border-bottom: 1px solid var(--im-border);
 }
-.im-hero::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background-image:
-    linear-gradient(var(--im-grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--im-grid-line) 1px, transparent 1px);
-  background-size: 32px 32px;
-  -webkit-mask-image: radial-gradient(600px 300px at 80% 10%, #000, transparent 75%);
-  mask-image: radial-gradient(600px 300px at 80% 10%, #000, transparent 75%);
-}
-.im-hero > * { position: relative; }
 .im-hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--im-accent); padding: 4px 12px; border-radius: 999px;
-  background: var(--im-accent-soft); border: 1px solid var(--im-border);
+  display: inline-block;
+  font-size: 0.74rem; font-weight: 600; letter-spacing: 0.04em;
+  color: var(--im-accent);
 }
 .im-hero h1, .im-hero .im-hero-title {
-  font-size: clamp(2.1rem, 5vw, 3.2rem); line-height: 1.05; margin: 16px 0 10px;
-  letter-spacing: -0.03em; color: var(--im-hero-fg); font-weight: 760;
+  font-size: clamp(1.9rem, 4vw, 2.7rem); line-height: 1.1; margin: 10px 0 12px;
+  letter-spacing: -0.025em; color: var(--im-fg-primary); font-weight: 700;
 }
-.im-hero .im-hero-title .grad {
-  background: var(--im-grad-accent);
-  -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent; color: transparent;
-}
+.im-hero .im-hero-title .grad { color: var(--im-accent); }
 .im-hero p.im-hero-sub {
-  font-size: 1.12rem; color: var(--im-hero-fg-soft); max-width: 620px; margin: 0;
+  font-size: 1.08rem; color: var(--im-fg-secondary); max-width: 640px; margin: 0; line-height: 1.6;
 }
 .im-hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
 .im-btn {
@@ -345,19 +316,24 @@ details.im-math-toggle {
   text-decoration: none; cursor: pointer; border: 1px solid transparent;
   transition: transform 150ms var(--im-ease), box-shadow 150ms var(--im-ease), background 150ms var(--im-ease);
 }
-.im-btn-primary { background: var(--im-grad-accent); color: var(--im-accent-contrast); box-shadow: var(--im-shadow-md); }
-.im-btn-primary:hover { transform: translateY(-2px); box-shadow: var(--im-shadow-lg); color: var(--im-accent-contrast); }
-.im-btn-ghost { background: var(--im-bg-surface); color: var(--im-fg-primary); border-color: var(--im-border-strong); }
-.im-btn-ghost:hover { transform: translateY(-2px); border-color: var(--im-accent); color: var(--im-accent); }
+.im-btn { border-radius: var(--im-radius-sm); }
+.im-btn-primary { background: var(--im-accent); color: var(--im-accent-contrast); }
+.im-btn-primary:hover { background: var(--im-accent-2); color: var(--im-accent-contrast); }
+.im-btn-ghost { background: transparent; color: var(--im-fg-primary); border-color: var(--im-border-strong); }
+.im-btn-ghost:hover { border-color: var(--im-accent); color: var(--im-accent); }
 
 // stat row
-.im-stats { display: flex; flex-wrap: wrap; gap: 28px; margin-top: 26px; }
-.im-stat .im-stat-num {
-  font-size: 1.8rem; font-weight: 760; letter-spacing: -0.02em;
-  background: var(--im-grad-accent); -webkit-background-clip: text; background-clip: text;
-  -webkit-text-fill-color: transparent; color: transparent;
+.im-stats {
+  display: flex; flex-wrap: wrap; gap: 0;
+  margin-top: 24px; border: 1px solid var(--im-border); border-radius: var(--im-radius-md);
+  overflow: hidden; width: fit-content; max-width: 100%;
 }
-.im-stat .im-stat-label { font-size: 0.8rem; color: var(--im-hero-fg-soft); text-transform: uppercase; letter-spacing: 0.05em; }
+.im-stat { padding: 12px 22px; border-right: 1px solid var(--im-border); }
+.im-stat:last-child { border-right: none; }
+.im-stat .im-stat-num {
+  font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; color: var(--im-fg-primary);
+}
+.im-stat .im-stat-label { font-size: 0.76rem; color: var(--im-fg-muted); text-transform: uppercase; letter-spacing: 0.04em; }
 
 // section heading on landing
 .im-section-label {
@@ -371,48 +347,34 @@ details.im-math-toggle {
   gap: 18px; margin: 1rem 0 2rem;
 }
 .im-track-card {
-  position: relative; display: flex; flex-direction: column; gap: 8px;
-  padding: 22px; border-radius: var(--im-radius-lg);
+  position: relative; display: flex; flex-direction: column; gap: 7px;
+  padding: 20px; border-radius: var(--im-radius-md);
   background: var(--im-bg-surface); border: 1px solid var(--im-border);
-  box-shadow: var(--im-shadow-sm); text-decoration: none; color: var(--im-fg-primary);
-  transition: transform 180ms var(--im-ease), box-shadow 180ms var(--im-ease), border-color 180ms var(--im-ease);
-  overflow: hidden;
+  text-decoration: none; color: var(--im-fg-primary);
+  transition: border-color 150ms var(--im-ease), box-shadow 150ms var(--im-ease);
 }
-.im-track-card::before {
-  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
-  background: var(--im-grad-accent); opacity: 0; transition: opacity 180ms var(--im-ease);
-}
-.im-track-card:hover { transform: translateY(-4px); box-shadow: var(--im-shadow-lg); border-color: var(--im-border-strong); }
-.im-track-card:hover::before { opacity: 1; }
+.im-track-card:hover { border-color: var(--im-accent); box-shadow: var(--im-shadow-sm); }
 .im-track-card .im-track-icon {
-  width: 44px; height: 44px; display: grid; place-items: center;
-  border-radius: var(--im-radius-md); font-size: 1.4rem;
-  background: var(--im-accent-soft); border: 1px solid var(--im-border);
+  font-size: 1.35rem; line-height: 1; margin-bottom: 2px;
+  filter: saturate(0.85);
 }
-.im-track-card h3 { margin: 4px 0 0; font-size: 1.12rem; }
-.im-track-card p { margin: 0; color: var(--im-fg-secondary); font-size: 0.92rem; line-height: 1.5; }
+.im-track-card h3 { margin: 0; font-size: 1.08rem; }
+.im-track-card p { margin: 0; color: var(--im-fg-secondary); font-size: 0.9rem; line-height: 1.55; }
 .im-track-card .im-track-meta {
-  margin-top: auto; padding-top: 10px;
+  margin-top: auto; padding-top: 12px;
   display: flex; align-items: center; justify-content: space-between;
   font-size: 0.8rem; color: var(--im-fg-muted);
 }
 .im-track-card .im-track-go { color: var(--im-accent); font-weight: 600; }
 
-// "live simulator" badge used on featured cards
+// "interactive" marker on featured cards (static, no animation)
 .im-live-badge {
   display: inline-flex; align-items: center; gap: 6px;
-  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.03em;
   color: var(--im-sim);
 }
 .im-live-badge::before {
-  content: ""; width: 7px; height: 7px; border-radius: 50%;
-  background: var(--im-sim); box-shadow: 0 0 0 0 var(--im-sim);
-  animation: im-pulse 2s infinite;
-}
-@keyframes im-pulse {
-  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--im-sim) 60%, transparent); }
-  70% { box-shadow: 0 0 0 7px transparent; }
-  100% { box-shadow: 0 0 0 0 transparent; }
+  content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--im-sim);
 }
 
 // ---- Motion / a11y --------------------------------------------------

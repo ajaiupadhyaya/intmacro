@@ -11,7 +11,7 @@ project:
     - "!content/MODELS.md"
 
 website:
-  title: "International Macroeconomics"
+  title: "Intermediate Macroeconomics"
   description: "An interactive dashboard of macroeconomic models for self-study."
   search:
     location: navbar
