@@ -94,10 +94,9 @@ When you raised **s**, the dashed `k*` line jumped *up* and the curve climbed to
 
 ## Self-check
 
-::: {.im-mcq}
-::: {.im-q-label}
-Q1 · concept
-:::
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
 A country permanently doubles its savings rate. In the long run, which is true?
 
 <details><summary>a) Its growth rate doubles</summary>
@@ -109,17 +108,16 @@ No — long-run growth is set by `g`, not `s`. Growth rises only during the tran
 <details><summary>c) Nothing changes</summary>
 No — the level changes even though the long-run growth rate doesn't.
 </details>
-:::
+</div>
 
-::: {.im-mcq}
-::: {.im-q-label}
-Q2 · simulator challenge
-:::
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
 Using the simulator above, set **s = 0.30, n = 0.02, g = 0.02, δ = 0.05, α = ⅓**. What steady-state `k*` does the dashed line show?
 
 <details><summary>Reveal answer</summary>
 `k* = (0.30/0.09)^{1.5} = (3.333)^{1.5} ≈ 6.09`. The dashed line should read **k* ≈ 6.09**.
 </details>
-:::
+</div>
 
 {{< include ../_includes/generated/solow_intro-related.md >}}
