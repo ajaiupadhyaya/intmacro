@@ -15,7 +15,7 @@ subtitle: "Consumption smoothing, the Euler equation, and why interest rates til
 - Explain why the agent is a *saver* (c₁ < y₁) vs a *borrower* (c₁ > y₁) depending on parameters.
 - Decompose an interest-rate change into a substitution effect and an income effect, and predict which dominates for savers vs borrowers.
 
-## 🚀 Try it first
+## Explore the model
 
 ::: {.im-sim-hero}
 ::: {.im-sim-label}
@@ -129,7 +129,7 @@ Suppose the agent is currently a **lender** (c₁ < y₁). The real interest rat
 Not necessarily. The substitution effect does push toward saving more (lower c₁), but the income effect — the lender earns more on existing savings — pushes c₁ up. The net direction is ambiguous.
 </details>
 <details><summary>b) c₁ is ambiguous — substitution and income effects offset each other</summary>
-✅ Correct. For a lender, a higher r creates a substitution effect (future consumption cheaper → save more → lower c₁) and a positive income effect (higher return on savings → richer → higher c₁). Standard theory does not pin the sign.
+**Correct**. For a lender, a higher r creates a substitution effect (future consumption cheaper → save more → lower c₁) and a positive income effect (higher return on savings → richer → higher c₁). Standard theory does not pin the sign.
 </details>
 <details><summary>c) c₁ must rise — the income effect always dominates for lenders</summary>
 No — the income effect works in that direction, but it need not dominate the substitution effect.

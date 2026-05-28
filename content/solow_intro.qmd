@@ -15,7 +15,7 @@ subtitle: "Why saving more makes you richer, not faster-growing"
 - Explain why the *level* of income and the *growth rate* of income are different things.
 - Read empirical convergence patterns through the model's lens.
 
-## 🚀 Try it first
+## Explore the model
 
 ::: {.im-sim-hero}
 ::: {.im-sim-label}
@@ -103,7 +103,7 @@ A country permanently doubles its savings rate. In the long run, which is true?
 No — long-run growth is set by `g`, not `s`. Growth rises only during the transition.
 </details>
 <details><summary>b) Its steady-state capital per worker rises</summary>
-✅ Correct. `k* = (s/(n+g+δ))^{1/(1−α)}` rises with `s` — a higher *level*, reached via temporarily faster growth.
+**Correct**. `k* = (s/(n+g+δ))^{1/(1−α)}` rises with `s` — a higher *level*, reached via temporarily faster growth.
 </details>
 <details><summary>c) Nothing changes</summary>
 No — the level changes even though the long-run growth rate doesn't.

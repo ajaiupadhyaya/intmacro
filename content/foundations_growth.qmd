@@ -15,7 +15,7 @@ subtitle: "How rich you are and how fast you're getting richer are two different
 - Read a time path and identify which of two economies is richer vs. which is catching up.
 - Connect this distinction to the convergence pattern you'll see in later chapters.
 
-## 🚀 Try it first
+## Explore the model
 
 ::: {.im-sim-hero}
 ::: {.im-sim-label}
@@ -99,7 +99,7 @@ Country X has GDP per capita of \$40,000 growing at 1%. Country Y has \$5,000 gr
 No — Y's far higher growth rate means it closes the gap and eventually overtakes X.
 </details>
 <details><summary>b) Y is catching up and will overtake X given enough time</summary>
-✅ Correct. A higher growth rate compounds; the level head-start is finite, so Y eventually passes X.
+**Correct**. A higher growth rate compounds; the level head-start is finite, so Y eventually passes X.
 </details>
 <details><summary>c) They grow at the same speed since growth is just level times rate</summary>
 No — growth *rate* is independent of the level. Y's 7% beats X's 1% regardless of who is richer now.

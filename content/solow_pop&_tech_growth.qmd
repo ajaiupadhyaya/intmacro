@@ -1,0 +1,137 @@
+---
+title: "Population & Technology Growth"
+subtitle: "Why only technological progress — not saving harder or breeding faster — raises living standards forever"
+---
+
+{{< include ../_includes/generated/solow_pop&_tech_growth-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — Measure everything *per effective worker* ($\tilde k = K/(AL)$) and the Solow economy settles to a constant steady state $\tilde k^{*}$, just like the basic model. But because each worker now commands more technology over time, output *per worker* keeps rising at the tech-growth rate $g$ forever, and *aggregate* output grows at $n+g$. Faster population growth $n$ doesn't enrich anyone — it *dilutes* capital and lowers $\tilde k^{*}$.
+:::
+
+## You'll be able to
+
+- Rescale the Solow model into per-effective-worker terms and find $\tilde k^{*}$ and $\tilde y^{*}$.
+- Explain why per-worker living standards grow at $g$ while aggregate output grows at $n+g$.
+- Predict that faster population growth *lowers* steady-state capital per effective worker.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Crank up population growth n and watch the steady state fall — then add tech growth g
+:::
+
+```{ojs}
+//| echo: false
+viewof sSpt      = Inputs.range([0.05, 0.9], {value: 0.30, step: 0.01, label: "savings rate s"})
+viewof deltaSpt  = Inputs.range([0.01, 0.2], {value: 0.05, step: 0.005, label: "depreciation δ"})
+viewof alphaSpt  = Inputs.range([0.1, 0.7], {value: 0.30, step: 0.05, label: "capital share α"})
+viewof nSpt      = Inputs.range([0.0, 0.05], {value: 0.01, step: 0.005, label: "population growth n"})
+viewof gSpt      = Inputs.range([0.0, 0.05], {value: 0.02, step: 0.005, label: "tech growth g"})
+viewof k0Spt     = Inputs.range([0.1, 10], {value: 1.0, step: 0.1, label: "initial k̃₀"})
+viewof TSpt      = Inputs.range([10, 100], {value: 50, step: 5, label: "time horizon"})
+
+kstarSpt = Math.pow(sSpt / (deltaSpt + nSpt + gSpt), 1 / (1 - alphaSpt))
+ystarSpt = Math.pow(kstarSpt, alphaSpt)
+
+pathSpt = {
+  const T = TSpt, rows = [];
+  let k = k0Spt;
+  for (let t = 0; t < T; t++) {
+    const y = Math.pow(k, alphaSpt);
+    rows.push({t, k, y});
+    k = k + sSpt * y - (deltaSpt + nSpt + gSpt) * k;
+  }
+  return rows;
+}
+
+Plot.plot({
+  marginLeft: 50,
+  x: {label: "time →"},
+  y: {label: "per effective worker", grid: true},
+  marks: [
+    Plot.ruleY([kstarSpt], {stroke: "var(--im-accent)", strokeDasharray: "3 3", opacity: 0.5}),
+    Plot.ruleY([ystarSpt], {stroke: "var(--im-sim)", strokeDasharray: "3 3", opacity: 0.5}),
+    Plot.line(pathSpt, {x: "t", y: "k", stroke: "var(--im-accent)", strokeWidth: 2.5}),
+    Plot.line(pathSpt, {x: "t", y: "y", stroke: "var(--im-sim)", strokeWidth: 2.5}),
+    Plot.text([{t: TSpt * 0.5, y: kstarSpt}], {text: d => `k̃* = ${kstarSpt.toFixed(2)}`, dy: -8, fill: "var(--im-accent)"}),
+    Plot.text([{t: TSpt * 0.5, y: ystarSpt}], {text: d => `ỹ* = ${ystarSpt.toFixed(2)}`, dy: -8, fill: "var(--im-sim)"})
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+md`**Steady state (per effective worker):** $\tilde k^{*} =$ **${kstarSpt.toFixed(3)}**,  $\tilde y^{*} =$ **${ystarSpt.toFixed(3)}**. In the long run, output **per worker** grows at $g =$ **${(gSpt*100).toFixed(1)}%** per period, while **aggregate** output grows at $n+g =$ **${((nSpt+gSpt)*100).toFixed(1)}%**.`
+```
+
+The blue line is capital per effective worker $\tilde k$, green is output per effective worker $\tilde y$, and the dashed lines are their steady-state targets. Slide $n$ up and the dashed targets drop — more mouths to equip means less capital each. Slide $g$ up and the targets *also* drop, yet the readout reminds you that per-worker income is now climbing at $g$ forever.
+:::
+
+## Core intuition
+
+Once labor grows at rate $n$ and technology at rate $g$, raw capital per worker is a moving target. The trick is to rescale by *effective* labor $AL$: count capital and output **per effective worker**, $\tilde k = K/(AL)$ and $\tilde y = \tilde k^{\alpha}$. In these units the model looks exactly like the basic Solow model, with one change: capital must now be spread across a workforce of effective labor that is itself expanding at $n+g$.
+
+So the [break-even investment]{.im-glossary-term} needed just to hold $\tilde k$ steady is no longer $\delta\tilde k$ but $(\delta + n + g)\tilde k$ — you replace worn-out capital *and* equip the new effective workers. Investment $s\tilde k^{\alpha}$ runs into [diminishing returns]{.im-glossary-term}, so the two curves cross at a single [steady state]{.im-glossary-term} $\tilde k^{*}$, and the economy [converges]{.im-glossary-term} to it.
+
+Here's the payoff. At $\tilde k^{*}$, *effective*-worker variables are flat. But $y = A\tilde y^{*}$, and $A$ itself grows at $g$ — so income **per worker** rises at $g$ forever. Aggregate output $Y = AL\tilde y^{*}$ grows at $n+g$. Faster population growth $n$ appears only in the denominator $(\delta+n+g)$: it *lowers* $\tilde k^{*}$. Only $g$ delivers sustained gains in living standards.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math</summary>
+
+In per-effective-worker terms the law of motion is
+$$\tilde k_{t+1} = \tilde k_t + s\,\tilde k_t^{\alpha} - (\delta + n + g)\,\tilde k_t.$$
+Setting $\tilde k_{t+1} = \tilde k_t$ (so $s\tilde k^{\alpha} = (\delta+n+g)\tilde k$) gives the steady state
+$$\tilde k^{*} = \left(\frac{s}{\delta + n + g}\right)^{\frac{1}{1-\alpha}}, \qquad \tilde y^{*} = (\tilde k^{*})^{\alpha}.$$
+Because $n$ and $g$ sit in the denominator, raising either one *lowers* $\tilde k^{*}$. Yet since $y = A\tilde y$ and $\dot A / A = g$,
+$$\frac{\dot y}{y} = g, \qquad \frac{\dot Y}{Y} = n + g.$$
+Living standards (output per worker) grow at $g$; aggregate output grows at $n+g$.
+
+</details>
+:::
+
+## What the simulator showed
+
+From any starting $\tilde k_0$, both lines bent toward the dashed targets and flattened — convergence in per-effective-worker terms, exactly like the basic model. Pushing $n$ up slid the dashed targets *down*: extra population dilutes the capital stock. Pushing $g$ up *also* lowered the dashed $\tilde k^{*}$, but the readout showed per-worker income now growing at the higher $g$ forever and aggregate output at $n+g$. The steady state is about *effective*-worker ratios; real living standards ride on top of it via $A$.
+
+## Common confusions
+
+::: {.im-confusion}
+**"Faster population growth makes a country richer."** No — $n$ enters the break-even term $(\delta+n+g)\tilde k$, so more population growth *dilutes* capital and *lowers* $\tilde k^{*}$ and $\tilde y^{*}$. It raises aggregate output growth (to $n+g$) but not income *per worker*.
+:::
+
+::: {.im-confusion}
+**"Without technology growth, living standards still rise forever."** No — with $g = 0$, per-effective-worker and per-worker variables coincide and are *constant* at the steady state. Saving more shifts you to a higher plateau once, but only $g > 0$ delivers *sustained* growth in living standards.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+In the steady state, at what rate does output **per worker** ($y = A\tilde y$) grow?
+
+<details><summary>a) g (the technology growth rate)</summary>
+**Correct**. Per-effective-worker output $\tilde y$ is constant at steady state, so $y = A\tilde y$ grows at the rate of $A$, which is $g$. Only technological progress raises living standards in the long run.
+</details>
+<details><summary>b) n + g</summary>
+No — that's the growth rate of *aggregate* output $Y = AL\tilde y$, which also picks up labor-force growth $n$. Per-*worker* output grows only at $g$.
+</details>
+<details><summary>c) zero — the economy is at a steady state</summary>
+No — only the *per-effective-worker* variables are constant. Per-worker income still rises with $A$ at rate $g$.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Set **s = 0.20, δ = 0.05, n = 0.01, g = 0.02, α = 0.33**. What is the steady-state capital per effective worker $\tilde k^{*}$?
+
+<details><summary>Reveal answer</summary>
+$\tilde k^{*} = \left(\dfrac{s}{\delta+n+g}\right)^{1/(1-\alpha)} = \left(\dfrac{0.20}{0.08}\right)^{1/0.67} = 2.5^{1.49} \approx 3.9$. The dashed blue line should sit near **k̃* ≈ 3.9** (and $\tilde y^{*} \approx 1.57$).
+</details>
+</div>
+
+{{< include ../_includes/generated/solow_pop&_tech_growth-related.md >}}
