@@ -191,6 +191,20 @@ code:not(.sourceCode), p code, li code {
   margin: 18px 0; font-size: 1.02rem;
 }
 
+// Fallback notice for legacy ipywidgets models awaiting OJS conversion
+.im-model-pending {
+  background: var(--im-bg-surface);
+  border: 1px solid var(--im-border);
+  border-left: 4px solid var(--im-sim);
+  padding: 14px 18px; border-radius: 0 var(--im-radius-md) var(--im-radius-md) 0;
+  margin: 22px 0; color: var(--im-fg-secondary); font-size: 0.95rem; line-height: 1.55;
+}
+.im-model-pending .im-model-pending-label {
+  display: block; margin-bottom: 4px;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--im-sim);
+}
+
 // Simulator hero — the chapter centerpiece (clean bordered panel)
 .im-sim-hero {
   position: relative;

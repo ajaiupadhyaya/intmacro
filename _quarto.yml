@@ -91,6 +91,9 @@ format:
           <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=STIX+Two+Math&display=swap" rel="stylesheet">
     include-after-body:
       - theme/glossary-tooltips.js
+      - theme/widget-fallback.js
 
 execute:
   freeze: auto
+  echo: false
+  warning: false
