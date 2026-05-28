@@ -35,3 +35,12 @@ Thumbs.db
 
 # Brainstorming visual-companion sessions
 .superpowers/
+
+/.quarto/
+.quarto/
+**/*.quarto_ipynb
+
+# Quarto build artifacts
+_site/
+_includes/generated/
+_glossary.qmd
