@@ -91,13 +91,17 @@ $$\text{MRS} = \frac{\partial U/\partial c_1}{\partial U/\partial c_2} = \frac{1
 Setting MRS $= 1+r$ (slope of budget line, in absolute value) gives the [Euler equation]{.im-glossary-term}:
 $$\frac{c_2}{\beta c_1} = 1+r \implies c_2 = \beta(1+r)\, c_1.$$
 
+**Reading the Euler equation.** Rearranged as $c_2/c_1 = \beta(1+r)$, it pins down the *growth rate* of consumption, not its level: patience ($\beta$) and the market return ($1+r$) jointly determine how tilted the path is. If $\beta(1+r) > 1$ the return to waiting outweighs impatience and consumption rises over time; if $\beta(1+r) = 1$ the path is perfectly flat ($c_1 = c_2$); if $\beta(1+r) < 1$ impatience wins and consumption falls.
+
+**Geometric reading (the Euler line).** In $(c_1, c_2)$ space, the set of bundles satisfying MRS $= 1+r$ is a ray through the origin with slope $\beta(1+r)$. The optimum is the single point where three objects meet: the budget line (affordability), the Euler line (optimal tilt), and the highest attainable indifference curve (tangency). Solving the model is just intersecting the first two.
+
 **Closed form.** Substitute $c_2 = \beta(1+r)c_1$ into the budget constraint:
 $$c_1 + \frac{\beta(1+r)c_1}{1+r} = W \implies c_1(1+\beta) = W \implies c_1^* = \frac{W}{1+\beta}.$$
-Then $c_2^* = \beta(1+r)\,c_1^*$.
+Then $c_2^* = \beta(1+r)\,c_1^*$. Period-1 saving is $s = y_1 - c_1^*$: the agent is a *saver* if $s > 0$ and a *borrower* if $s < 0$.
 
 **Parity check** ($y_1=80$, $y_2=120$, $r=0.10$, $\beta=1$):
 $$W = 80 + \frac{120}{1.1} \approx 189.09, \quad c_1^* = \frac{189.09}{2} \approx 94.55, \quad c_2^* = 1.1 \times 94.55 \approx 104.0.$$
-Since $c_1^* = 94.55 > y_1 = 80$, the agent is a **borrower** in period 1.
+Since $c_1^* = 94.55 > y_1 = 80$, saving is $s = 80 - 94.55 \approx -14.5 < 0$: the agent is a **borrower** in period 1.
 
 </details>
 :::

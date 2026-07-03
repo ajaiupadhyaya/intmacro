@@ -1,0 +1,11 @@
+---
+title: "Redirecting…"
+format:
+  html:
+    include-in-header:
+      text: |
+        <meta http-equiv="refresh" content="0; url=adassim.html">
+        <link rel="canonical" href="adassim.html">
+---
+
+This chapter's material was merged into [Dynamic AD–AS with a Taylor Rule](adassim.html).

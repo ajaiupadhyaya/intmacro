@@ -1,0 +1,30 @@
+---
+title: "Business Cycles & Policy Dynamics — Track Map"
+---
+
+Short-run fluctuations and the policy rules that shape them. The IS curve is
+the entry point; the equilibrium-cycle chapters form a second, parallel branch.
+Click a node to jump there.
+
+```{mermaid}
+graph LR
+  IS[IS Curve] --> AD[Dynamic AD-AS + Taylor Rule]
+  AD --> AX[AD-AS Exercises]
+  LI[Lucas Island Model] --> EQ[Equilibrium Cycles w/ Persistence]
+  EQ --> RBC[Real Business Cycles]
+  click IS "../content/is_curve_model.html"
+  click AD "../content/adassim.html"
+  click AX "../content/adas_model.html"
+  click LI "../content/lucas_island_model.html"
+  click EQ "../content/equilibrium_model.html"
+  click RBC "../content/rbc_simulation.html"
+```
+
+## Suggested path
+
+1. [The IS Curve](../content/is_curve_model.qmd) — interest rates, demand, and goods-market equilibrium.
+2. [Dynamic AD–AS with a Taylor Rule](../content/adassim.qmd) — inflation and output dynamics under a policy rule, including how the economy absorbs demand and supply shocks.
+3. [AD–AS: Exercises & Case Studies](../content/adas_model.ipynb) — applied problems using the AD–AS framework.
+4. [The Lucas Island Model](../content/lucas_island_model.ipynb) — imperfect information as a source of real fluctuations.
+5. [Equilibrium Business Cycles with Persistence](../content/equilibrium_model.ipynb) — propagation that stretches shocks over time.
+6. [The Real Business Cycle Model](../content/rbc_simulation.ipynb) — fluctuations as the efficient response to productivity shocks.

@@ -1,0 +1,197 @@
+---
+title: "The Labor-Leisure Choice Model"
+subtitle: "Why a raise doesn't automatically make you work more"
+---
+
+{{< include ../_includes/generated/labor_leisure_model-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — Every hour of leisure costs you a wage's worth of consumption, so the wage is the *price* of leisure. A higher wage pulls in two directions at once: it makes leisure more expensive (work more) but also makes you richer (work less). With log preferences and no other income the two forces exactly cancel — hours worked don't change at all. What reliably reduces work is *non-labor* income, which carries an income effect with no substitution effect attached.
+:::
+
+## You'll be able to
+
+- Derive the optimal split of time between labor and leisure from the tangency condition MRS = w.
+- Decompose the effect of a wage change into income and substitution effects, and explain when they cancel.
+- Predict how non-labor income (transfers, wealth) shifts labor supply, and why the direction differs from a wage change.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — the budget line, indifference curve, and optimal choice update live
+:::
+
+```{ojs}
+//| echo: false
+viewof w     = Inputs.range([1, 50], {value: 15, step: 1, label: "real wage w"})
+viewof piNL  = Inputs.range([0, 100], {value: 0, step: 5, label: "non-labor income π"})
+viewof theta = Inputs.range([0.1, 5], {value: 1.0, step: 0.1, label: "leisure preference θ"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+// U(c, l) = ln(c) + θ·ln(l), budget c = w(T − l) + π, time endowment T = 24.
+// Tangency MRS = θc/l = w plus the budget constraint gives
+// l* = (θ/(1+θ))·(T + π/w), clipped to the time endowment (π = 0 reproduces
+// the notebook's l* = (θ/(1+θ))·T exactly).
+T = 24
+
+opt = {
+  const lRaw = (theta / (1 + theta)) * (T + piNL / w);
+  const lStar = Math.min(Math.max(lRaw, 1e-6), T - 1e-6);
+  const LStar = T - lStar;
+  const cStar = w * LStar + piNL;
+  const UStar = Math.log(cStar) + theta * Math.log(lStar);
+  return {lStar, LStar, cStar, UStar};
+}
+
+// reference economy at w₀ = 15 (same π, θ) — compare against it as you move w
+w0 = 15
+ref = {
+  const lRaw = (theta / (1 + theta)) * (T + piNL / w0);
+  const lStar = Math.min(Math.max(lRaw, 1e-6), T - 1e-6);
+  return {lStar, cStar: w0 * (T - lStar) + piNL};
+}
+
+yMax = Math.max(w, w0) * T * 1.05 + piNL
+
+budget = {
+  const pts = [];
+  for (let i = 0; i <= 400; i++) {
+    const l = 1e-3 + (i / 400) * (T - 2e-3);
+    pts.push({l, c: w * (T - l) + piNL});
+  }
+  return pts;
+}
+
+refBudget = {
+  const pts = [];
+  for (let i = 0; i <= 400; i++) {
+    const l = 1e-3 + (i / 400) * (T - 2e-3);
+    pts.push({l, c: w0 * (T - l) + piNL});
+  }
+  return pts;
+}
+
+// indifference curve through the optimum: c = exp(U* − θ·ln l)
+indiff = {
+  const pts = [];
+  for (let i = 0; i <= 400; i++) {
+    const l = 1e-3 + (i / 400) * (T - 2e-3);
+    const c = Math.exp(opt.UStar - theta * Math.log(l));
+    if (c <= yMax) pts.push({l, c});
+  }
+  return pts;
+}
+
+Plot.plot({
+  marginLeft: 55,
+  x: {label: "leisure l (hours) →", domain: [0, T]},
+  y: {label: "consumption c", domain: [0, yMax], grid: true},
+  marks: [
+    Plot.line(refBudget, {x: "l", y: "c", stroke: "var(--im-sim)", strokeDasharray: "2 4", strokeOpacity: 0.6}),
+    Plot.dot([ref], {x: "lStar", y: "cStar", stroke: "var(--im-sim)", fill: "none", r: 5, strokeOpacity: 0.7}),
+    Plot.line(budget, {x: "l", y: "c", stroke: "var(--im-accent)", strokeWidth: 2}),
+    Plot.line(indiff, {x: "l", y: "c", stroke: "var(--im-accent)", strokeWidth: 1.5, strokeDasharray: "5 4", opacity: 0.8}),
+    Plot.dot([opt], {x: "lStar", y: "cStar", fill: "var(--im-sim)", r: 6}),
+    Plot.text([opt], {
+      x: "lStar", y: "cStar",
+      text: d => `l* = ${d.lStar.toFixed(1)} h, L* = ${d.LStar.toFixed(1)} h, c* = ${d.cStar.toFixed(1)}`,
+      dy: -14, fill: "var(--im-sim)", fontWeight: "bold"
+    })
+  ]
+})
+```
+
+The solid line is the **budget constraint** (slope −w); the dashed curve is the **indifference curve** through the optimum; the filled dot is the optimal bundle (l\*, c\*) where MRS = w. The faint hollow dot and dotted line hold the picture at a reference wage w₀ = 15, so as you move the wage slider you can see how much of the change in the optimum comes from the budget line *rotating* (substitution effect) versus the household simply being *richer* (income effect).
+:::
+
+## Core intuition
+
+You have 24 hours in a day. Every hour is either worked — earning the real wage w and financing consumption — or enjoyed as leisure. That makes the wage the *opportunity cost of leisure*: an afternoon off costs you exactly w units of consumption per hour. The budget line in (leisure, consumption) space has slope −w for precisely this reason.
+
+Preferences pull the other way. The household likes both consumption and leisure, and each obeys diminishing marginal utility: the tenth hour of leisure is worth less than the first, and the same for consumption. The optimum sits where the *willingness* to trade consumption for leisure (the marginal rate of substitution) equals the *market rate* at which they trade (the wage). Inside that condition lives the central tension of labor economics: raise the wage and leisure becomes more expensive — a **substitution effect** pushing toward more work — but the same raise makes the household richer at any given hours, and richer households buy more of everything they like, including leisure — an **income effect** pushing toward less work. Which force wins is an empirical question, not a theorem. With the log preferences used here and no outside income, they cancel exactly.
+
+Non-labor income π — transfers, dividends, family support — is different. It shifts the budget line *up* without changing its slope. That is a pure income effect: no relative price has moved, so labor supply unambiguously falls.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full derivation)</summary>
+
+**Setup.** The household has a fixed time endowment $T$ split between labor $L$ and leisure $\ell$:
+$$T = L + \ell.$$
+
+Consumption is financed by labor income (plus, in the simulator's extension, non-labor income $\pi$). Substituting $L = T - \ell$:
+$$c = w L + \pi = w\,(T - \ell) + \pi.$$
+This is the **budget line**; its slope is $-w$, so the opportunity cost of an hour of leisure is $w$ units of consumption.
+
+**Preferences.** Utility is Cobb-Douglas in logs:
+$$U(c, \ell) = \ln(c) + \theta \ln(\ell),$$
+where $\theta$ measures the relative preference for leisure.
+
+**First-order condition.** Maximize $U$ subject to the budget constraint. The marginal utilities are
+$$\frac{\partial U}{\partial \ell} = \frac{\theta}{\ell}, \qquad \frac{\partial U}{\partial c} = \frac{1}{c},$$
+so the marginal rate of substitution of leisure for consumption is
+$$MRS = \frac{\partial U/\partial \ell}{\partial U/\partial c} = \frac{\theta\, c}{\ell}.$$
+At an interior optimum the indifference curve is tangent to the budget line:
+$$MRS = w \quad\Longleftrightarrow\quad \frac{\theta\, c}{\ell} = w.$$
+
+**Solving.** Substitute the budget constraint $c = w(T - \ell) + \pi$ into the tangency condition:
+$$\theta\,\bigl[w(T - \ell) + \pi\bigr] = w\,\ell
+\;\Longrightarrow\;
+\theta\,w\,T + \theta\,\pi = w\,\ell\,(1 + \theta),$$
+$$\ell^{*} = \frac{\theta}{1+\theta}\left(T + \frac{\pi}{w}\right), \qquad
+L^{*} = T - \ell^{*}, \qquad
+c^{*} = w\,L^{*} + \pi.$$
+
+With $\pi = 0$ this collapses to the notebook's solution
+$$\ell^{*} = \frac{\theta}{1+\theta}\,T,$$
+which is *independent of the wage*: for log utility with no non-labor income, the income and substitution effects of a wage change cancel exactly. With $\pi > 0$, $\partial \ell^{*}/\partial w = -\theta\pi/[(1+\theta)w^{2}] < 0$: the substitution effect dominates and a higher wage raises hours worked.
+
+</details>
+:::
+
+## What the simulator showed
+
+With **π = 0**, drag the wage slider and watch the optimal point slide *along a vertical line*: consumption rises one-for-one with the wage, but leisure is pinned at $\ell^* = \frac{\theta}{1+\theta}T$ (12 hours when θ = 1). The budget line rotates, the indifference curve shifts up, and hours worked do not move — the income and substitution effects cancel exactly under log utility.
+
+Now set **π > 0** and move the wage again: leisure falls as w rises, because non-labor income doesn't scale with the wage, so the substitution effect gets the upper hand. Raising **π** alone shifts the budget line up in parallel and buys *more leisure* — a pure income effect. Finally, **θ** tilts the split directly: a household that values leisure more (higher θ) chooses a tangency further to the right, working fewer hours at any wage.
+
+## Common confusions
+
+::: {.im-confusion}
+**"A higher wage always means more work."** Not necessarily. A higher wage raises the price of leisure (substitution effect: work more) but also raises income at any given hours (income effect: consume more leisure, work less). In this model with log utility and no non-labor income the two effects cancel exactly — the wage slider moves consumption but not hours. Empirically, backward-bending labor supply curves are exactly this income effect winning at high wages.
+:::
+
+::: {.im-confusion}
+**"Extra non-labor income doesn't change how much you work — it's just extra money."** It does change it, and in one direction only. A transfer or windfall shifts the budget line up *without changing its slope*, so there is no substitution effect at all — only an income effect, and leisure is a normal good. The model predicts hours worked fall. This is why lottery winners reduce hours and why the design of transfer programs worries about labor-supply responses.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+The government mails every household a lump-sum check (non-labor income rises; the wage is unchanged). According to the model, hours worked...
+
+<details><summary>a) Rise — households are richer, so they can afford to work more</summary>
+No — working is not something you "afford"; leisure is. Richer households buy more leisure, so hours worked fall.
+</details>
+<details><summary>b) Fall — a pure income effect with no substitution effect</summary>
+**Correct**. The budget line shifts up in parallel: no relative price changed, so there is no substitution effect. Leisure is a normal good, so `l*` rises and `L* = T − l*` falls.
+</details>
+<details><summary>c) Are unchanged — income and substitution effects cancel</summary>
+No — that cancellation applies to a *wage* change (under log utility with π = 0), where both effects are present. A lump-sum transfer has only an income effect, so hours must fall.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Using the simulator above, set **w = 20, π = 40, θ = 1.0**. How many hours of leisure does the optimal point show, and what is consumption `c*`?
+
+<details><summary>Reveal answer</summary>
+`l* = (θ/(1+θ))·(T + π/w) = (1/2)·(24 + 40/20) = (1/2)·26 = 13` hours of leisure, so labor is `L* = 24 − 13 = 11` hours and consumption is `c* = 20·11 + 40 = 260`. The label should read **l* = 13.0 h, L* = 11.0 h, c* = 260.0**.
+</details>
+</div>
+
+{{< include ../_includes/generated/labor_leisure_model-related.md >}}

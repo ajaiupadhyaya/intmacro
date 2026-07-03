@@ -1,0 +1,31 @@
+---
+title: "Foundations & Measurement — Track Map"
+---
+
+The toolkit the rest of the course assumes: the mathematics of growth, and how
+raw economic activity becomes the numbers we analyze. Click a node to jump
+there.
+
+```{mermaid}
+graph LR
+  PR[Mathematical Preliminaries] --> MG[Measuring GDP]
+  MG --> RN[Real vs Nominal GDP]
+  RN --> DF[Deflators & Price Indices]
+  RN --> CW[Real GDP with Changing Prices]
+  CW --> XC[Comparing GDP Across Countries]
+  click PR "../content/Preliminaries.html"
+  click MG "../content/measuring_gdp.html"
+  click RN "../content/realvsnom.html"
+  click DF "../content/cash_money.html"
+  click CW "../content/two_goods_twoperiods.html"
+  click XC "../content/realgdpacross.html"
+```
+
+## Suggested path
+
+1. [Mathematical Preliminaries](../content/Preliminaries.ipynb) — growth rates, compounding, and the log approximation used throughout.
+2. [Measuring GDP: The Expenditure Approach](../content/measuring_gdp.ipynb) — output as the sum of consumption, investment, government, and net exports.
+3. [Real vs. Nominal GDP Over Time](../content/realvsnom.ipynb) — separating genuine output changes from price changes.
+4. [Deflators and Price Indices](../content/cash_money.ipynb) — how a price index is built and why we deflate.
+5. [Real GDP with Changing Prices](../content/two_goods_twoperiods.ipynb) — base-year versus chain-weighted measures of real output.
+6. [Comparing GDP Across Countries](../content/realgdpacross.ipynb) — purchasing-power-parity adjustments for cross-country comparison.

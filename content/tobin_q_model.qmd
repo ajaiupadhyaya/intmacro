@@ -1,0 +1,171 @@
+---
+title: "Investment and Tobin's q"
+subtitle: "A firm buys another machine only when the value it adds beats the cost of owning it — q above one is the signal to invest"
+---
+
+{{< include ../_includes/generated/tobin_q_model-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — Tobin's q compresses the whole investment decision into one ratio: the value of an extra unit of capital over its cost. In the simple marginal version, $q = MPK/(r+\delta)$. When $q > 1$ the machine earns more than it costs to own, so the firm invests; when $q < 1$ it lets capital run down; at $q = 1$ the capital stock is exactly where the firm wants it.
+:::
+
+## You'll be able to
+
+- Compute marginal q from the marginal product of capital and the user cost $r + \delta$, and read off the invest / don't-invest signal.
+- Explain why a higher interest rate or faster depreciation depresses investment, while higher productivity stimulates it.
+- Distinguish marginal q (one more unit of capital) from average q (the whole firm's market value over replacement cost).
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — marginal q and the firm's investment response update live
+:::
+
+```{ojs}
+//| echo: false
+viewof A     = Inputs.range([0.5, 3.0], {value: 1.0, step: 0.1, label: "TFP A"})
+viewof alpha = Inputs.range([0.10, 0.80], {value: 0.33, step: 0.01, label: "capital share α"})
+viewof K     = Inputs.range([1, 200], {value: 50, step: 1, label: "current capital K"})
+viewof L     = Inputs.range([10, 1000], {value: 100, step: 10, label: "labor L (held fixed)"})
+viewof r     = Inputs.range([0.00, 0.15], {value: 0.04, step: 0.005, label: "real interest rate r"})
+viewof delta = Inputs.range([0.00, 0.15], {value: 0.06, step: 0.005, label: "depreciation δ"})
+viewof phi   = Inputs.range([0, 50], {value: 10, step: 1, label: "investment sensitivity φ"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+userCost = r + delta
+mpk = alpha * A * Math.pow(K, alpha - 1) * Math.pow(L, 1 - alpha)
+q = userCost > 1e-9 ? mpk / userCost : (mpk > 0 ? Infinity : 0)
+Kstar = userCost > 1e-9
+  ? Math.pow(alpha * A * Math.pow(L, 1 - alpha) / userCost, 1 / (1 - alpha))
+  : NaN
+netInvestment = Number.isFinite(q) ? phi * Math.max(0, q - 1) : NaN
+grossInvestment = Number.isFinite(netInvestment) ? netInvestment + delta * K : NaN
+
+responseCurve = {
+  const qMax = Number.isFinite(q) ? Math.max(2.0, q * 1.2) : 2.0;
+  const pts = [];
+  const N = 100;
+  for (let i = 0; i < N; i++) {
+    const qv = (qMax * i) / (N - 1);
+    pts.push({q: qv, I: phi * Math.max(0, qv - 1)});
+  }
+  return pts;
+}
+
+signal = !Number.isFinite(q)
+  ? "q undefined (user cost is zero)"
+  : Math.abs(q - 1) < 0.005
+    ? `indifferent: q ≈ 1, K ≈ K* = ${Kstar.toFixed(1)}`
+    : q > 1
+      ? `invest: q = ${q.toFixed(2)} > 1, K < K* = ${Kstar.toFixed(1)}`
+      : `no net investment: q = ${q.toFixed(2)} < 1, K > K* = ${Kstar.toFixed(1)}`
+
+Plot.plot({
+  marginLeft: 55,
+  x: {label: "marginal q = MPK / (r + δ)"},
+  y: {label: "net investment Iₙ = φ · max(0, q − 1)", grid: true},
+  marks: [
+    Plot.ruleY([0], {stroke: "currentColor", strokeOpacity: 0.4}),
+    Plot.ruleX([1], {stroke: "var(--im-sim)", strokeDasharray: "4 4", strokeWidth: 1.5}),
+    Plot.text([{q: 1, I: phi > 0 ? phi * Math.max(1.0, (Number.isFinite(q) ? Math.max(2.0, q * 1.2) : 2.0) - 1) * 0.9 : 1}],
+      {x: "q", y: "I", text: () => "q = 1 threshold", fill: "var(--im-sim)", dx: 6, textAnchor: "start"}),
+    Plot.line(responseCurve, {x: "q", y: "I", stroke: "var(--im-accent)", strokeWidth: 2}),
+    ...(Number.isFinite(q) ? [
+      Plot.dot([{q, I: netInvestment}], {x: "q", y: "I", fill: "var(--im-accent)", r: 5}),
+      Plot.text([{q, I: netInvestment}],
+        {x: "q", y: "I", text: () => `current q = ${q.toFixed(2)}`, dy: -12, fill: "var(--im-accent)"})
+    ] : [])
+  ],
+  caption: `MPK = ${mpk.toFixed(4)} · user cost r + δ = ${userCost.toFixed(3)} · ${signal} · net I = ${Number.isFinite(netInvestment) ? netInvestment.toFixed(2) : "—"} · gross I = Iₙ + δK = ${Number.isFinite(grossInvestment) ? grossInvestment.toFixed(2) : "—"}`
+})
+```
+
+The dashed teal line marks **q = 1**, the boundary between investing and standing pat. The dot is the firm's current position given your sliders.
+:::
+
+## Core intuition
+
+Think about a firm deciding whether to buy one more machine. The machine produces extra output — the *marginal product of capital* (MPK). But owning it isn't free: the firm ties up funds that could have earned the real interest rate $r$, and the machine wears out at the [depreciation]{.im-glossary-term} rate $\delta$. The sum $r + \delta$ is the **user cost of capital** — what one unit of capital costs to hold for one period.
+
+Tobin's insight was to take the ratio. Marginal q is the value of one more unit of capital over its cost, and in this simplified version that is just $MPK/(r+\delta)$. A ratio above one says the machine pays for itself with room to spare, so buy it; below one, don't.
+
+Because capital has [diminishing returns]{.im-glossary-term}, each machine the firm adds pushes MPK — and therefore q — down. Investment is self-limiting: the firm keeps buying until q falls to exactly 1, which pins down its desired capital stock $K^*$. Anything that shifts MPK up, such as higher [total factor productivity]{.im-glossary-term} or a larger workforce, raises q at the current capital stock and triggers a burst of investment; anything that raises the user cost — tighter credit, faster obsolescence — pushes q down and chokes investment off. This is the core channel through which interest rates move business investment.
+
+Strictly speaking, this MPK-over-user-cost ratio is a one-period shortcut. The full theory defines marginal q as the *present value of all future marginal products* an extra unit of capital will generate, relative to its purchase and installation cost; and the *average* q you can measure in data compares a firm's total stock-market value to the replacement cost of its entire capital stock. The investment logic — invest when q exceeds one — is the same in every version.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full derivation)</summary>
+
+Production is Cobb–Douglas with labor held fixed:
+$$Y = A K^{\alpha} L^{1-\alpha}.$$
+The marginal product of capital is
+$$MPK = \frac{\partial Y}{\partial K} = \alpha A K^{\alpha-1} L^{1-\alpha},$$
+which is positive but declining in $K$ since $\alpha < 1$.
+
+Holding one unit of capital for one period costs the foregone real return plus wear and tear:
+$$\text{user cost} = r + \delta.$$
+
+Simplified marginal q is the benefit–cost ratio:
+$$q = \frac{MPK}{r + \delta} = \frac{\alpha A K^{\alpha-1} L^{1-\alpha}}{r+\delta}.$$
+
+The firm's desired capital stock $K^*$ is where the benefit of the last unit exactly equals its cost — the first-order condition
+$$MPK = r + \delta \quad\Longleftrightarrow\quad q = 1.$$
+Solving $\alpha A (K^*)^{\alpha-1} L^{1-\alpha} = r+\delta$ for $K^*$:
+$$K^* = \left(\frac{\alpha A L^{1-\alpha}}{r+\delta}\right)^{\frac{1}{1-\alpha}}.$$
+If $K < K^*$ then $q > 1$ and the firm invests; if $K > K^*$ then $q < 1$ and it lets capital run down.
+
+The simulator closes the model with a simple linear response of net investment to the q-gap:
+$$I_{net} = \varphi \cdot \max(0,\, q - 1),$$
+and gross investment adds replacement of worn-out capital:
+$$I_{gross} = I_{net} + \delta K.$$
+
+The precise dynamic definition of marginal q replaces current MPK with the present value of all future marginal products per unit of acquisition-plus-installation cost; the static ratio above is the one-period simplification used throughout this chapter.
+
+</details>
+:::
+
+## What the simulator showed
+
+Raising **r** or **δ** raises the user cost, so q falls and the dot slides down the response line toward — and past — the q = 1 threshold: dearer capital, less investment. Raising **A** or **L** raises MPK at the current capital stock, so q jumps above 1 and net investment turns on. Raising **K** itself drags q down through diminishing returns — a firm that has already accumulated a lot of capital has less reason to add more, which is exactly why investment stops at $K^*$. Finally, **φ** doesn't move q at all; it only steepens the response line, controlling how aggressively a given q-gap translates into investment spending.
+
+## Common confusions
+
+::: {.im-confusion}
+**"q is the firm's stock price over its book value, and that's what the model is about."** That is *average* q — total market value over total replacement cost — which is what we can measure in data. The theory's investment decision runs on *marginal* q: the value of one *additional* unit of capital relative to its cost. The two coincide only under special conditions (constant returns and competitive markets, the Hayashi conditions). A firm can have average q above 1 yet no profitable marginal project.
+:::
+
+::: {.im-confusion}
+**"If q drops below 1 the firm should sell off all its capital immediately."** No — q < 1 says the *marginal* unit isn't worth its cost, so the firm stops *net* investment and lets depreciation shrink the stock gradually toward $K^*$. Installed capital is costly to resell and the inframarginal units still have MPK above the user cost. That is why the simulator's response function is flat at zero below q = 1 rather than plunging negative.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+The central bank raises the real interest rate $r$, with technology and the capital stock unchanged. What happens in the q framework?
+
+<details><summary>a) MPK falls, so q falls</summary>
+No — MPK depends on $A$, $K$, $L$, none of which changed. It's the *cost* side that moves, not the benefit side.
+</details>
+<details><summary>b) The user cost r + δ rises, so q falls and the desired capital stock K* falls</summary>
+**Correct**. A higher $r$ raises the denominator of $q = MPK/(r+\delta)$, pushing q toward or below 1 and shrinking $K^* = (\alpha A L^{1-\alpha}/(r+\delta))^{1/(1-\alpha)}$. Investment falls — the interest-rate channel of monetary policy on investment.
+</details>
+<details><summary>c) Nothing — interest rates matter for savers, not for firms</summary>
+No — even a firm investing its own funds forgoes interest it could have earned, so $r$ is an opportunity cost of holding capital.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Set **A = 1.0, α = 0.50, K = 100, L = 100, r = 4%, δ = 6%, φ = 10**. What marginal q does the simulator report, and how much net investment does the firm undertake?
+
+<details><summary>Reveal answer</summary>
+With $\alpha = 0.5$ and $K = L = 100$, $MPK = 0.5 \cdot 100^{-0.5} \cdot 100^{0.5} = 0.5$. The user cost is $r + \delta = 0.10$, so $q = 0.5/0.10 = \mathbf{5.00}$, and net investment is $\varphi(q-1) = 10 \times 4 = \mathbf{40}$. The firm is far below its desired capital stock ($K^* = (0.5 \cdot 10 / 0.1)^2 = 2500$), so the invest signal is strong.
+</details>
+</div>
+
+{{< include ../_includes/generated/tobin_q_model-related.md >}}

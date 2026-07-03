@@ -56,17 +56,15 @@ appear as hover definitions throughout and are collected in the
 *Forward-looking decisions about consumption, labor, and investment.*
 
 - [The Two-Period Consumption Model](content/two_period_consumption.qmd) — splitting lifetime resources between today and tomorrow.
-- [The Two-Period Model: Extensions](content/two_period_model.ipynb) — a more general treatment of intertemporal choice.
-- [The Labor–Leisure Choice](content/labor_leisure_model.ipynb) — trading consumption against time given the real wage.
-- [Investment and Tobin's q](content/tobin_q_model.ipynb) — when the value of capital justifies new investment.
+- [The Labor–Leisure Choice](content/labor_leisure_model.qmd) — trading consumption against time given the real wage.
+- [Investment and Tobin's q](content/tobin_q_model.qmd) — when the value of capital justifies new investment.
 
 ## Business Cycles & Policy Dynamics
 
 *Short-run fluctuations, monetary policy, and the models that explain them.*
 
-- [The IS Curve](content/is_curve_model.ipynb) — interest rates, demand, and goods-market equilibrium.
-- [Dynamic AD–AS with a Taylor Rule](content/adassim.qmd) — inflation and output dynamics under a policy rule.
-- [AD–AS Shocks and Adjustment](content/dynamicshock.ipynb) — how the economy responds to demand and supply shocks.
+- [The IS Curve](content/is_curve_model.qmd) — interest rates, demand, and goods-market equilibrium.
+- [Dynamic AD–AS with a Taylor Rule](content/adassim.qmd) — inflation and output dynamics under a policy rule, and how the economy absorbs demand and supply shocks.
 - [AD–AS: Exercises & Case Studies](content/adas_model.ipynb) — applied problems using the AD–AS framework.
 - [The Lucas Island Model](content/lucas_island_model.ipynb) — imperfect information and the source of real fluctuations.
 - [Equilibrium Business Cycles with Persistence](content/equilibrium_model.ipynb) — propagation that stretches shocks over time.

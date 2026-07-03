@@ -108,6 +108,97 @@ At the default φπ = 1.5 the three series (inflation, output gap, interest rate
 
 When you lower φπ below 1 — try φπ = 0.5 — the output gap and inflation paths fail to converge: each period's correction is too small to offset the gap, and the oscillations grow or persist rather than decay. This is the Taylor principle in action.
 
+## Shocks and adjustment
+
+So far the economy was displaced from equilibrium only because expectations started away from target (πᵉ ≠ π\*). Real economies are also hit by **shocks** — sudden disturbances to demand or supply. The same three equations handle them: add a disturbance term ε^AD to the IS curve and ε^AS to the Phillips curve, and the model traces out an *impulse response* — the path of output and inflation back to the steady state after the shock hits.
+
+The standard catalogue:
+
+- **Demand shocks (ε^AD).** A drop in consumer confidence or government spending (ε^AD < 0) shifts AD left: output falls, and the negative output gap pulls inflation down with it. Output and inflation move in the **same direction**, so the Taylor rule faces no dilemma — cutting rates supports output *and* pushes inflation back toward target.
+- **Supply shocks (ε^AS).** A rise in production costs — the classic case is an oil-price spike (ε^AS > 0) — shifts AS up: inflation rises while the policy response depresses output. Output and inflation move in **opposite directions**; this is the "stagflationary" case, and it confronts the central bank with a genuine dilemma: fighting inflation requires raising the rate, which deepens the output loss, while supporting output would let inflation run further above target. A favorable supply shock (ε^AS < 0, e.g. falling oil prices) is the mirror image: inflation falls and output rises.
+- **Expectations shocks.** A sudden jump in initial inflation (or expected inflation) is exactly the configuration the first simulator starts from — πᵉ = 3 above π* = 2 — so you have already seen its impulse response above.
+
+Shocks also differ in **persistence**. A one-off shock hits for a single period and then vanishes; a persistent shock decays gradually (here, geometrically at rate ρ). The more persistent the shock, the longer the Taylor rule must keep the interest rate away from its natural level, and the longer output and inflation stay displaced.
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Pick a shock — the impulse response of output and inflation updates live (it also responds to the φπ and T sliders above)
+:::
+
+```{ojs}
+//| echo: false
+viewof shock_kind = Inputs.radio(["demand", "supply"], {value: "demand", label: "shock type"})
+viewof shock_size = Inputs.range([-8, 8], {value: -5, step: 0.5, label: "shock size ε"})
+viewof shock_rho  = Inputs.range([0, 0.9], {value: 0, step: 0.05, label: "persistence ρ"})
+
+shockSim = {
+  // Local calibration for the shock experiment: expectations anchored at
+  // target (so the shock is the ONLY disturbance) and flatter IS/Phillips
+  // slopes so |λ·α·φπ| < 1 across the whole φπ slider range above.
+  const YbarS = 100, rbarS = 2, piStarS = 2, piES = piStarS;
+  const alphaS = 2, lambdaS = 0.15;
+  const t0 = 2; // shock arrives in period 2
+  const piS = [], YS = [], rS = [];
+  piS[0] = piES;
+  rS[0]  = rbarS + phi_pi * (piS[0] - piStarS);
+  YS[0]  = YbarS - alphaS * (rS[0] - rbarS);
+  for (let t = 1; t < T; t++) {
+    const eps = t >= t0 ? shock_size * Math.pow(shock_rho, t - t0) : 0;
+    const eAD = shock_kind === "demand" ? eps : 0;
+    const eAS = shock_kind === "supply" ? eps : 0;
+    rS[t]  = rbarS + phi_pi * (piS[t-1] - piStarS);
+    YS[t]  = YbarS - alphaS * (rS[t] - rbarS) + eAD;
+    piS[t] = piES + lambdaS * (YS[t] - YbarS) + eAS;
+  }
+  const rows = [];
+  for (let t = 0; t < T; t++) {
+    rows.push({t, value: YS[t] - YbarS,   series: "output gap (Y − Ȳ)"});
+    rows.push({t, value: piS[t] - piStarS, series: "inflation gap (π − π*)"});
+  }
+  return rows;
+}
+
+Plot.plot({
+  marginLeft: 50, height: 320,
+  color: {
+    legend: true,
+    domain: ["output gap (Y − Ȳ)", "inflation gap (π − π*)"],
+    range: ["var(--im-accent)", "var(--im-warn)"]
+  },
+  x: {label: "time (periods) →"},
+  y: {grid: true, label: "deviation from steady state"},
+  marks: [
+    Plot.ruleY([0], {stroke: "var(--im-sim)", strokeDasharray: "4 4"}),
+    Plot.ruleX([2], {stroke: "var(--im-fg-muted)", strokeDasharray: "2 4"}),
+    Plot.line(shockSim, {x: "t", y: "value", stroke: "series", strokeWidth: 2})
+  ]
+})
+```
+
+The dashed teal line is the steady state (zero gaps); the vertical dashed line marks the shock's arrival in period 2. Switch to a **supply** shock with ε = +5 — output and inflation now move in opposite directions.
+:::
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (shock-augmented model)</summary>
+
+The IS and Phillips curves gain disturbance terms; the Taylor rule is unchanged:
+
+$$Y_t = \bar{Y} - \alpha\,(r_t - \bar{r}) + \varepsilon^{AD}_t$$
+$$\pi_t = \pi^e + \lambda\,(Y_t - \bar{Y}) + \varepsilon^{AS}_t$$
+$$r_t = \bar{r} + \varphi_\pi\,(\pi_{t-1} - \pi^*)$$
+
+The shock arrives in period $t_0 = 2$ with size $\varepsilon$ and decays geometrically at rate $\rho$:
+$$\varepsilon_t = \varepsilon\,\rho^{\,t - t_0} \quad \text{for } t \ge t_0, \qquad \varepsilon_t = 0 \text{ before.}$$
+$\rho = 0$ is a one-off shock; $\rho$ close to 1 is a persistent one.
+
+**Local calibration.** This simulator anchors expectations at target ($\pi^e = \pi^* = 2$) so the impulse response isolates the shock, and uses flatter slopes $\alpha = 2$, $\lambda = 0.15$. The feedback coefficient is then $\lambda\alpha\,\varphi_\pi = 0.3\,\varphi_\pi < 1$ for every value of $\varphi_\pi$ on the slider, so the responses always decay back to steady state — what varies with $\varphi_\pi$ is *how* they decay (monotone vs oscillatory, fast vs slow).
+
+**Reading the responses.** A demand shock moves output on impact and inflation with it ($\lambda \varepsilon^{AD}$ in the same direction). A supply shock moves inflation on impact while output is untouched *in the impact period*; the output loss arrives one period later, when the Taylor rule reacts to the higher inflation — the policy response, not the shock itself, is what depresses output.
+
+</details>
+:::
+
 ## Common confusions
 
 ::: {.im-confusion}
@@ -116,6 +207,10 @@ When you lower φπ below 1 — try φπ = 0.5 — the output gap and inflation 
 
 ::: {.im-confusion}
 **"Any positive φπ stabilizes the economy."** No — the Taylor principle requires φπ > 1. If the central bank raises rates by *less* than one percentage point for each percentage point of excess inflation (φπ < 1), the real rate response is too weak: inflation gaps become self-reinforcing rather than self-correcting, and the economy oscillates or diverges.
+:::
+
+::: {.im-confusion}
+**"Demand and supply shocks look the same in the data."** No — the co-movement of output and inflation identifies them. Under a demand shock the two move in the *same* direction (a slump lowers both); under a supply shock they move in *opposite* directions (an oil-price spike raises inflation while output falls — stagflation). This is also why the policy problem differs: a demand shock lets the Taylor rule fight both gaps with one instrument, while a supply shock forces a trade-off between them.
 :::
 
 ## Self-check

@@ -44,11 +44,6 @@ labor_leisure_model:
   title: "The Labor-Leisure Choice"
   tldr: "How agents trade consumption against leisure given the real wage."
   prereqs: [two_period_consumption]
-two_period_model:
-  track: intertemporal
-  title: "The Two-Period Model (General)"
-  tldr: "A general treatment of the two-period intertemporal optimization problem."
-  prereqs: [two_period_consumption]
 tobin_q_model:
   track: intertemporal
   title: "Investment and Tobin's q"
@@ -64,8 +59,3 @@ adassim:
   title: "Dynamic AD-AS with a Taylor Rule"
   tldr: "IS + Phillips curve + Taylor rule generate output and inflation dynamics; the Taylor principle (φπ>1) is what makes them converge."
   prereqs: [is_curve_model]
-dynamicshock:
-  track: business_cycles
-  title: "AD-AS Shocks & Adjustment"
-  tldr: "How the dynamic AD-AS economy responds to one-off demand and supply shocks."
-  prereqs: [adassim]

@@ -1,0 +1,21 @@
+---
+title: "Intertemporal Choice & Labor — Track Map"
+---
+
+Forward-looking decisions about consumption, work, and investment. The
+two-period model is the shared foundation; click a node to jump there.
+
+```{mermaid}
+graph LR
+  TP[Two-Period Consumption] --> LL[Labor-Leisure Choice]
+  TP --> TQ[Investment & Tobin's q]
+  click TP "../content/two_period_consumption.html"
+  click LL "../content/labor_leisure_model.html"
+  click TQ "../content/tobin_q_model.html"
+```
+
+## Suggested path
+
+1. [The Two-Period Consumption Model](../content/two_period_consumption.qmd) — splitting lifetime resources between today and tomorrow; the Euler equation and the role of the interest rate.
+2. [The Labor–Leisure Choice](../content/labor_leisure_model.qmd) — trading consumption against time given the real wage; income vs. substitution effects.
+3. [Investment and Tobin's q](../content/tobin_q_model.qmd) — when the market value of capital justifies new investment.

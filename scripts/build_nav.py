@@ -70,7 +70,12 @@ def main() -> int:
 
     gloss = yaml.safe_load((inc / "glossary.yml").read_text()) or []
     tip = {e["term"]: {"short": e["short"], "aka": e.get("aka", [])} for e in gloss}
-    (out / "glossary-tooltips.json").write_text(json.dumps(tip, indent=2))
+    tip_json = json.dumps(tip, indent=2)
+    (out / "glossary-tooltips.json").write_text(tip_json)
+    # Also emit a copy at the project root: _quarto.yml lists it under
+    # project.resources so it ships at the site root, where the tooltip JS
+    # (theme/glossary-tooltips.js) fetches it.
+    (inc.parent / "glossary-tooltips.json").write_text(tip_json)
     print(f"build_nav: {len(data)} chapters, {len(gloss)} glossary terms -> {out}")
     return 0
 

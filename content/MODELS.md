@@ -71,18 +71,18 @@ Renames are deferred to Phase 4 so that we don't break the Phase 1 TOC + early P
 | Model ID | Canonical | Title | Status | Merge sources | Notes |
 |---|---|---|---|---|---|
 | `two_period_consumption` | `content/2_period_consump.ipynb` | ⏳ Trading Off Today for Tomorrow: Intertemporal Choice | canonical | `content/2_period_consump_backup.ipynb` (apparent duplicate — diff check needed), `content/two_period_model.ipynb` (cleaner equation walkthrough) | High overlap cluster. Backup file is almost certainly an exact duplicate of canonical; if so, drop. |
-| — | `content/two_period_model.ipynb` | ⏳ The Two-Period Consumption Model | merge-required | → `2_period_consump.ipynb` | Crisp framing worth folding in; then archive. |
+| — | `_archive/two_period_model_v1.ipynb` | ⏳ The Two-Period Consumption Model | superseded | — | ✅ 2026-07-02: Euler interpretation + geometric reading merged into `two_period_consumption.qmd`; archived with provenance. |
 | — | `content/2_period_consump_backup.ipynb` | (apparent dup) | superseded | → diff against canonical | If identical, delete in Phase 2; else merge unique cells. |
-| `labor_leisure` | `content/labor_leisure_model.ipynb` | 💼 The Labor-Leisure Choice Model | canonical | — | — |
-| `tobin_q` | `content/tobin_q_model.ipynb` | 🏗️ Investment & Tobin's q | canonical | `_archive/mpk_tobin.ipynb` (MPK vs cost-of-capital framing) | — |
+| `labor_leisure` | `content/labor_leisure_model.qmd` | The Labor-Leisure Choice Model | canonical | — | ✅ 2026-07-02: converted to v2 OJS chapter; v1 notebook archived. |
+| `tobin_q` | `content/tobin_q_model.qmd` | Investment & Tobin's q | canonical | — | ✅ 2026-07-02: converted to v2 OJS chapter; `_archive/mpk_tobin.ipynb` framing merged; v1 notebook archived. |
 
 ## Part 4 — Business Cycles & Policy Dynamics
 
 | Model ID | Canonical | Title | Status | Merge sources | Notes |
 |---|---|---|---|---|---|
-| `is_curve` | `content/is_curve_model.ipynb` | 📉 The IS Curve | canonical | `_archive/iscurve.ipynb` (intuition framing) | — |
-| `adas_sim` | `content/adassim.ipynb` | 🔄 Dynamic AD-AS with Monetary Policy | canonical | `content/dynamicshock.ipynb` (shock typology) | Primary AD-AS simulator. |
-| `adas_shocks` | `content/dynamicshock.ipynb` | 💥 AD-AS Shocks and Dynamic Adjustment | merge-required | → `adassim.ipynb` | Shock catalogue belongs alongside the simulator. |
+| `is_curve` | `content/is_curve_model.qmd` | The IS Curve | canonical | — | ✅ 2026-07-02: converted to v2 OJS chapter; `_archive/iscurve.ipynb` intuition merged; v1 notebook archived. |
+| `adas_sim` | `content/adassim.qmd` | Dynamic AD-AS with Monetary Policy | canonical | — | Primary AD-AS simulator. ✅ 2026-07-02: shock typology + impulse-response sim merged in from `dynamicshock`. |
+| `adas_shocks` | `_archive/dynamicshock_v1.ipynb` | AD-AS Shocks and Dynamic Adjustment | superseded | — | ✅ 2026-07-02: merged into `adassim.qmd`; archived with provenance. |
 | `adas_exercises` | `content/adas_model.ipynb` | 🎯 Advanced AD-AS Exercises and Case Studies | rename-required | — | Capstone exercises for AD-AS block. |
 | `lucas_island` | `content/lucas_island_model.ipynb` | 💥 Equilibrium Business Cycles: Lucas Model | canonical | — | — |
 | `eq_business_cycles` | `content/equilibrium_model.ipynb` | 🔁 Equilibrium Business Cycles with Persistence | canonical | — | Builds on Lucas — pair adjacent in TOC. |
@@ -95,9 +95,9 @@ Renames are deferred to Phase 4 so that we don't break the Phase 1 TOC + early P
 | `_archive/intro.ipynb` | empty stub — keep-as-historical, do not merge |
 | `_archive/cd_crsrevised.ipynb` | merge-required → `cobb_d_prod` |
 | `_archive/gabd.ipynb` | merge-required → `growth_acc` |
-| `_archive/iscurve.ipynb` | merge-required → `is_curve_model` |
+| `_archive/iscurve.ipynb` | ✅ merged into `is_curve_model.qmd` 2026-07-02 |
 | `_archive/mgcwrgdp.ipynb` | merge-required → `two_goods_twoperiods` (and cross-ref `realgdpacross`) |
-| `_archive/mpk_tobin.ipynb` | merge-required → `tobin_q_model` |
+| `_archive/mpk_tobin.ipynb` | ✅ merged into `tobin_q_model.qmd` 2026-07-02 |
 | `_archive/qGDP.ipynb` | merge-required → `realvsnom` |
 | `_archive/real_gdp_growth.ipynb` | merge-required → `two_goods_twoperiods` |
 | `_archive/romer_model_endogen.ipynb` | merge-required → `romer_model` |

@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: _site
+  resources:
+    - glossary-tooltips.json
   render:
     - "index.qmd"
     - "content/*.qmd"
@@ -29,8 +31,14 @@ website:
         href: _glossary.qmd
       - text: "Tracks"
         menu:
+          - text: "Foundations & Measurement"
+            href: tracks/measurement.qmd
           - text: "Growth & Long-Run Dynamics"
             href: tracks/growth.qmd
+          - text: "Intertemporal Choice & Labor"
+            href: tracks/intertemporal.qmd
+          - text: "Business Cycles & Policy Dynamics"
+            href: tracks/business_cycles.qmd
   sidebar:
     style: floating
     collapse-level: 2
@@ -64,14 +72,12 @@ website:
       - section: "Intertemporal Choice & Labor"
         contents:
           - content/two_period_consumption.qmd
-          - content/two_period_model.ipynb
-          - content/labor_leisure_model.ipynb
-          - content/tobin_q_model.ipynb
+          - content/labor_leisure_model.qmd
+          - content/tobin_q_model.qmd
       - section: "Business Cycles & Policy Dynamics"
         contents:
-          - content/is_curve_model.ipynb
+          - content/is_curve_model.qmd
           - content/adassim.qmd
-          - content/dynamicshock.ipynb
           - content/adas_model.ipynb
           - content/lucas_island_model.ipynb
           - content/equilibrium_model.ipynb

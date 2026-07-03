@@ -1,0 +1,171 @@
+---
+title: "The IS Curve: Equilibrium in the Goods Market"
+subtitle: "Why higher interest rates mean lower output — and why a change in r moves you along the curve while a change in spending shifts it"
+---
+
+{{< include ../_includes/generated/is_curve_model-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — The IS curve traces out every combination of the real interest rate $r$ and output $Y$ at which the goods market clears (planned spending = output). It slopes down because a higher $r$ chokes off investment, and the multiplier amplifies that drop. A change in $r$ *moves along* the curve; a change in autonomous spending ($G$, $T$, consumer or investor confidence) *shifts* the whole curve.
+:::
+
+## You'll be able to
+
+- Derive the IS curve $Y = \frac{1}{1-c_1}(A_0 - i_1 r)$ from the consumption and investment functions, and read off the multiplier.
+- Distinguish a *movement along* the IS curve (a change in $r$) from a *shift* of the curve (a change in $c_0$, $i_0$, $G$, or $T$).
+- Predict how the MPC and the interest sensitivity of investment change the curve's slope, and by how much a fiscal change moves equilibrium output.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — the IS curve redraws live; pick an overlay to compare a shifted curve against the baseline
+:::
+
+```{ojs}
+//| echo: false
+viewof c0 = Inputs.range([0, 50], {value: 20, step: 1, label: "autonomous consumption c₀"})
+viewof c1 = Inputs.range([0.1, 0.95], {value: 0.7, step: 0.05, label: "MPC c₁"})
+viewof i0 = Inputs.range([0, 50], {value: 25, step: 1, label: "autonomous investment i₀"})
+viewof i1 = Inputs.range([10, 200], {value: 50, step: 5, label: "interest sensitivity i₁"})
+viewof G = Inputs.range([0, 100], {value: 50, step: 5, label: "government purchases G"})
+viewof T = Inputs.range([0, 100], {value: 30, step: 5, label: "taxes T"})
+viewof overlay = Inputs.select(["None", "Higher G (+20)", "Lower T (-15)", "Investment shock (i0 -15)"], {value: "None", label: "overlay shift"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+mpc = Math.min(Math.max(c1, 0.01), 0.99)          // clip MPC to (0, 1)
+A0 = c0 - mpc * T + i0 + G                        // autonomous expenditure
+multiplier = 1 / (1 - mpc)                        // Keynesian multiplier
+
+isData = {
+  const pts = [];
+  for (let j = 0; j < 200; j++) {
+    const r = 0.25 * j / 199;                     // r from 0% to 25%
+    pts.push({Y: multiplier * (A0 - i1 * r), r: r * 100});
+  }
+  return pts;
+}
+
+A0shift = overlay === "Higher G (+20)" ? A0 + 20
+  : overlay === "Lower T (-15)" ? A0 + mpc * 15
+  : overlay === "Investment shock (i0 -15)" ? A0 - 15
+  : null
+
+shiftData = {
+  if (A0shift === null) return null;
+  const pts = [];
+  for (let j = 0; j < 200; j++) {
+    const r = 0.25 * j / 199;
+    pts.push({Y: multiplier * (A0shift - i1 * r), r: r * 100});
+  }
+  return pts;
+}
+
+Yex = multiplier * (A0 - i1 * 0.05)               // marked point at r = 5%
+YexShift = A0shift === null ? null : multiplier * (A0shift - i1 * 0.05)
+
+Plot.plot({
+  marginLeft: 50,
+  x: {label: "output Y →"},
+  y: {label: "real interest rate r (%)", grid: true},
+  marks: [
+    Plot.ruleY([5], {stroke: "var(--im-sim)", strokeDasharray: "2 4", strokeOpacity: 0.6}),
+    ...(shiftData ? [Plot.line(shiftData, {x: "Y", y: "r", stroke: "var(--im-sim)", strokeWidth: 2, strokeDasharray: "6 4"})] : []),
+    Plot.line(isData, {x: "Y", y: "r", stroke: "var(--im-accent)", strokeWidth: 2.5}),
+    Plot.dot([{Y: Yex, r: 5}], {x: "Y", y: "r", fill: "var(--im-accent)"}),
+    Plot.text([{Y: Yex, r: 5}], {x: "Y", y: "r", text: () => `Y = ${Yex.toFixed(1)} at r = 5%`, dx: 8, dy: -10, textAnchor: "start", fill: "var(--im-accent)"}),
+    ...(YexShift !== null ? [
+      Plot.dot([{Y: YexShift, r: 5}], {x: "Y", y: "r", fill: "var(--im-sim)"}),
+      Plot.text([{Y: YexShift, r: 5}], {x: "Y", y: "r", text: () => `Y' = ${YexShift.toFixed(1)}`, dx: 8, dy: 12, textAnchor: "start", fill: "var(--im-sim)"})
+    ] : [])
+  ]
+})
+
+md`Autonomous expenditure **A₀ = ${A0.toFixed(1)}**, multiplier **1/(1 − c₁) = ${multiplier.toFixed(2)}**, so the IS curve is Y = ${multiplier.toFixed(2)} × (${A0.toFixed(1)} − ${i1} r). At r = 5%: **Y = ${Yex.toFixed(1)}**${YexShift !== null ? ` (shifted curve: Y′ = ${YexShift.toFixed(1)})` : ""}.`
+```
+
+The solid curve is the baseline IS curve; the dashed curve (when an overlay is selected) is the same economy after a fiscal change or an investment shock. The dotted horizontal line marks $r = 5\%$, where the labeled point reports equilibrium output.
+:::
+
+## Core intuition
+
+The IS curve is not a behavioral relationship like a demand curve — it is a *set of equilibria*. Pick any real interest rate $r$; the goods market then finds the unique output level at which planned spending equals production. Trace out that output level for every $r$ and you have the IS curve.
+
+Why does it slope down? A higher real interest rate raises the cost of borrowing, so fewer investment projects clear the profitability hurdle and planned investment falls. (In richer models a higher $r$ also tilts households toward saving — the flip side of [consumption smoothing]{.im-glossary-term} — so consumption falls too; here we keep only the investment channel.) Lower planned spending means firms are producing more than is being bought, so output falls. And it falls by *more* than the initial drop in investment: each dollar of lost income cuts consumption by the MPC, which cuts income again, and so on — the multiplier $\frac{1}{1-c_1}$.
+
+Two features of the curve follow directly:
+
+- **Slope.** A larger interest sensitivity $i_1$ or a larger MPC $c_1$ makes the curve *flatter*: the same change in $r$ produces a bigger swing in output.
+- **Position.** Anything that raises autonomous expenditure $A_0 = c_0 - c_1 T + i_0 + G$ — more government purchases, lower taxes, a burst of consumer or investor optimism — shifts the whole curve to the right by $\frac{\Delta A_0}{1-c_1}$, at *every* interest rate.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full derivation)</summary>
+
+In a closed economy, planned aggregate expenditure is
+$$AE = C + I + G.$$
+
+Consumption depends on disposable income and investment depends negatively on the real interest rate:
+$$C = c_0 + c_1 (Y - T), \qquad I = i_0 - i_1 r,$$
+with $0 < c_1 < 1$ the marginal propensity to consume and $i_1 > 0$ the interest sensitivity of investment. $G$ and $T$ are exogenous.
+
+Goods-market equilibrium requires output to equal planned expenditure, $Y = AE$:
+$$Y = [c_0 + c_1 (Y - T)] + [i_0 - i_1 r] + G.$$
+
+Collect the terms in $Y$:
+$$Y - c_1 Y = c_0 - c_1 T + i_0 + G - i_1 r$$
+$$Y (1 - c_1) = (c_0 - c_1 T + i_0 + G) - i_1 r.$$
+
+Define autonomous expenditure $A_0 = c_0 - c_1 T + i_0 + G$ (spending that depends on neither $Y$ nor $r$). Then
+$$Y = \frac{1}{1 - c_1}\,(A_0 - i_1 r).$$
+
+This is the IS curve: a negative relationship between $r$ and equilibrium $Y$. Its slope (with $r$ on the vertical axis) is $-\frac{1-c_1}{i_1}$, so a larger $c_1$ or $i_1$ flattens the curve; the term $1 - c_1$ is the marginal propensity to save. A change in $A_0$ shifts the curve horizontally by $\frac{\Delta A_0}{1 - c_1}$.
+
+</details>
+:::
+
+## What the simulator showed
+
+When you dragged **G** or **T**, the *entire* curve slid horizontally — a shift, because autonomous expenditure changed at every interest rate. Note the asymmetry the overlays reveal: raising $G$ by 20 shifts output at $r = 5\%$ by $20 \times \frac{1}{1-c_1}$, but cutting $T$ by 15 shifts it by only $15 \times \frac{c_1}{1-c_1}$ — tax cuts work through consumption, so a dollar of tax cut moves spending by only $c_1$ dollars before the multiplier takes over.
+
+When you raised the **MPC c₁** or the **interest sensitivity i₁**, the curve *rotated flatter* rather than sliding: both amplify how strongly output responds to any given change in $r$. And the marked point at $r = 5\%$ never required touching an interest-rate slider — moving along the curve is what the economy does when $r$ itself changes, which in later chapters is the central bank's job.
+
+## Common confusions
+
+::: {.im-confusion}
+**"The interest rate fell, so the IS curve shifts right."** No — $r$ is on the axis. A change in $r$ is a *movement along* the IS curve, not a shift of it. Only changes in things *not* on the axes — $c_0$, $i_0$, $G$, $T$ — shift the curve. This is exactly the "shift vs. movement along" discipline from supply-and-demand diagrams, and it is the single most common IS-curve error on exams.
+:::
+
+::: {.im-confusion}
+**"The IS curve shows the demand for goods falling as their price rises."** The IS curve is not a demand curve, and $r$ is not a price of goods. Every point on the curve is a full goods-market *equilibrium* — output already equals planned spending there. The curve answers: "if the real interest rate were $r$, what output would the goods market settle at?" Which point the economy actually occupies is determined elsewhere (by monetary policy or the money market), not by the IS curve alone.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+Which of the following shifts the IS curve to the right?
+
+<details><summary>a) A fall in the real interest rate</summary>
+No — $r$ is on the vertical axis, so a fall in $r$ is a movement *along* the curve to a higher-output point, not a shift.
+</details>
+<details><summary>b) An increase in government purchases G</summary>
+**Correct**. Higher $G$ raises autonomous expenditure $A_0$, so equilibrium output is higher at *every* interest rate — the whole curve moves right by $\Delta G/(1-c_1)$.
+</details>
+<details><summary>c) An increase in the MPC c₁</summary>
+Not a parallel shift — a higher $c_1$ raises the multiplier, which *rotates* the curve (flatter, and stretched away from the vertical axis). It changes the slope, not just the position.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Using the simulator above, set **c₀ = 20, c₁ = 0.75, i₀ = 25, i₁ = 50, G = 50, T = 40** (overlay: None). What output does the labeled point at $r = 5\%$ report?
+
+<details><summary>Reveal answer</summary>
+$A_0 = 20 - 0.75 \times 40 + 25 + 50 = 65$ and the multiplier is $1/(1-0.75) = 4$, so $Y = 4 \times (65 - 50 \times 0.05) = 4 \times 62.5 = \mathbf{250}$. The point should read **Y = 250.0 at r = 5%**.
+</details>
+</div>
+
+{{< include ../_includes/generated/is_curve_model-related.md >}}

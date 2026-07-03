@@ -1,0 +1,11 @@
+---
+title: "Redirecting…"
+format:
+  html:
+    include-in-header:
+      text: |
+        <meta http-equiv="refresh" content="0; url=two_period_consumption.html">
+        <link rel="canonical" href="two_period_consumption.html">
+---
+
+This chapter's material was merged into [The Two-Period Consumption Model](two_period_consumption.html).

@@ -1,11 +1,18 @@
 <script type="module">
   // Tooltip data is emitted by scripts/build_nav.py to _includes/generated/.
   // Quarto copies site resources to the root; fetch relative to site root.
-  const url = "/intmacro/glossary-tooltips.json";  // GH Pages base path
+  // Try GH Pages base path, then site root relative to this page's depth.
+  const candidates = [
+    "/intmacro/glossary-tooltips.json",
+    "glossary-tooltips.json",
+    "../glossary-tooltips.json",
+  ];
   let dict = {};
-  try { dict = await (await fetch(url)).json(); } catch (e) { /* dev: no base path */ }
-  if (Object.keys(dict).length === 0) {
-    try { dict = await (await fetch("glossary-tooltips.json")).json(); } catch (e) {}
+  for (const url of candidates) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) { dict = await res.json(); break; }
+    } catch (e) { /* try next */ }
   }
 
   let tip;

@@ -2,7 +2,8 @@
 title: "Growth & Long-Run Dynamics — Track Map"
 ---
 
-How the growth chapters build on each other. Click a node to jump there.
+What makes economies rich over the long run. The chapters build on each other
+as shown below; click a node to jump there.
 
 ```{mermaid}
 graph LR
@@ -10,8 +11,45 @@ graph LR
   CD --> SI[Solow Model]
   SI --> ST[Solow Transition]
   SI --> SP[Solow + Pop/Tech]
+  SI --> HC[Human Capital]
+  ST --> CV[Convergence]
+  SI --> SX[Solow Exercises]
+  CD --> RM[Romer Model]
+  RM --> SE[Scale Effects]
+  RM --> HY[Solow-Romer Hybrid]
+  SI --> HY
+  CD --> GA[Growth Accounting]
+  GA --> SG[Slowing Growth]
+  CD --> RB[Robots vs Labor]
   click FG "../content/foundations_growth.html"
   click CD "../content/cobb_d_prod.html"
   click SI "../content/solow_intro.html"
   click ST "../content/solow_transition.html"
+  click SP "../content/solow_pop&_tech_growth.html"
+  click HC "../content/humancapital.html"
+  click CV "../content/convergence_hypo.html"
+  click SX "../content/solow_model.html"
+  click RM "../content/romer_model.html"
+  click SE "../content/scale_effects.html"
+  click HY "../content/hybrid_model.html"
+  click GA "../content/growth_acc.html"
+  click SG "../content/slowinggrowth.html"
+  click RB "../content/robots.html"
 ```
+
+## Suggested path
+
+1. [Levels vs. Growth Rates](../content/foundations_growth.qmd) — why how rich a country is and how fast it grows are distinct.
+2. [Cobb–Douglas Production](../content/cobb_d_prod.qmd) — output from capital and labor, diminishing returns, and factor shares.
+3. [The Solow Growth Model](../content/solow_intro.qmd) — saving, depreciation, and the steady state.
+4. [Solow Transition Dynamics](../content/solow_transition.qmd) — the path an economy travels toward its steady state.
+5. [Population & Technology Growth](../content/solow_pop&_tech_growth.qmd) — Solow with a growing workforce and advancing technology.
+6. [Human Capital](../content/humancapital.qmd) — a second accumulable factor in the Solow framework.
+7. [The Convergence Hypothesis](../content/convergence_hypo.qmd) — when poorer economies do, and do not, catch up.
+8. [The Romer Model](../content/romer_model.ipynb) — ideas, nonrivalry, and growth driven from within.
+9. [Scale Effects](../content/scale_effects.ipynb) — how population size influences the rate of innovation.
+10. [The Solow–Romer Hybrid](../content/hybrid_model.ipynb) — capital accumulation combined with endogenous ideas.
+11. [Growth Accounting](../content/growth_acc.ipynb) — decomposing growth into capital, labor, and TFP.
+12. [Slowing Growth and Declining TFP](../content/slowinggrowth.ipynb) — what a falling rate of technological advance implies.
+13. [Robots vs. Labor](../content/robots.ipynb) — automation and substitution in a CES production model.
+14. [Solow Exercises & Case Studies](../content/solow_model.ipynb) — applied capstone problems for the block.
