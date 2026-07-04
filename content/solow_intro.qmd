@@ -56,7 +56,7 @@ Plot.plot({
 })
 ```
 
-The dashed green line is the **steady state** `k*`. The curve is the economy's path starting from a low capital stock.
+The dashed red line is the **steady state** `k*`. The curve is the economy's path starting from a low capital stock.
 :::
 
 ## Core intuition

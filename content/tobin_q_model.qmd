@@ -81,7 +81,7 @@ Plot.plot({
 })
 ```
 
-The dashed teal line marks **q = 1**, the boundary between investing and standing pat. The dot is the firm's current position given your sliders.
+The dashed red line marks **q = 1**, the boundary between investing and standing pat. The dot is the firm's current position given your sliders.
 :::
 
 ## Core intuition

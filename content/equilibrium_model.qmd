@@ -83,7 +83,7 @@ Plot.plot({
 })
 ```
 
-The gray dashed line is the monetary impulse `m`; the solid line is output `y`; the green dashed line is the capital stock `k` it leaves behind. The vertical rule marks the one-time surprise at t = 5.
+The gray dashed line is the monetary impulse `m`; the solid line is output `y`; the red dashed line is the capital stock `k` it leaves behind. The vertical rule marks the one-time surprise at t = 5.
 :::
 
 ## Core intuition

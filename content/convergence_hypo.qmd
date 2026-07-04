@@ -119,7 +119,7 @@ So $\lambda$ is the **speed of convergence**: the larger it is, the faster the g
 
 ## What the simulator showed
 
-With both countries sharing parameters, the two output paths chased the *same* dashed steady-state line: the poor country (blue) shot up steeply while the rich one (green) barely moved, and the gap between them narrowed period by period — absolute convergence in action, with the poorer economy posting the higher growth rate. Flip on the conditional-convergence toggle and Country B aims at a *higher* dashed target: now both still "converge," each to its own $y^{*}$, but the poor country never catches the rich one — the gap can even stay constant or widen. Same model, opposite headline, depending entirely on whether the steady states match.
+With both countries sharing parameters, the two output paths chased the *same* dashed steady-state line: the poor country (blue) shot up steeply while the rich one (red) barely moved, and the gap between them narrowed period by period — absolute convergence in action, with the poorer economy posting the higher growth rate. Flip on the conditional-convergence toggle and Country B aims at a *higher* dashed target: now both still "converge," each to its own $y^{*}$, but the poor country never catches the rich one — the gap can even stay constant or widen. Same model, opposite headline, depending entirely on whether the steady states match.
 
 ## Common confusions
 

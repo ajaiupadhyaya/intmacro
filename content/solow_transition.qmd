@@ -60,7 +60,7 @@ Plot.plot({
 })
 ```
 
-The blue line is capital per worker, green is output per worker, and the dashed lines are their steady-state targets. Try a tiny $k_0$ (rapid catch-up) versus a $k_0$ *above* $k^{*}$ (the economy shrinks down).
+The blue line is capital per worker, red is output per worker, and the dashed lines are their steady-state targets. Try a tiny $k_0$ (rapid catch-up) versus a $k_0$ *above* $k^{*}$ (the economy shrinks down).
 :::
 
 ## Core intuition

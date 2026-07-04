@@ -58,13 +58,13 @@ Plot.plot({
   marks: [
     Plot.ruleY([kstarHc], {stroke: "var(--im-accent)", strokeDasharray: "3 3", opacity: 0.5}),
     Plot.ruleY([hstarHc], {stroke: "var(--im-danger)", strokeDasharray: "3 3", opacity: 0.5}),
-    Plot.ruleY([ystarHc], {stroke: "var(--im-sim)", strokeDasharray: "3 3", opacity: 0.5}),
+    Plot.ruleY([ystarHc], {stroke: "var(--im-fg-primary)", strokeDasharray: "3 3", opacity: 0.5}),
     Plot.line(pathHc, {x: "t", y: "k", stroke: "var(--im-accent)", strokeWidth: 2.5}),
     Plot.line(pathHc, {x: "t", y: "h", stroke: "var(--im-danger)", strokeWidth: 2.5}),
-    Plot.line(pathHc, {x: "t", y: "y", stroke: "var(--im-sim)", strokeWidth: 2.5}),
+    Plot.line(pathHc, {x: "t", y: "y", stroke: "var(--im-fg-primary)", strokeWidth: 2.5}),
     Plot.text([{t: THc * 0.5, y: kstarHc}], {text: d => `k* = ${kstarHc.toFixed(1)}`, dy: -8, fill: "var(--im-accent)"}),
     Plot.text([{t: THc * 0.5, y: hstarHc}], {text: d => `h* = ${hstarHc.toFixed(1)}`, dy: -8, fill: "var(--im-danger)"}),
-    Plot.text([{t: THc * 0.5, y: ystarHc}], {text: d => `y* = ${ystarHc.toFixed(1)}`, dy: -8, fill: "var(--im-sim)"})
+    Plot.text([{t: THc * 0.5, y: ystarHc}], {text: d => `y* = ${ystarHc.toFixed(1)}`, dy: -8, fill: "var(--im-fg-primary)"})
   ]
 })
 ```
@@ -74,7 +74,7 @@ Plot.plot({
 md`**Steady-state targets** — physical capital $k^{*}$ = **${kstarHc.toFixed(2)}**, human capital $h^{*}$ = **${hstarHc.toFixed(2)}**, output per worker $y^{*}$ = **${ystarHc.toFixed(2)}**. ${(alphaHc + betaHc >= 0.97) ? "⚠️ With α + β near 1 the model approaches endogenous-growth-like sensitivity: tiny changes in saving move the steady state enormously." : ""}`
 ```
 
-The blue line is physical capital, the red line is human capital, and the green line is output — each converging to its dashed target. Try nudging $s_h$ up by a little and watch *all three* lines lift: more schooling feeds back into more output, which finances more of *both* stocks.
+The blue line is physical capital, the red line is human capital, and the ink-black line is output — each converging to its dashed target. Try nudging $s_h$ up by a little and watch *all three* lines lift: more schooling feeds back into more output, which finances more of *both* stocks.
 :::
 
 ## Core intuition

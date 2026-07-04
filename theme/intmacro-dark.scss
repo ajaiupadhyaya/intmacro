@@ -1,49 +1,40 @@
 /*-- scss:defaults --*/
 @import "_brand";
 
-$body-bg:    #0a0c11;
-$body-color: #e6e8ee;
-$link-color: #93b4ff;
-$navbar-bg:  rgba(15,18,26,0.72);
+$body-bg:    #101520;
+$body-color: #eae7de;
+$link-color: #7ca5e8;
+$navbar-bg:  #101520;
 
+// Night print: the same ink-and-paper system, inverted.
 :root {
-  --im-bg-page: #0a0c11;
-  --im-bg-surface: #13161f;
-  --im-bg-elevated: #1a1e2b;
-  --im-fg-primary: #e9ebf2;
-  --im-fg-secondary: #aab0c2;
-  --im-fg-muted: #6b7280;
-  --im-border: #232838;
-  --im-border-strong: #313850;
-  --im-accent: #93b4ff;
-  --im-accent-2: #b794ff;
-  --im-accent-contrast: #0a0c11;
-  --im-accent-soft: #182039;
-  --im-sim: #34d399;
-  --im-sim-soft: #06231b;
-  --im-warn: #fbbf24;
-  --im-warn-soft: #271d09;
-  --im-danger: #f87171;
-  --im-danger-soft: #2a1316;
+  --im-bg-page: #101520;
+  --im-bg-surface: #101520;
+  --im-bg-elevated: #171d2b;
+  --im-fg-primary: #eae7de;
+  --im-fg-secondary: #b4b2a8;
+  --im-fg-muted: #767c88;
+  --im-border: #28303f;
+  --im-border-strong: #3a4356;
+  --im-accent: #7ca5e8;
+  --im-accent-2: #a3c2f2;
+  --im-accent-contrast: #101520;
+  --im-accent-soft: #1a2436;
+  --im-sim: #d97c66;
+  --im-sim-soft: #2a1c1a;
+  --im-warn: #cfa758;
+  --im-warn-soft: #262013;
+  --im-danger: #d97c66;
+  --im-danger-soft: #2a1c1a;
 
-  --im-glass: rgba(15,18,26,0.72);
-  --im-grid-line: rgba(255,255,255,0.05);
-  --im-shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
-  --im-shadow-md: 0 6px 18px rgba(0,0,0,0.45);
-  --im-shadow-lg: 0 24px 48px -16px rgba(0,0,0,0.7), 0 8px 20px -10px rgba(0,0,0,0.5);
-  --im-ring: 0 0 0 3px rgba(147,180,255,0.25);
+  --im-grid-line: rgba(234, 231, 222, 0.05);
+  --im-shadow-tooltip: 0 6px 24px -8px rgba(0, 0, 0, 0.6);
+  --im-ring: 0 0 0 2px var(--im-bg-page), 0 0 0 4px var(--im-sim);
 
-  --im-grad-accent: linear-gradient(135deg, #6d8bff 0%, #9b7bff 55%, #c4a6ff 100%);
-  --im-grad-hero: radial-gradient(1200px 520px at 10% -10%, rgba(124,108,255,0.22), transparent 60%),
-                  radial-gradient(900px 480px at 92% 0%, rgba(52,211,153,0.12), transparent 55%);
-  --im-hero-fg: #f2f4fa;
-  --im-hero-fg-soft: #aab0c2;
-
-  --im-radius-sm: 8px;
-  --im-radius-md: 12px;
-  --im-radius-lg: 18px;
-  --im-radius-xl: 24px;
-  --im-ease: cubic-bezier(0.16,1,0.3,1);
+  --im-radius-sm: 2px;
+  --im-radius-md: 3px;
+  --im-radius-lg: 4px;
+  --im-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /*-- scss:rules --*/

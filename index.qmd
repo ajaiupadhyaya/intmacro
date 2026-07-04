@@ -1,41 +1,139 @@
 ---
-title: "Intermediate Macroeconomics"
-subtitle: "Interactive models for self-study"
 pagetitle: "Intermediate Macroeconomics"
 toc: false
+sidebar: false
 ---
 
-This site is an interactive companion to an intermediate macroeconomics course.
-Each chapter develops one model — its assumptions, key equations, and intuition —
-and pairs it with a simulator you can adjust directly in your browser, alongside
-worked explanations and self-check questions. It is built for self-study: read
-through a model, then change its parameters and watch how the results respond.
+```{=html}
 
-The chapters are organized into five tracks. If you are starting fresh, begin
-with **Foundations**; otherwise, jump to whatever you are working on. Key terms
-appear as hover definitions throughout and are collected in the
-[Glossary](_glossary.qmd).
+<div class="im-hero">
+  <div>
+    <span class="im-hero-eyebrow">An interactive course companion</span>
+    <h1 class="im-hero-title">Intermediate<br>Macroeconomics</h1>
+    <p class="im-hero-sub">Every chapter builds one model — its assumptions, its
+    equations, its intuition — and hands you the controls. Drag a parameter and
+    watch the economy answer. Built for studying on your own, at your own pace.</p>
+    <div class="im-hero-cta">
+      <a class="im-btn im-btn-primary" href="content/foundations_growth.html">Start with Foundations</a>
+      <a class="im-btn im-btn-ghost" href="_glossary.html">Browse the glossary</a>
+    </div>
+    <p class="im-hero-meta">29 chapters &nbsp;&middot;&nbsp; 17 live models &nbsp;&middot;&nbsp; 5 tracks</p>
+  </div>
+  <div class="im-hero-art" role="img" aria-label="A Solow growth diagram: a concave saving curve crossing a straight break-even line, with the steady state k-star marked in red.">
+    <svg viewBox="0 0 520 400" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- axes -->
+      <path class="ink" d="M60 24 V340 H496" stroke-width="1.4"/>
+      <!-- break-even line (n+g+δ)k -->
+      <path class="curve-gray" d="M60 340 L430 76" stroke-width="1.6"/>
+      <!-- saving curve s·f(k) -->
+      <path class="curve-blue" d="M60 340 C 130 208, 240 158, 470 122" stroke-width="2"/>
+      <!-- drop line to k* -->
+      <path class="drop" d="M248 196 V340" stroke-width="1.2" stroke-dasharray="4 5"/>
+      <!-- equilibrium -->
+      <circle class="eq-dot" cx="248" cy="196" r="5.5"/>
+      <!-- labels -->
+      <text class="lbl" x="436" y="70">(n+g+&#948;)k</text>
+      <text class="lbl" x="452" y="146">s&#183;f(k)</text>
+      <text class="lbl lbl-eq" x="241" y="362">k*</text>
+      <text class="lbl" x="478" y="332">k</text>
+    </svg>
+  </div>
+</div>
+```
 
-## Foundations
+```{=html}
+
+<p class="im-section-label">Five tracks</p>
+<div class="im-track-grid">
+  <a class="im-track-card" href="content/Preliminaries.html">
+    <span class="im-track-num">I</span>
+    <span class="im-track-glyph"><svg viewBox="0 0 64 44" fill="none" aria-hidden="true">
+      <path class="g-blue" d="M4 40 C 24 38, 42 26, 60 6" stroke-width="1.75"/>
+      <path class="g-gray" d="M4 40 L 60 22" stroke-width="1.4" stroke-dasharray="3 4"/>
+      <circle class="g-dot" cx="60" cy="6" r="3.2"/>
+    </svg></span>
+    <h3>Foundations</h3>
+    <p>Growth rates, compounding, and the log approximation the whole course leans on.</p>
+    <span class="im-track-meta">1 chapter</span>
+  </a>
+  <a class="im-track-card" href="tracks/measurement.html">
+    <span class="im-track-num">II</span>
+    <span class="im-track-glyph"><svg viewBox="0 0 64 44" fill="none" aria-hidden="true">
+      <path class="g-ink" d="M8 40 V28 H16 V40" stroke-width="1.5"/>
+      <path class="g-ink" d="M22 40 V20 H30 V40" stroke-width="1.5"/>
+      <path class="g-blue" d="M36 40 V14 H44 V40" stroke-width="1.5"/>
+      <path class="g-ink" d="M50 40 V8 H58 V40" stroke-width="1.5"/>
+      <circle class="g-dot" cx="54" cy="8" r="3"/>
+    </svg></span>
+    <h3>Measurement</h3>
+    <p>How raw activity becomes GDP, price indices, and honest cross-country comparisons.</p>
+    <span class="im-track-meta">5 chapters</span>
+  </a>
+  <a class="im-track-card" href="tracks/growth.html">
+    <span class="im-track-num">III</span>
+    <span class="im-track-glyph"><svg viewBox="0 0 64 44" fill="none" aria-hidden="true">
+      <path class="g-gray" d="M4 40 L 54 6" stroke-width="1.4"/>
+      <path class="g-blue" d="M4 40 C 14 16, 30 10, 60 6" stroke-width="1.75"/>
+      <circle class="g-dot" cx="26" cy="16" r="3.2"/>
+    </svg></span>
+    <h3>Growth</h3>
+    <p>From Solow to Romer: what makes economies rich, and what keeps them growing.</p>
+    <span class="im-track-meta">14 chapters</span>
+  </a>
+  <a class="im-track-card" href="tracks/intertemporal.html">
+    <span class="im-track-num">IV</span>
+    <span class="im-track-glyph"><svg viewBox="0 0 64 44" fill="none" aria-hidden="true">
+      <path class="g-gray" d="M8 6 L 58 38" stroke-width="1.4"/>
+      <path class="g-blue" d="M12 42 C 16 20, 30 12, 58 10" stroke-width="1.75"/>
+      <circle class="g-dot" cx="27" cy="17" r="3.2"/>
+    </svg></span>
+    <h3>Intertemporal</h3>
+    <p>Consumption, labor, and investment as forward-looking choices about time.</p>
+    <span class="im-track-meta">3 chapters</span>
+  </a>
+  <a class="im-track-card" href="tracks/business_cycles.html">
+    <span class="im-track-num">V</span>
+    <span class="im-track-glyph"><svg viewBox="0 0 64 44" fill="none" aria-hidden="true">
+      <path class="g-gray" d="M4 22 H60" stroke-width="1.2" stroke-dasharray="3 4"/>
+      <path class="g-blue" d="M4 22 C 8 6, 16 6, 22 22 S 32 40, 38 22 S 48 12, 54 22 S 58 24, 60 22" stroke-width="1.75"/>
+      <circle class="g-dot" cx="13" cy="10" r="3.2"/>
+    </svg></span>
+    <h3>Business Cycles</h3>
+    <p>Short-run fluctuations, monetary surprises, and the policy rules that answer them.</p>
+    <span class="im-track-meta">6 chapters</span>
+  </a>
+</div>
+```
+
+Key terms appear as hover definitions throughout and are collected in the
+[Glossary](_glossary.qmd). Chapters marked with earlier material list their
+prerequisites at the top — you can always trace a concept back.
+
+## I &nbsp;Foundations
 
 *The mathematical toolkit the rest of the course assumes.*
 
+::: {.im-chapter-list}
 - [Mathematical Preliminaries](content/Preliminaries.ipynb) — growth rates, compounding, and the log approximation used throughout.
+:::
 
-## Measurement & National Accounts
+## II &nbsp;Measurement & National Accounts
 
 *How raw economic activity becomes the numbers we analyze.*
 
+::: {.im-chapter-list}
 - [Measuring GDP: The Expenditure Approach](content/measuring_gdp.ipynb) — output as the sum of consumption, investment, government, and net exports.
 - [Real vs. Nominal GDP Over Time](content/realvsnom.ipynb) — separating genuine output changes from price changes.
 - [Deflators and Price Indices](content/cash_money.ipynb) — how a price index is built and why we deflate.
 - [Real GDP with Changing Prices](content/two_goods_twoperiods.ipynb) — base-year versus chain-weighted measures of real output.
 - [Comparing GDP Across Countries](content/realgdpacross.ipynb) — purchasing-power-parity adjustments for cross-country comparison.
+:::
 
-## Growth & Long-Run Dynamics
+## III &nbsp;Growth & Long-Run Dynamics
 
 *What makes economies rich over the long run, from Solow to endogenous growth.*
 
+::: {.im-chapter-list}
 - [Levels vs. Growth Rates](content/foundations_growth.qmd) — why how rich a country is and how fast it grows are distinct.
 - [Cobb–Douglas Production](content/cobb_d_prod.qmd) — output from capital and labor, diminishing returns, and factor shares.
 - [The Solow Growth Model](content/solow_intro.qmd) — saving, depreciation, and the steady state.
@@ -50,22 +148,27 @@ appear as hover definitions throughout and are collected in the
 - [Growth Accounting](content/growth_acc.qmd) — decomposing output growth into capital, labor, and total factor productivity.
 - [Slowing Growth and Declining TFP](content/slowinggrowth.ipynb) — what a falling rate of technological advance implies.
 - [Robots vs. Labor](content/robots.ipynb) — automation and substitution in a CES production model.
+:::
 
-## Intertemporal Choice & Labor
+## IV &nbsp;Intertemporal Choice & Labor
 
 *Forward-looking decisions about consumption, labor, and investment.*
 
+::: {.im-chapter-list}
 - [The Two-Period Consumption Model](content/two_period_consumption.qmd) — splitting lifetime resources between today and tomorrow.
 - [The Labor–Leisure Choice](content/labor_leisure_model.qmd) — trading consumption against time given the real wage.
 - [Investment and Tobin's q](content/tobin_q_model.qmd) — when the value of capital justifies new investment.
+:::
 
-## Business Cycles & Policy Dynamics
+## V &nbsp;Business Cycles & Policy Dynamics
 
 *Short-run fluctuations, monetary policy, and the models that explain them.*
 
+::: {.im-chapter-list}
 - [The IS Curve](content/is_curve_model.qmd) — interest rates, demand, and goods-market equilibrium.
 - [Dynamic AD–AS with a Taylor Rule](content/adassim.qmd) — inflation and output dynamics under a policy rule, and how the economy absorbs demand and supply shocks.
 - [AD–AS: Exercises & Case Studies](content/adas_model.ipynb) — applied problems using the AD–AS framework.
 - [The Lucas Island Model](content/lucas_island_model.qmd) — imperfect information and the source of real fluctuations.
 - [Equilibrium Business Cycles with Persistence](content/equilibrium_model.qmd) — propagation that stretches shocks over time.
 - [The Real Business Cycle Model](content/rbc_simulation.qmd) — fluctuations as the efficient response to productivity shocks.
+:::

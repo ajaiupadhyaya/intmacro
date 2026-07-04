@@ -84,7 +84,7 @@ Plot.plot({
 })
 ```
 
-The dashed gray line is the TFP shock itself; the dotted horizontal rule marks the new steady state that *every* series eventually reaches. Investment (orange) overshoots hardest; consumption (green) barely moves on impact and glides up.
+The dashed gray line is the TFP shock itself; the dotted horizontal rule marks the new steady state that *every* series eventually reaches. Investment (orange) overshoots hardest; consumption (red) barely moves on impact and glides up.
 :::
 
 ## Core intuition

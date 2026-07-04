@@ -1,9 +1,10 @@
 /*-- scss:rules --*/
 
 // =====================================================================
-//  intmacro design system  —  shared across light & dark themes.
-//  All color comes from --im-* tokens defined in the theme files, so
-//  this single file restyles the entire dashboard in both modes.
+//  intmacro design system — "the ink diagram"
+//  Ink curves on paper. Blue is the model, red is the annotation.
+//  All color comes from --im-* tokens in the theme files; this single
+//  file styles the entire site in both light and dark.
 // =====================================================================
 
 // ---- Global page surface -------------------------------------------
@@ -14,387 +15,606 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-::selection { background: var(--im-accent-soft); color: var(--im-accent); }
+::selection { background: var(--im-sim-soft); color: var(--im-sim); }
 
-// thin, unobtrusive scrollbars
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--im-border-strong) transparent;
 }
 *::-webkit-scrollbar { width: 10px; height: 10px; }
 *::-webkit-scrollbar-thumb {
-  background: var(--im-border-strong); border-radius: 8px;
-  border: 2px solid var(--im-bg-page);
+  background: var(--im-border-strong);
+  border: 3px solid var(--im-bg-page);
 }
 *::-webkit-scrollbar-thumb:hover { background: var(--im-fg-muted); }
 
 // ---- Typography -----------------------------------------------------
-h1, h2, h3, h4, h5 {
+// Display serif = STIX Two Text, the text face of the math font: titles
+// and equations are set in one hand.
+h1, h2, h3,
+.quarto-title .title,
+.navbar .navbar-brand {
+  font-family: 'STIX Two Text', 'STIX Two Math', Georgia, serif;
+  font-weight: 600;
+  letter-spacing: 0;
   color: var(--im-fg-primary);
-  font-weight: 650;
-  letter-spacing: -0.018em;
-  line-height: 1.2;
+  line-height: 1.18;
 }
-h1 { font-weight: 720; letter-spacing: -0.028em; }
+h4, h5 { color: var(--im-fg-primary); font-weight: 650; }
+
+// mono eyebrow — the utility voice used for every small label on the site
+%im-eyebrow {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
 
 #quarto-document-content {
   h2 {
-    margin-top: 2.4rem; padding-bottom: 0.4rem;
+    margin-top: 2.6rem;
+    padding-bottom: 0.45rem;
     border-bottom: 1px solid var(--im-border);
   }
   h3 { margin-top: 1.8rem; }
   p, li { color: var(--im-fg-primary); }
-  a { color: var(--im-accent); text-underline-offset: 2px; text-decoration-thickness: 1px; }
-  a:hover { color: var(--im-accent-2); }
-  // comfortable reading measure
-  > * { max-width: 820px; }
-  > .im-sim-hero, > .im-related-cards, > .cell, > .im-hero, > .im-track-grid { max-width: none; }
+  a {
+    color: var(--im-accent);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+  a:hover { color: var(--im-sim); }
+  > * { max-width: 780px; }   // reading measure
+  > .im-sim-hero, > .im-related-cards, > .cell,
+  > .im-hero, > .im-track-grid { max-width: none; }
 }
 
-// ---- Navbar: glassy, sticky, subtle ---------------------------------
+// ---- Navbar: a flat paper rule, no glass ----------------------------
 .navbar {
-  background: var(--im-glass) !important;
-  backdrop-filter: saturate(180%) blur(14px);
-  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  background: var(--im-bg-page) !important;
   border-bottom: 1px solid var(--im-border);
-  box-shadow: var(--im-shadow-sm);
-  padding-top: 0.55rem; padding-bottom: 0.55rem;
+  box-shadow: none;
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
 }
 .navbar .navbar-brand {
-  font-weight: 700; letter-spacing: -0.02em;
+  font-size: 1.06rem;
   color: var(--im-fg-primary);
 }
 .navbar .nav-link {
   color: var(--im-fg-secondary) !important;
-  font-weight: 520; border-radius: 8px;
-  padding: 0.3rem 0.7rem !important;
-  transition: background 140ms var(--im-ease), color 140ms var(--im-ease);
+  font-weight: 480;
+  padding: 0.3rem 0.65rem !important;
+  border-radius: 0;
+  transition: color 130ms var(--im-ease);
 }
-.navbar .nav-link:hover { color: var(--im-fg-primary) !important; background: var(--im-accent-soft); }
-
-// search box in navbar
-.navbar .aa-Autocomplete, #quarto-search input {
-  border-radius: 10px !important;
-}
-
-// ---- Sidebar --------------------------------------------------------
-#quarto-sidebar, .sidebar.sidebar-navigation {
+.navbar .nav-link:hover {
+  color: var(--im-sim) !important;
   background: transparent;
 }
+.navbar .aa-Autocomplete, #quarto-search input {
+  border-radius: var(--im-radius-sm) !important;
+}
+
+// ---- Sidebar ---------------------------------------------------------
+#quarto-sidebar, .sidebar.sidebar-navigation { background: transparent; }
 .sidebar-navigation {
-  .sidebar-section > .sidebar-item .sidebar-item-text,
-  > .sidebar-item.sidebar-section .sidebar-item-text {
-    // top-level section labels
-  }
   .sidebar-item-text {
     color: var(--im-fg-secondary);
-    border-radius: 8px;
-    transition: background 130ms var(--im-ease), color 130ms var(--im-ease);
+    transition: color 130ms var(--im-ease);
   }
   .sidebar-item-container { margin: 1px 0; }
   .sidebar-link {
-    border-radius: 8px; padding: 4px 10px;
-    transition: background 130ms var(--im-ease), color 130ms var(--im-ease);
+    border-radius: 0;
+    padding: 3px 10px;
+    border-left: 1px solid transparent;
+    transition: color 130ms var(--im-ease), border-color 130ms var(--im-ease);
   }
-  .sidebar-link:hover { background: var(--im-accent-soft); color: var(--im-accent); }
-  // active chapter
+  .sidebar-link:hover { background: transparent; color: var(--im-sim); }
   .sidebar-link.active,
   .sidebar-item-text.active {
-    background: var(--im-accent-soft);
-    color: var(--im-accent) !important;
+    background: transparent;
+    color: var(--im-sim) !important;
     font-weight: 600;
-    box-shadow: inset 3px 0 0 var(--im-accent);
+    box-shadow: inset 2px 0 0 var(--im-sim);
   }
 }
-// section headers (the part titles) — quiet, uppercase
+// track/part labels: mono caps — chapter links inside stay quiet normal case
 .sidebar-navigation .sidebar-section > .sidebar-item > .sidebar-item-container > .sidebar-item-text,
 .sidebar-navigation > ul > .sidebar-item.sidebar-section > .sidebar-item-container .menu-text {
-  text-transform: uppercase;
-  font-size: 0.72rem;
-  letter-spacing: 0.07em;
-  font-weight: 700;
+  @extend %im-eyebrow;
   color: var(--im-fg-muted);
 }
+.sidebar-navigation .sidebar-section .sidebar-item .sidebar-item-container .sidebar-link .menu-text,
+.sidebar-navigation .sidebar-section ul .sidebar-link {
+  font-family: 'Inter', system-ui, sans-serif;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.84rem;
+  font-weight: 450;
+}
 
-// ---- Right TOC ------------------------------------------------------
+// ---- Right TOC -------------------------------------------------------
 #quarto-margin-sidebar {
-  .nav-link { color: var(--im-fg-muted); border-left: 2px solid transparent; transition: color 120ms, border-color 120ms; }
+  .nav-link {
+    color: var(--im-fg-muted);
+    border-left: 1px solid var(--im-border);
+    transition: color 120ms, border-color 120ms;
+  }
   .nav-link:hover { color: var(--im-fg-secondary); }
-  .nav-link.active { color: var(--im-accent); border-left-color: var(--im-accent); font-weight: 600; }
-  > nav > h2, .sidebar-title { color: var(--im-fg-muted); text-transform: uppercase; letter-spacing: 0.07em; font-size: 0.72rem; }
+  .nav-link.active {
+    color: var(--im-sim);
+    border-left: 2px solid var(--im-sim);
+    font-weight: 600;
+  }
+  > nav > h2, .sidebar-title {
+    @extend %im-eyebrow;
+    color: var(--im-fg-muted);
+  }
 }
 
-// ---- Title block ----------------------------------------------------
+// ---- Title block -----------------------------------------------------
 #title-block-header.quarto-title-block {
-  .quarto-title .title { font-size: 2.5rem; line-height: 1.1; }
-  .quarto-title .subtitle { color: var(--im-fg-secondary); font-size: 1.12rem; font-weight: 420; }
+  margin-bottom: 1.4rem;
+  .quarto-title .title { font-size: 2.4rem; line-height: 1.12; }
+  .quarto-title .subtitle {
+    font-family: 'STIX Two Text', Georgia, serif;
+    font-style: italic;
+    color: var(--im-fg-secondary);
+    font-size: 1.15rem;
+    font-weight: 400;
+    margin-top: 0.4rem;
+  }
 }
 
-// ---- Quarto callouts: align to design tokens ------------------------
+// ---- Quarto callouts -------------------------------------------------
 .callout {
   border-radius: var(--im-radius-md) !important;
   border: 1px solid var(--im-border) !important;
-  box-shadow: var(--im-shadow-sm);
+  box-shadow: none;
+  background: var(--im-bg-surface);
   overflow: hidden;
 }
 .callout.callout-style-default > .callout-header { font-weight: 600; }
-.callout-tip { border-left: 4px solid var(--im-sim) !important; }
-.callout-note { border-left: 4px solid var(--im-accent) !important; }
-.callout-warning, .callout-important { border-left: 4px solid var(--im-warn) !important; }
-.callout-caution { border-left: 4px solid var(--im-danger) !important; }
+.callout-tip { border-left: 2px solid var(--im-accent) !important; }
+.callout-note { border-left: 2px solid var(--im-accent) !important; }
+.callout-warning, .callout-important { border-left: 2px solid var(--im-warn) !important; }
+.callout-caution { border-left: 2px solid var(--im-danger) !important; }
 
-// ---- Code blocks ----------------------------------------------------
+// ---- Code blocks -----------------------------------------------------
 div.sourceCode, pre.sourceCode {
   border-radius: var(--im-radius-md);
   border: 1px solid var(--im-border);
   background: var(--im-bg-elevated) !important;
 }
 code:not(.sourceCode), p code, li code {
-  background: var(--im-accent-soft); color: var(--im-accent);
-  padding: 1px 6px; border-radius: 6px; font-size: 0.86em;
+  background: var(--im-bg-elevated);
+  color: var(--im-fg-primary);
+  border: 1px solid var(--im-border);
+  padding: 0 5px;
+  border-radius: var(--im-radius-sm);
+  font-size: 0.85em;
 }
-.code-tools-button { color: var(--im-fg-muted); }
+// hide the floating "</> Code" source button — the OJS source is hidden by
+// design and the footer's "Edit this page" link already covers the curious
+.quarto-title-tools-only, .code-tools-button { display: none !important; }
 
-// ---- Tables ---------------------------------------------------------
+// ---- Tables ----------------------------------------------------------
 #quarto-document-content table {
-  border-radius: var(--im-radius-md); overflow: hidden;
-  box-shadow: var(--im-shadow-sm); border: 1px solid var(--im-border);
+  border: 1px solid var(--im-border);
+  box-shadow: none;
 }
 #quarto-document-content thead th {
-  background: var(--im-bg-elevated); color: var(--im-fg-secondary);
-  text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.05em;
+  @extend %im-eyebrow;
+  background: var(--im-bg-elevated);
+  color: var(--im-fg-secondary);
 }
 
 // =====================================================================
 //  Chapter components
 // =====================================================================
 
-// Prereq chips
-.im-prereq-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 4px; }
+// Prereq tags — quiet, square, mono
+.im-prereq-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
 .im-prereq-chip {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-size: 0.78rem; padding: 4px 12px; border-radius: 999px;
-  background: var(--im-bg-surface); color: var(--im-fg-secondary);
-  border: 1px solid var(--im-border); text-decoration: none;
-  box-shadow: var(--im-shadow-sm);
-  transition: transform 140ms var(--im-ease), border-color 140ms var(--im-ease), color 140ms var(--im-ease);
-}
-.im-prereq-chip:hover { color: var(--im-accent); border-color: var(--im-accent); transform: translateY(-1px); }
-
-// TL;DR
-.im-tldr {
-  position: relative;
-  background: var(--im-accent-soft);
+  @extend %im-eyebrow;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--im-radius-sm);
+  background: transparent;
+  color: var(--im-fg-secondary);
   border: 1px solid var(--im-border);
-  border-left: 4px solid var(--im-accent);
-  padding: 14px 18px; border-radius: 0 var(--im-radius-md) var(--im-radius-md) 0;
-  margin: 18px 0; font-size: 1.02rem;
+  text-decoration: none;
+  transition: color 140ms var(--im-ease), border-color 140ms var(--im-ease);
+}
+.im-prereq-chip:hover { color: var(--im-sim); border-color: var(--im-sim); }
+
+// TL;DR — set like a paper's abstract: serif italic between hairline rules
+.im-tldr {
+  font-family: 'STIX Two Text', Georgia, serif;
+  font-style: italic;
+  font-size: 1.09rem;
+  line-height: 1.6;
+  color: var(--im-fg-primary);
+  background: transparent;
+  border-top: 1px solid var(--im-fg-primary);
+  border-bottom: 1px solid var(--im-border);
+  padding: 16px 2px 18px;
+  margin: 22px 0 26px;
+  strong:first-child {
+    @extend %im-eyebrow;
+    font-style: normal;
+    color: var(--im-sim);
+    display: block;
+    margin-bottom: 6px;
+  }
+  em { font-style: normal; }   // nested emphasis flips upright inside the italic block
 }
 
 // Fallback notice for legacy ipywidgets models awaiting OJS conversion
 .im-model-pending {
-  background: var(--im-bg-surface);
+  background: var(--im-bg-elevated);
   border: 1px solid var(--im-border);
-  border-left: 4px solid var(--im-sim);
-  padding: 14px 18px; border-radius: 0 var(--im-radius-md) var(--im-radius-md) 0;
-  margin: 22px 0; color: var(--im-fg-secondary); font-size: 0.95rem; line-height: 1.55;
+  padding: 14px 18px;
+  border-radius: var(--im-radius-md);
+  margin: 22px 0;
+  color: var(--im-fg-secondary);
+  font-size: 0.95rem;
+  line-height: 1.55;
 }
 .im-model-pending .im-model-pending-label {
-  display: block; margin-bottom: 4px;
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  @extend %im-eyebrow;
+  display: block;
+  margin-bottom: 4px;
   color: var(--im-sim);
 }
 
-// Simulator hero — the chapter centerpiece (clean bordered panel)
+// Simulator hero — the chapter centerpiece: an instrument panel on graph paper
 .im-sim-hero {
   position: relative;
-  background: var(--im-bg-surface);
-  border: 1px solid var(--im-border);
-  border-top: 3px solid var(--im-sim);
+  background:
+    linear-gradient(var(--im-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--im-grid-line) 1px, transparent 1px),
+    var(--im-bg-surface);
+  background-size: 28px 28px, 28px 28px, auto;
+  border: 1px solid var(--im-border-strong);
   border-radius: var(--im-radius-md);
-  padding: 20px 22px; margin: 24px 0;
-  box-shadow: var(--im-shadow-sm);
+  padding: 18px 22px 20px;
+  margin: 26px 0;
 }
 .im-sim-hero .im-sim-label {
-  display: inline-flex; align-items: center; gap: 7px;
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
-  color: var(--im-sim); text-transform: uppercase;
+  @extend %im-eyebrow;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--im-fg-secondary);
+  padding-bottom: 12px;
 }
+// the red equilibrium dot — the site's recurring mark
 .im-sim-hero .im-sim-label::before {
-  content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--im-sim);
+  content: "";
+  flex: none;
+  width: 7px; height: 7px;
+  margin-top: 0.28em;   // optically centers on the first text line even when the label wraps
+  border-radius: 50%;
+  background: var(--im-sim);
 }
 .im-sim-hero .ojs-inputs {
-  display: flex; flex-wrap: wrap; gap: 14px 22px; margin: 14px 0;
+  display: flex; flex-wrap: wrap; gap: 12px 22px; margin: 12px 0;
 }
-.im-sim-hero label, .im-sim-hero .ojs-inputs label { color: var(--im-fg-secondary); font-weight: 520; }
+.im-sim-hero label, .im-sim-hero .ojs-inputs label {
+  color: var(--im-fg-secondary);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
 .im-sim-hero input[type="range"] { accent-color: var(--im-accent); }
+.im-sim-hero input[type="number"],
+.im-sim-hero input[type="text"] {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.82rem;
+  background: var(--im-bg-page);
+  border: 1px solid var(--im-border);
+  border-radius: var(--im-radius-sm);
+  color: var(--im-fg-primary);
+}
 .im-sim-hero figure, .im-sim-hero .plot-d6a7b5 { margin-top: 6px; }
+// Observable Plot hardcodes a white SVG background — repaint it with the
+// theme's paper so charts read correctly in dark mode too
+.im-sim-hero svg[class*="plot-"] {
+  background: var(--im-bg-page) !important;
+  color: var(--im-fg-secondary);
+}
+.im-sim-hero div[class*="swatches"] { color: var(--im-fg-secondary); }
 
-// Math toggle
+// Math toggle — the derivation drawer
 details.im-math-toggle {
-  border: 1px solid var(--im-border); border-radius: var(--im-radius-md);
-  background: var(--im-bg-surface); padding: 4px 16px; margin: 16px 0;
-  box-shadow: var(--im-shadow-sm);
+  border: 1px solid var(--im-border);
+  border-radius: var(--im-radius-md);
+  background: var(--im-bg-elevated);
+  padding: 4px 18px;
+  margin: 18px 0;
 }
 .im-math-toggle > summary {
-  cursor: pointer; font-weight: 600; color: var(--im-fg-secondary);
-  list-style: none; padding: 10px 0;
+  cursor: pointer;
+  list-style: none;
+  padding: 11px 0;
+  font-weight: 600;
+  color: var(--im-fg-secondary);
 }
 .im-math-toggle > summary::-webkit-details-marker { display: none; }
-.im-math-toggle > summary::before { content: "▶"; font-size: 0.7em; margin-right: 8px; color: var(--im-accent); }
-.im-math-toggle[open] > summary::before { content: "▼"; }
-
-// Common confusions
-.im-confusion {
-  display: flex; gap: 10px;
-  background: var(--im-danger-soft);
-  border: 1px solid var(--im-border);
-  border-left: 4px solid var(--im-danger);
-  padding: 12px 16px; border-radius: 0 var(--im-radius-md) var(--im-radius-md) 0; margin: 12px 0;
+.im-math-toggle > summary::before {
+  content: "+";
+  font-family: 'STIX Two Text', Georgia, serif;
+  display: inline-block;
+  width: 1.1em;
+  color: var(--im-sim);
+  font-weight: 600;
 }
-.im-confusion::before { content: "⚠"; color: var(--im-danger); font-weight: 700; }
+.im-math-toggle[open] > summary::before { content: "−"; }
+.im-math-toggle > summary:hover { color: var(--im-fg-primary); }
 
-// MCQ
+// Common confusions — a red margin note
+.im-confusion {
+  background: transparent;
+  border-left: 2px solid var(--im-sim);
+  padding: 4px 0 4px 18px;
+  margin: 16px 0;
+}
+.im-confusion::before {
+  @extend %im-eyebrow;
+  content: "common confusion";
+  display: block;
+  color: var(--im-sim);
+  margin-bottom: 2px;
+}
+.im-confusion p:last-child { margin-bottom: 0; }
+
+// Self-check MCQ
 .im-mcq {
-  background: var(--im-warn-soft);
-  border: 1px solid var(--im-border); border-top: 3px solid var(--im-warn);
-  border-radius: var(--im-radius-md); padding: 16px 18px; margin: 14px 0;
-  box-shadow: var(--im-shadow-sm);
+  background: var(--im-bg-elevated);
+  border: 1px solid var(--im-border);
+  border-radius: var(--im-radius-md);
+  padding: 16px 20px;
+  margin: 14px 0;
 }
 .im-mcq .im-q-label {
+  @extend %im-eyebrow;
   display: inline-block;
-  font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.08em;
-  font-weight: 800; color: var(--im-warn); margin-bottom: 8px;
+  color: var(--im-warn);
+  margin-bottom: 8px;
 }
 .im-mcq details { margin-top: 8px; }
 .im-mcq summary {
-  cursor: pointer; color: var(--im-accent); font-weight: 600;
+  cursor: pointer;
+  color: var(--im-accent);
+  font-weight: 550;
   width: fit-content;
 }
+.im-mcq summary:hover { color: var(--im-sim); }
 
 // Related-chapters footer
 .im-related-cards {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 28px 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 28px 0;
 }
 @media (max-width: 700px) { .im-related-cards { grid-template-columns: 1fr; } }
 .im-related-card {
   display: block;
-  background: var(--im-bg-surface); border: 1px solid var(--im-border);
-  border-radius: var(--im-radius-md); padding: 14px 16px; text-decoration: none;
+  background: transparent;
+  border: 1px solid var(--im-border);
+  border-radius: var(--im-radius-md);
+  padding: 14px 16px;
+  text-decoration: none;
   color: var(--im-fg-primary);
-  transition: border-color 150ms var(--im-ease), box-shadow 150ms var(--im-ease);
+  transition: border-color 150ms var(--im-ease);
 }
-.im-related-card:hover { box-shadow: var(--im-shadow-sm); border-color: var(--im-accent); }
+.im-related-card:hover { border-color: var(--im-fg-primary); }
 .im-related-card .im-role {
-  font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--im-accent); font-weight: 700;
+  @extend %im-eyebrow;
+  color: var(--im-sim);
 }
-.im-related-card strong { display: block; margin-top: 3px; }
+.im-related-card strong {
+  display: block;
+  margin-top: 3px;
+  font-family: 'STIX Two Text', Georgia, serif;
+  font-weight: 600;
+}
 
 // Glossary term + tooltip
-.im-glossary-term { border-bottom: 1px dashed var(--im-accent); cursor: help; }
+.im-glossary-term { border-bottom: 1px dashed var(--im-fg-muted); cursor: help; }
+.im-glossary-term:hover { border-bottom-color: var(--im-sim); }
 .im-glossary-tooltip {
-  position: absolute; z-index: 1000; max-width: 280px;
-  background: var(--im-bg-surface); color: var(--im-fg-primary);
-  border: 1px solid var(--im-border); border-radius: var(--im-radius-sm);
-  padding: 10px 14px; font-size: 0.82rem; line-height: 1.45;
-  box-shadow: var(--im-shadow-lg);
+  position: absolute;
+  z-index: 1000;
+  max-width: 280px;
+  background: var(--im-bg-page);
+  color: var(--im-fg-primary);
+  border: 1px solid var(--im-border-strong);
+  border-radius: var(--im-radius-sm);
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  box-shadow: var(--im-shadow-tooltip);
 }
 
 // =====================================================================
 //  Landing page (index.qmd)
 // =====================================================================
 .im-hero {
-  position: relative;
-  margin: -0.5rem 0 2.2rem;
-  padding: clamp(1.6rem, 3.5vw, 2.6rem) 0 1.8rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+  margin: 0.8rem 0 2.4rem;
+  padding: clamp(1.2rem, 3vw, 2.2rem) 0 2.4rem;
   border-bottom: 1px solid var(--im-border);
 }
+@media (max-width: 860px) {
+  .im-hero { grid-template-columns: 1fr; }
+  .im-hero-art { max-width: 420px; }
+}
 .im-hero-eyebrow {
-  display: inline-block;
-  font-size: 0.74rem; font-weight: 600; letter-spacing: 0.04em;
-  color: var(--im-accent);
+  @extend %im-eyebrow;
+  display: block;
+  color: var(--im-sim);
+  margin-bottom: 14px;
 }
 .im-hero h1, .im-hero .im-hero-title {
-  font-size: clamp(1.9rem, 4vw, 2.7rem); line-height: 1.1; margin: 10px 0 12px;
-  letter-spacing: -0.025em; color: var(--im-fg-primary); font-weight: 700;
+  font-family: 'STIX Two Text', Georgia, serif;
+  font-size: clamp(2.2rem, 5vw, 3.3rem);
+  font-weight: 600;
+  line-height: 1.08;
+  margin: 0 0 16px;
+  color: var(--im-fg-primary);
 }
-.im-hero .im-hero-title .grad { color: var(--im-accent); }
 .im-hero p.im-hero-sub {
-  font-size: 1.08rem; color: var(--im-fg-secondary); max-width: 640px; margin: 0; line-height: 1.6;
+  font-size: 1.05rem;
+  color: var(--im-fg-secondary);
+  max-width: 560px;
+  margin: 0;
+  line-height: 1.65;
 }
-.im-hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+.im-hero-meta {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.78rem;
+  color: var(--im-fg-muted);
+  margin-top: 20px;
+}
+.im-hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
 .im-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 11px 20px; border-radius: 999px; font-weight: 600; font-size: 0.95rem;
-  text-decoration: none; cursor: pointer; border: 1px solid transparent;
-  transition: transform 150ms var(--im-ease), box-shadow 150ms var(--im-ease), background 150ms var(--im-ease);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--im-radius-sm);
+  font-weight: 550;
+  font-size: 0.93rem;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 150ms var(--im-ease), color 150ms var(--im-ease), border-color 150ms var(--im-ease);
 }
-.im-btn { border-radius: var(--im-radius-sm); }
-.im-btn-primary { background: var(--im-accent); color: var(--im-accent-contrast); }
-.im-btn-primary:hover { background: var(--im-accent-2); color: var(--im-accent-contrast); }
-.im-btn-ghost { background: transparent; color: var(--im-fg-primary); border-color: var(--im-border-strong); }
-.im-btn-ghost:hover { border-color: var(--im-accent); color: var(--im-accent); }
-
-// stat row
-.im-stats {
-  display: flex; flex-wrap: wrap; gap: 0;
-  margin-top: 24px; border: 1px solid var(--im-border); border-radius: var(--im-radius-md);
-  overflow: hidden; width: fit-content; max-width: 100%;
+// #quarto-document-content a would recolor these; win specificity explicitly
+#quarto-document-content .im-btn-primary, .im-btn-primary {
+  background: var(--im-fg-primary);
+  color: var(--im-bg-page);
 }
-.im-stat { padding: 12px 22px; border-right: 1px solid var(--im-border); }
-.im-stat:last-child { border-right: none; }
-.im-stat .im-stat-num {
-  font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; color: var(--im-fg-primary);
+#quarto-document-content .im-btn-primary:hover, .im-btn-primary:hover {
+  background: var(--im-sim);
+  color: #fff;
 }
-.im-stat .im-stat-label { font-size: 0.76rem; color: var(--im-fg-muted); text-transform: uppercase; letter-spacing: 0.04em; }
-
-// section heading on landing
-.im-section-label {
-  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--im-fg-muted); margin: 2.6rem 0 0.2rem;
+#quarto-document-content .im-btn-ghost, .im-btn-ghost {
+  background: transparent;
+  color: var(--im-fg-primary);
+  border-color: var(--im-border-strong);
 }
-
-// track cards
-.im-track-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-  gap: 18px; margin: 1rem 0 2rem;
-}
-.im-track-card {
-  position: relative; display: flex; flex-direction: column; gap: 7px;
-  padding: 20px; border-radius: var(--im-radius-md);
-  background: var(--im-bg-surface); border: 1px solid var(--im-border);
-  text-decoration: none; color: var(--im-fg-primary);
-  transition: border-color 150ms var(--im-ease), box-shadow 150ms var(--im-ease);
-}
-.im-track-card:hover { border-color: var(--im-accent); box-shadow: var(--im-shadow-sm); }
-.im-track-card .im-track-icon {
-  font-size: 1.35rem; line-height: 1; margin-bottom: 2px;
-  filter: saturate(0.85);
-}
-.im-track-card h3 { margin: 0; font-size: 1.08rem; }
-.im-track-card p { margin: 0; color: var(--im-fg-secondary); font-size: 0.9rem; line-height: 1.55; }
-.im-track-card .im-track-meta {
-  margin-top: auto; padding-top: 12px;
-  display: flex; align-items: center; justify-content: space-between;
-  font-size: 0.8rem; color: var(--im-fg-muted);
-}
-.im-track-card .im-track-go { color: var(--im-accent); font-weight: 600; }
-
-// "interactive" marker on featured cards (static, no animation)
-.im-live-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.03em;
+#quarto-document-content .im-btn-ghost:hover, .im-btn-ghost:hover {
+  border-color: var(--im-sim);
   color: var(--im-sim);
 }
-.im-live-badge::before {
-  content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--im-sim);
+
+// hero diagram — ink strokes take theme colors via currentColor + tokens
+.im-hero-art { width: 100%; }
+.im-hero-art svg { display: block; width: 100%; height: auto; }
+.im-hero-art .ink { stroke: var(--im-fg-primary); }
+.im-hero-art .curve-blue { stroke: var(--im-accent); }
+.im-hero-art .curve-gray { stroke: var(--im-fg-muted); }
+.im-hero-art .eq-dot { fill: var(--im-sim); }
+.im-hero-art .drop { stroke: var(--im-sim); }
+.im-hero-art .lbl {
+  font-family: 'STIX Two Text', Georgia, serif;
+  font-style: italic;
+  font-size: 21px;
+  fill: var(--im-fg-secondary);
 }
+.im-hero-art .lbl-eq { fill: var(--im-sim); }
+
+// section label on landing
+.im-section-label {
+  @extend %im-eyebrow;
+  color: var(--im-fg-muted);
+  margin: 2.8rem 0 0.4rem;
+}
+
+// track cards — numbered like parts of a book, each with its curve glyph.
+// Flex so a ragged last row stretches instead of leaving an empty cell.
+.im-track-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 1rem 0 2.4rem;
+  border: 1px solid var(--im-border);
+  border-radius: var(--im-radius-md);
+  overflow: hidden;
+}
+.im-track-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 270px;   // wraps 3 + 2 at desktop widths; no orphan row
+  min-width: 0;
+  padding: 22px 20px 18px;
+  background: transparent;
+  border: 0;
+  border-right: 1px solid var(--im-border);
+  border-bottom: 1px solid var(--im-border);
+  margin: 0 -1px -1px 0;
+  text-decoration: none;
+  color: var(--im-fg-primary);
+  transition: background 150ms var(--im-ease);
+}
+.im-track-card:hover { background: var(--im-bg-elevated); }
+.im-track-num {
+  font-family: 'STIX Two Text', Georgia, serif;
+  font-size: 0.95rem;
+  color: var(--im-fg-muted);
+}
+.im-track-card .im-track-glyph { height: 40px; margin: 2px 0 4px; }
+.im-track-card .im-track-glyph svg { height: 100%; width: auto; display: block; }
+.im-track-card .im-track-glyph .g-ink { stroke: var(--im-fg-primary); }
+.im-track-card .im-track-glyph .g-blue { stroke: var(--im-accent); }
+.im-track-card .im-track-glyph .g-gray { stroke: var(--im-fg-muted); }
+.im-track-card .im-track-glyph .g-dot { fill: var(--im-sim); }
+.im-track-card h3 {
+  margin: 0;
+  font-size: 1.12rem;
+  font-family: 'STIX Two Text', Georgia, serif;
+  font-weight: 600;
+}
+.im-track-card p {
+  margin: 0;
+  color: var(--im-fg-secondary);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.im-track-card .im-track-meta {
+  @extend %im-eyebrow;
+  margin-top: auto;
+  padding-top: 14px;
+  color: var(--im-fg-muted);
+}
+.im-track-card:hover .im-track-meta { color: var(--im-sim); }
+
+// chapter index lists — a table of contents, not a bullet dump
+.im-chapter-list ul { list-style: none; padding-left: 0; margin: 0.4rem 0 1rem; }
+.im-chapter-list li {
+  padding: 7px 0;
+  border-bottom: 1px solid var(--im-border);
+}
+.im-chapter-list li:last-child { border-bottom: 0; }
+.im-chapter-list a { font-weight: 520; text-decoration: none; }
+.im-chapter-list a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 // ---- Motion / a11y --------------------------------------------------
 html { scroll-behavior: smooth; }
 a, button { -webkit-tap-highlight-color: transparent; }
-:focus-visible { outline: none; box-shadow: var(--im-ring); border-radius: 6px; }
+:focus-visible { outline: none; box-shadow: var(--im-ring); border-radius: var(--im-radius-sm); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

@@ -175,7 +175,7 @@ Plot.plot({
 })
 ```
 
-The dashed teal line is the steady state (zero gaps); the vertical dashed line marks the shock's arrival in period 2. Switch to a **supply** shock with ε = +5 — output and inflation now move in opposite directions.
+The dashed red line is the steady state (zero gaps); the vertical dashed line marks the shock's arrival in period 2. Switch to a **supply** shock with ε = +5 — output and inflation now move in opposite directions.
 :::
 
 ::: {.im-math-toggle}

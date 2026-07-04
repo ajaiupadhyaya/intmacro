@@ -66,7 +66,7 @@ Plot.plot({
 md`**Steady state (per effective worker):** $\tilde k^{*} =$ **${kstarSpt.toFixed(3)}**,  $\tilde y^{*} =$ **${ystarSpt.toFixed(3)}**. In the long run, output **per worker** grows at $g =$ **${(gSpt*100).toFixed(1)}%** per period, while **aggregate** output grows at $n+g =$ **${((nSpt+gSpt)*100).toFixed(1)}%**.`
 ```
 
-The blue line is capital per effective worker $\tilde k$, green is output per effective worker $\tilde y$, and the dashed lines are their steady-state targets. Slide $n$ up and the dashed targets drop — more mouths to equip means less capital each. Slide $g$ up and the targets *also* drop, yet the readout reminds you that per-worker income is now climbing at $g$ forever.
+The blue line is capital per effective worker $\tilde k$, red is output per effective worker $\tilde y$, and the dashed lines are their steady-state targets. Slide $n$ up and the dashed targets drop — more mouths to equip means less capital each. Slide $g$ up and the targets *also* drop, yet the readout reminds you that per-worker income is now climbing at $g$ forever.
 :::
 
 ## Core intuition

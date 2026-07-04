@@ -1,53 +1,41 @@
 /*-- scss:defaults --*/
 @import "_brand";
 
-$body-bg:    #f7f8fb;
-$body-color: #0f172a;
-$link-color: #4f46e5;
-$navbar-bg:  rgba(255,255,255,0.72);
+$body-bg:    #fbfaf7;
+$body-color: #1c2431;
+$link-color: #2757a5;
+$navbar-bg:  #fbfaf7;
 
-// Component color tokens consumed in components.scss
+// Component color tokens consumed in components.scss.
+// Identity: ink curves on warm paper; blue = the model, red = the annotation.
 :root {
-  --im-bg-page: #f7f8fb;
-  --im-bg-surface: #ffffff;
-  --im-bg-elevated: #fbfcfe;
-  --im-fg-primary: #0f172a;
-  --im-fg-secondary: #475569;
-  --im-fg-muted: #94a3b8;
-  --im-border: #e7e9f0;
-  --im-border-strong: #d4d8e3;
-  --im-accent: #4f46e5;
-  --im-accent-2: #7c6cff;
-  --im-accent-contrast: #ffffff;
-  --im-accent-soft: #eef0ff;
-  --im-sim: #0d9488;
-  --im-sim-soft: #ecfdf8;
-  --im-warn: #d97706;
-  --im-warn-soft: #fffbeb;
-  --im-danger: #dc2626;
-  --im-danger-soft: #fef2f2;
+  --im-bg-page: #fbfaf7;       // paper
+  --im-bg-surface: #fbfaf7;
+  --im-bg-elevated: #f3f1ea;   // a second sheet underneath
+  --im-fg-primary: #1c2431;    // ink
+  --im-fg-secondary: #4c5464;
+  --im-fg-muted: #8b8e94;      // graphite — also the dashed-reference gray in charts
+  --im-border: #e4e1d8;
+  --im-border-strong: #c9c5b8;
+  --im-accent: #2757a5;        // model blue: primary curves, links, interactive
+  --im-accent-2: #1d4079;
+  --im-accent-contrast: #fbfaf7;
+  --im-accent-soft: #ebf0f7;
+  --im-sim: #a63e2c;           // annotation red: equilibrium points, supply curves, active states
+  --im-sim-soft: #f7ede9;
+  --im-warn: #8f6a1e;          // ochre, self-check only
+  --im-warn-soft: #f6f0e0;
+  --im-danger: #a63e2c;
+  --im-danger-soft: #f7ede9;
 
-  // Surfaces & effects
-  --im-glass: rgba(255,255,255,0.72);
-  --im-grid-line: rgba(15,23,42,0.04);
-  --im-shadow-sm: 0 1px 2px rgba(15,23,42,0.04), 0 1px 3px rgba(15,23,42,0.06);
-  --im-shadow-md: 0 4px 12px rgba(15,23,42,0.06), 0 2px 4px rgba(15,23,42,0.04);
-  --im-shadow-lg: 0 18px 40px -12px rgba(15,23,42,0.18), 0 8px 16px -8px rgba(15,23,42,0.10);
-  --im-ring: 0 0 0 3px rgba(79,70,229,0.18);
+  --im-grid-line: rgba(28, 36, 49, 0.055);   // graph-paper grid inside sim panels
+  --im-shadow-tooltip: 0 6px 24px -8px rgba(28, 36, 49, 0.25);
+  --im-ring: 0 0 0 2px var(--im-bg-page), 0 0 0 4px var(--im-sim);
 
-  // Gradients
-  --im-grad-accent: linear-gradient(135deg, #4f46e5 0%, #7c6cff 55%, #a78bfa 100%);
-  --im-grad-hero: radial-gradient(1200px 500px at 12% -10%, rgba(124,108,255,0.18), transparent 60%),
-                  radial-gradient(900px 480px at 92% 0%, rgba(13,148,136,0.12), transparent 55%);
-  --im-hero-fg: #0f172a;
-  --im-hero-fg-soft: #475569;
-
-  // Geometry / motion
-  --im-radius-sm: 8px;
-  --im-radius-md: 12px;
-  --im-radius-lg: 18px;
-  --im-radius-xl: 24px;
-  --im-ease: cubic-bezier(0.16,1,0.3,1);
+  --im-radius-sm: 2px;
+  --im-radius-md: 3px;
+  --im-radius-lg: 4px;
+  --im-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /*-- scss:rules --*/

@@ -70,7 +70,7 @@ Plot.plot({
 })
 ```
 
-**Blue line** = intertemporal budget constraint; **green curve** = indifference curve at the optimum; **yellow square** = endowment point (y₁, y₂); **blue dot** = optimal bundle (c₁\*, c₂\*).
+**Blue line** = intertemporal budget constraint; **red curve** = indifference curve at the optimum; **gold square** = endowment point (y₁, y₂); **blue dot** = optimal bundle (c₁\*, c₂\*).
 :::
 
 ## Core intuition

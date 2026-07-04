@@ -52,7 +52,7 @@ Plot.plot({
 })
 ```
 
-The solid blue line is economy **A**; the dashed green line is economy **B**. Set A to a low level with a high growth rate and B to a high level with zero growth — then watch A overtake B.
+The solid blue line is economy **A**; the dashed red line is economy **B**. Set A to a low level with a high growth rate and B to a high level with zero growth — then watch A overtake B.
 :::
 
 ## Core intuition

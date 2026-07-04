@@ -90,11 +90,15 @@ format:
       dark: [theme/intmacro-dark.scss, theme/components.scss]
     toc: true
     toc-depth: 2
-    code-tools: true
+    code-tools: false
+    grid:
+      sidebar-width: 250px
+      body-width: 950px
+      margin-width: 210px
     include-in-header:
       - text: |
           <link rel="preconnect" href="https://fonts.googleapis.com">
-          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=STIX+Two+Math&display=swap" rel="stylesheet">
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=STIX+Two+Math&family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
     include-after-body:
       - theme/glossary-tooltips.js
       - theme/widget-fallback.js
