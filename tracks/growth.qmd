@@ -47,9 +47,9 @@ graph LR
 6. [Human Capital](../content/humancapital.qmd) — a second accumulable factor in the Solow framework.
 7. [The Convergence Hypothesis](../content/convergence_hypo.qmd) — when poorer economies do, and do not, catch up.
 8. [The Romer Model](../content/romer_model.qmd) — ideas, nonrivalry, and growth driven from within.
-9. [Scale Effects](../content/scale_effects.ipynb) — how population size influences the rate of innovation.
-10. [The Solow–Romer Hybrid](../content/hybrid_model.ipynb) — capital accumulation combined with endogenous ideas.
+9. [Scale Effects](../content/scale_effects.qmd) — how population size influences the rate of innovation.
+10. [The Solow–Romer Hybrid](../content/hybrid_model.qmd) — capital accumulation combined with endogenous ideas.
 11. [Growth Accounting](../content/growth_acc.qmd) — decomposing growth into capital, labor, and TFP.
-12. [Slowing Growth and Declining TFP](../content/slowinggrowth.ipynb) — what a falling rate of technological advance implies.
-13. [Robots vs. Labor](../content/robots.ipynb) — automation and substitution in a CES production model.
-14. [Solow Exercises & Case Studies](../content/solow_model.ipynb) — applied capstone problems for the block.
+12. [Slowing Growth and Declining TFP](../content/slowinggrowth.qmd) — what a falling rate of technological advance implies.
+13. [Robots vs. Labor](../content/robots.qmd) — automation and substitution in a CES production model.
+14. [Solow Exercises & Case Studies](../content/solow_model.qmd) — applied capstone problems for the block.

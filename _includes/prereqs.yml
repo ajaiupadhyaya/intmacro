@@ -109,3 +109,33 @@ realgdpacross:
   title: "Comparing GDP Across Countries"
   tldr: "Market exchange rates mislead; PPP prices make quantities comparable across countries."
   prereqs: [realvsnom]
+scale_effects:
+  track: growth
+  title: "Scale Effects in the Romer Model"
+  tldr: "In the Romer model more people means more researchers means faster growth — the scale effect, and the data's quarrel with it."
+  prereqs: [romer_model]
+hybrid_model:
+  track: growth
+  title: "The Solow-Romer Hybrid Model"
+  tldr: "Bolt Solow's capital accumulation onto Romer's idea growth: transition dynamics around a rising balanced-growth path."
+  prereqs: [solow_intro, romer_model]
+slowinggrowth:
+  track: growth
+  title: "Slowing Growth and Declining TFP"
+  tldr: "TFP growth has been slowing for decades. If ideas are getting harder to find, constant growth needs ever more researchers."
+  prereqs: [growth_acc]
+robots:
+  track: growth
+  title: "Robots vs. Labor"
+  tldr: "A CES production function where automation substitutes for workers: what rising robot productivity does to wages and the labor share."
+  prereqs: [cobb_d_prod]
+solow_model:
+  track: growth
+  title: "Solow Model: Exercises & Case Studies"
+  tldr: "Applied problems built on the Solow framework — work them with the simulators, then check your reasoning."
+  prereqs: [solow_intro]
+adas_model:
+  track: business_cycles
+  title: "AD-AS: Exercises & Case Studies"
+  tldr: "Applied problems using the dynamic AD-AS framework — shocks, policy rules, and the paths they trace."
+  prereqs: [adassim]

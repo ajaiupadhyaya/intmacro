@@ -24,7 +24,7 @@ graph LR
 
 1. [The IS Curve](../content/is_curve_model.qmd) — interest rates, demand, and goods-market equilibrium.
 2. [Dynamic AD–AS with a Taylor Rule](../content/adassim.qmd) — inflation and output dynamics under a policy rule, including how the economy absorbs demand and supply shocks.
-3. [AD–AS: Exercises & Case Studies](../content/adas_model.ipynb) — applied problems using the AD–AS framework.
+3. [AD–AS: Exercises & Case Studies](../content/adas_model.qmd) — applied problems using the AD–AS framework.
 4. [The Lucas Island Model](../content/lucas_island_model.qmd) — imperfect information as a source of real fluctuations.
 5. [Equilibrium Business Cycles with Persistence](../content/equilibrium_model.qmd) — propagation that stretches shocks over time.
 6. [The Real Business Cycle Model](../content/rbc_simulation.qmd) — fluctuations as the efficient response to productivity shocks.

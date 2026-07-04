@@ -1,0 +1,219 @@
+---
+title: "AD-AS: Exercises & Case Studies"
+subtitle: "Worked problems on demand shocks, supply shocks, and the policy dilemmas they create"
+---
+
+{{< include ../_includes/generated/adas_model-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — This is a practice chapter, not a theory chapter. You get a compact AD-AS adjustment simulator and a set of worked problems: demand shocks, supply shocks, policy responses, and two historical case studies (2008 and post-COVID inflation). For each one, set up the simulator, commit to an answer, then reveal the worked solution. The theory lives in the dynamic AD-AS chapter — here you drill it.
+:::
+
+## You'll be able to
+
+- Compute short-run impact effects and long-run equilibria (Y*, P*) for demand and supply shocks by hand, and confirm them in the simulator.
+- Diagnose a shock from the *co-movement* of output and prices — same direction means demand, opposite directions means supply — and pick the policy response that fits.
+- Map historical episodes (the Great Recession, post-COVID inflation) into AD-AS shifts and explain what the framework gets right about each.
+
+## Work with the model
+
+The workhorse for every exercise below is the notebook's dynamic AD-AS economy: a linear AD curve $Y = a - bP$, a vertical long-run AS at potential output $\bar{Y}$, and gradual price adjustment — prices rise when output runs above potential and fall when it runs below. Shocks are just changes to $a$ (demand) or $\bar{Y}$ (supply); the simulator traces the economy's period-by-period path back to long-run equilibrium.
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Set the sliders for each exercise — the output path and the AD-AS diagram update live
+:::
+
+```{ojs}
+//| echo: false
+viewof a_ax    = Inputs.range([80, 150], {value: 120, step: 5, label: "AD intercept a (demand)"})
+viewof b_ax    = Inputs.range([1, 30], {value: 10, step: 1, label: "AD slope b"})
+viewof ybar_ax = Inputs.range([80, 120], {value: 100, step: 1, label: "potential output Ȳ (supply)"})
+viewof c_ax    = Inputs.range([0.5, 20], {value: 8, step: 0.5, label: "price inertia c (λ = 1/c)"})
+viewof p0_ax   = Inputs.range([0.5, 3.0], {value: 1.0, step: 0.05, label: "initial price level P₀"})
+viewof T_ax    = Inputs.range([5, 50], {value: 20, step: 1, label: "periods T"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+// Y_t = a − b·P_t  (AD);  P_t = P_{t−1} + (1/c)·(Y_{t−1} − Ȳ)  (price adjustment),
+// with the notebook's floor P_t ≥ 0 kept intact.
+// Adaptations: default c raised 5 → 8 — the v1 default (b=10, c=5) sits exactly on the
+// stability boundary |1 − b/c| = 1, so the path oscillates forever without converging;
+// c = 8 gives |1 − b/c| = 0.25 (damped). P₀ slider extended to 3.0 for the recession
+// exercises. Everything else (equations, ranges, floor) is unchanged.
+adasSim_ax = {
+  const lam = 1.0 / c_ax;
+  const Y = [], P = [];
+  P[0] = p0_ax;
+  Y[0] = a_ax - b_ax * P[0];
+  for (let t = 1; t < T_ax; t++) {
+    P[t] = Math.max(P[t - 1] + lam * (Y[t - 1] - ybar_ax), 1e-6);
+    Y[t] = a_ax - b_ax * P[t];
+  }
+  const rows = [];
+  for (let t = 0; t < T_ax; t++) rows.push({t, Y: Y[t], P: P[t]});
+  return rows;
+}
+
+pstar_ax = (a_ax - ybar_ax) / b_ax
+
+adLine_ax = {
+  const ps = adasSim_ax.map(d => d.P).concat([pstar_ax, p0_ax]);
+  const lo = Math.max(Math.min(...ps) * 0.9, 0), hi = Math.max(...ps) * 1.1 + 0.1;
+  const pts = [];
+  for (let i = 0; i <= 60; i++) {
+    const P = lo + (hi - lo) * i / 60;
+    pts.push({P, Y: a_ax - b_ax * P});
+  }
+  return pts;
+}
+
+Plot.plot({
+  marginLeft: 50, height: 260,
+  x: {label: "time (periods) →"},
+  y: {grid: true, label: "output Y"},
+  marks: [
+    Plot.ruleY([ybar_ax], {stroke: "#9aa0a6", strokeDasharray: "4 4"}),
+    Plot.text([{t: T_ax - 1, Y: ybar_ax}], {x: "t", y: "Y", text: () => `Ȳ = ${ybar_ax}`, dy: -8, fill: "#9aa0a6", textAnchor: "end"}),
+    Plot.line(adasSim_ax, {x: "t", y: "Y", stroke: "var(--im-accent)", strokeWidth: 2}),
+    Plot.dot(adasSim_ax, {x: "t", y: "Y", r: 2.5, fill: "var(--im-accent)"})
+  ]
+})
+
+Plot.plot({
+  marginLeft: 50, height: 320,
+  x: {label: "output Y →"},
+  y: {grid: true, label: "price level P"},
+  marks: [
+    Plot.ruleX([ybar_ax], {stroke: "#9aa0a6", strokeDasharray: "4 4"}),
+    Plot.ruleY([pstar_ax], {stroke: "var(--im-sim)", strokeDasharray: "4 4"}),
+    Plot.line(adLine_ax, {x: "Y", y: "P", stroke: "var(--im-accent)", strokeWidth: 1.5}),
+    Plot.line(adasSim_ax, {x: "Y", y: "P", stroke: "#c77d2e", strokeWidth: 1.5}),
+    Plot.dot(adasSim_ax, {x: "Y", y: "P", r: 2.5, fill: "#c77d2e"}),
+    Plot.dot([adasSim_ax[0]], {x: "Y", y: "P", r: 5, fill: "var(--im-fg-primary)"}),
+    Plot.text([{Y: ybar_ax, P: pstar_ax}], {x: "Y", y: "P", text: () => `long run (Ȳ, P*) = (${ybar_ax}, ${pstar_ax.toFixed(2)})`, dy: -10, dx: 4, fill: "var(--im-sim)", textAnchor: "start"})
+  ]
+})
+```
+
+Top panel: output over time, with potential output Ȳ dashed in gray. Bottom panel: the same path in (Y, P) space — the blue line is the AD curve, the vertical gray dashes are the LRAS, and the orange dots trace the economy period by period from the black starting dot toward the long-run point (Ȳ, P*).
+:::
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (model, long-run equilibrium, stability)</summary>
+
+**The two equations**, simulated period by period:
+
+Aggregate demand:
+$$Y_t = a - b\,P_t$$
+
+Price adjustment (a Phillips-type rule, with speed $\lambda = 1/c$):
+$$P_t = P_{t-1} + \lambda\,(Y_{t-1} - \bar{Y})$$
+
+**Long-run equilibrium.** Prices stop moving when $Y = \bar{Y}$, so the long-run price level solves $\bar{Y} = a - b\,P^*$:
+$$P^* = \frac{a - \bar{Y}}{b}.$$
+Every exercise below uses this one formula for the long run; the short-run impact effect is just the AD curve evaluated at the *pre-shock* price level.
+
+**Parity check** (defaults $a = 120$, $b = 10$, $\bar{Y} = 100$, $c = 8$, $P_0 = 1$):
+$$Y_0 = 120 - 10(1) = 110, \quad P_1 = 1 + \tfrac{1}{8}(110 - 100) = 2.25, \quad Y_1 = 120 - 10(2.25) = 97.5,$$
+converging to $(\bar{Y}, P^*) = (100,\ 2.0)$.
+
+**Stability.** Substituting AD into the price rule gives a first-order difference equation in $P$:
+$$P_t = \left(1 - \tfrac{b}{c}\right) P_{t-1} + \tfrac{a - \bar{Y}}{c}.$$
+Convergence requires $\left|1 - b/c\right| < 1$, i.e. $c > b/2$. With $b = 10$: $c > 10$ gives monotone convergence, $5 < c < 10$ gives damped oscillations, $c = 5$ (the v1 notebook's default) oscillates forever, and $c < 5$ is unstable. This is why the simulator defaults to $c = 8$ — verified numerically before hardcoding.
+
+</details>
+:::
+
+## Exercises
+
+Work each problem on paper first, set up the simulator to check, and only then reveal the answer. The default parameters are $a = 120$, $b = 10$, $\bar{Y} = 100$, $c = 8$ unless a problem says otherwise; "start in long-run equilibrium" means $P_0 = P^* = 2.0$.
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · demand shock</div>
+
+The economy starts in long-run equilibrium ($a = 120$, $b = 10$, $\bar{Y} = 100$, so $P_0 = 2.0$ and $Y = 100$). Consumer confidence surges and autonomous spending jumps from $a = 120$ to $a = 140$. Compute: (i) output in the impact period, before prices move; (ii) the new long-run equilibrium $(Y, P^*)$; (iii) the price level one period after impact (with $c = 8$).
+
+<details><summary>Reveal answer</summary>
+(i) On impact prices are still at 2.0, so output jumps along the new AD curve: $Y_0 = 140 - 10(2.0) = \mathbf{120}$ — a boom of +20 above potential.
+(ii) In the long run output must return to $\bar{Y} = 100$; the entire shock ends up in prices: $P^* = (140 - 100)/10 = \mathbf{4.0}$, double the old level.
+(iii) $P_1 = 2.0 + \tfrac{1}{8}(120 - 100) = \mathbf{4.5}$ — the price level actually *overshoots* its new long-run value (output correspondingly undershoots: $Y_1 = 140 - 45 = 95$), then the damped oscillation settles onto $(100, 4.0)$. Check it in the simulator: set $P_0 = 2.0$ and $a = 140$. The lesson: a demand shock buys a temporary boom and a permanent price increase.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · supply shock</div>
+
+Back to long-run equilibrium at $(100, 2.0)$. An oil-price spike permanently cuts potential output from $\bar{Y} = 100$ to $\bar{Y} = 90$ ($a$ stays at 120). Compute: (i) output in the impact period; (ii) the new long run $(Y, P^*)$; (iii) output one period after impact. What is the striking difference from Q1 in *when* the pain arrives?
+
+<details><summary>Reveal answer</summary>
+(i) The AD curve hasn't moved and prices haven't adjusted yet, so impact-period output is *unchanged*: $Y_0 = 120 - 10(2.0) = \mathbf{100}$ — but that is now 10 units *above* the new potential.
+(ii) Long run: $P^* = (120 - 90)/10 = \mathbf{3.0}$ and $Y = \bar{Y} = \mathbf{90}$. Prices up 50%, output down 10 — stagflation.
+(iii) $P_1 = 2.0 + \tfrac{1}{8}(100 - 90) = 3.25$, so $Y_1 = 120 - 32.5 = \mathbf{87.5}$, briefly *below* the new potential before settling at 90.
+Unlike the demand shock, nothing visible happens on impact — the damage arrives through the price-adjustment channel over the following periods, as the overheated economy bids up prices and slides down the fixed AD curve. Verify with $\bar{Y} = 90$, $P_0 = 2.0$.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q3 · policy response</div>
+
+The economy is in a recession: $a = 120$, $b = 10$, $\bar{Y} = 100$, but the price level is stuck at $P_0 = 2.5$, so $Y_0 = 120 - 25 = 95$ — a negative [output gap]{.im-glossary-term} of 5. A stimulus package raises $a$. (i) How large must the new $a$ be to close the gap *immediately*, in the impact period? (ii) What is the long-run cost of doing so, compared with waiting for prices to adjust on their own?
+
+<details><summary>Reveal answer</summary>
+(i) You need $Y = 100$ at the current price level: $a' - 10(2.5) = 100 \Rightarrow a' = \mathbf{125}$, i.e. a stimulus of $\Delta a = +5$ — exactly the size of the gap, because the gap is what's left of demand at the stuck price level.
+(ii) With $a' = 125$ the long-run price level becomes $P^* = (125 - 100)/10 = \mathbf{2.5}$ — the stimulus *validates* the too-high price level and makes it permanent. Without policy, the same model heals itself: the negative gap pulls prices down from 2.5 toward the old $P^* = 2.0$ and output climbs back to 100 — but only after several periods of recession. That is the classic trade-off: stimulus buys speed at the cost of a permanently higher price level; patience buys price stability at the cost of a longer slump.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q4 · case study — the Great Recession (2008–09)</div>
+
+Model the 2008 financial crisis as a pure demand shock: from long-run equilibrium at $(100, 2.0)$, collapsing confidence and credit cut $a$ from 120 to 110. (i) Compute the impact on output and the no-policy long-run outcome. (ii) The model says the economy self-corrects — through what mechanism, and why did policymakers in 2008–09 refuse to wait for it? (iii) Why was monetary policy alone not enough?
+
+<details><summary>Reveal answer</summary>
+(i) Impact: $Y_0 = 110 - 10(2.0) = \mathbf{90}$ — output drops 10 below potential while prices barely move, matching the actual pattern of 2008–09 (a collapse in real activity with only mild disinflation at first). No-policy long run: $P^* = (110 - 100)/10 = \mathbf{1.0}$ — the model restores $Y = 100$ only after the price level *halves*.
+(ii) The self-correction mechanism is **deflation**: the negative gap grinds prices down until the existing demand buys the full potential output. Real-world policymakers would not wait because deflation is slow (years of high unemployment) and dangerous — falling prices raise real debt burdens and can feed a spiral the simple model omits. The alternative is to restore $a$ directly: rate cuts, then fiscal stimulus (the 2009 Recovery Act), pushing AD back so output recovers *without* deflation.
+(iii) The Fed cut its policy rate to essentially zero by December 2008 and could cut no further — the **zero lower bound**. In this chapter's model that is a cap on how much monetary policy can raise $a$; the remaining gap had to be closed by fiscal stimulus and unconventional tools. Note the co-movement signature: output and prices moved (weakly) *together* — the fingerprint of a demand shock, which is what makes aggressive stimulus the textbook response.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q5 · case study — post-COVID inflation (2021–23)</div>
+
+Model the post-pandemic episode as *two simultaneous shocks* hitting the long-run equilibrium $(100, 2.0)$: large fiscal transfers raise demand from $a = 120$ to $a = 130$, while supply-chain disruptions cut potential from $\bar{Y} = 100$ to $\bar{Y} = 95$. (i) Compute impact output and the new long run. (ii) Use the result to explain why this inflation was so much larger and more persistent than forecasters expected. (iii) What made the policy problem harder than 2008?
+
+<details><summary>Reveal answer</summary>
+(i) Impact: $Y_0 = 130 - 10(2.0) = \mathbf{110}$ — a boom 15 above the new potential of 95. Long run: $P^* = (130 - 95)/10 = \mathbf{3.5}$ with $Y = 95$. Check it: set $a = 130$, $\bar{Y} = 95$, $P_0 = 2.0$.
+(ii) Each shock alone is moderate — $a = 130$ by itself gives $P^* = 3.0$; $\bar{Y} = 95$ by itself gives $P^* = 2.5$. But both push the price level the *same* direction, and together they compound: $P^*$ rises 75% (2.0 → 3.5). Forecasters who modeled only one shock — "transitory" supply disruptions *or* stimulus — systematically underpredicted; and because a large chunk of the price rise is the new *long-run equilibrium*, it could not simply fade on its own.
+(iii) In 2008 output and inflation both fell — one problem, one direction, so stimulus fixed both. In 2021–23 output boomed while inflation surged, and the supply component posed the classic dilemma: tightening (cutting $a$ back) fights inflation but deepens the eventual output loss, while accommodating cements the higher $P^*$. This demand-vs-supply decomposition is exactly the diagnostic the dynamic AD-AS chapter's [Taylor rule]{.im-glossary-term} experiments drill: the co-movement of output and inflation tells you which shock you face and how sharp the trade-off is.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q6 · adjustment dynamics</div>
+
+Fix $a = 120$, $b = 10$, $\bar{Y} = 100$, $P_0 = 1.0$ and vary only the price-inertia parameter $c$. Predict the shape of the adjustment path for $c = 12$, $c = 8$, $c = 5$, and $c = 4$, then verify in the simulator. (Hint: the dynamics reduce to $P_t = (1 - b/c)\,P_{t-1} + \text{const}$.)
+
+<details><summary>Reveal answer</summary>
+The coefficient $1 - b/c$ controls everything, exactly like the $\lambda\alpha\varphi_\pi$ condition in the dynamic AD-AS chapter:
+
+- $c = 12$: coefficient $= +0.17$ — **smooth monotone convergence** to $(100, 2.0)$; the gap shrinks ~83% per period.
+- $c = 8$: coefficient $= -0.25$ — **damped oscillation**; $P$ overshoots to 2.25 in period 1, then converges. (Verified: $|P - P^*|$ runs 1 → 0.25 → 0.06 → 0.02 → …)
+- $c = 5$: coefficient $= -1$ exactly — the **stability boundary**: the economy oscillates between the same two points forever, never converging. This is the v1 notebook's default, which is why this page ships with $c = 8$.
+- $c = 4$: coefficient $= -1.5$ — **unstable**: deviations grow each period until the price level slams into its zero floor, after which the economy cycles permanently between a boom and a slump.
+
+Counter-intuitive punchline: *faster* price adjustment (smaller $c$) is not always better. Prices that respond too violently to the output gap overshoot so hard they destabilize the economy — flexibility helps only up to the point $c > b/2$.
+</details>
+</div>
+
+## Common mistakes
+
+::: {.im-confusion}
+**Confusing movements *along* AD with *shifts of* AD.** During the adjustment after any shock, output changes every period — but the economy is sliding *along a fixed AD curve* as prices adjust ($Y_t = a - bP_t$ with $a$ constant). Only a change in $a$ (confidence, fiscal policy, monetary policy) *shifts* the curve. In Q2, output falls for several periods with no demand shift at all — students who see falling output and reflexively draw AD shifting left get the diagnosis, and the policy call, wrong.
+:::
+
+::: {.im-confusion}
+**Treating a supply shock as a demand shock because "output fell either way."** Output falls in both cases, so output alone cannot identify the shock — the price co-movement can. Demand shock: output and prices move in the *same* direction (Q4: both fell in 2008). Supply shock: *opposite* directions (Q2/Q5: output down, prices up). Misdiagnosing matters because the remedies conflict — stimulus is the right answer to 2008 but would have poured fuel on 2021–23's inflation.
+:::
+
+{{< include ../_includes/generated/adas_model-related.md >}}

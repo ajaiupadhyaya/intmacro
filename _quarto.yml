@@ -6,7 +6,6 @@ project:
   render:
     - "index.qmd"
     - "content/*.qmd"
-    - "content/*.ipynb"
     - "tracks/*.qmd"
     - "_glossary.qmd"
     - "404.qmd"
@@ -71,13 +70,13 @@ website:
           - "content/solow_pop&_tech_growth.qmd"
           - content/humancapital.qmd
           - content/convergence_hypo.qmd
-          - content/solow_model.ipynb
+          - content/solow_model.qmd
           - content/romer_model.qmd
-          - content/scale_effects.ipynb
-          - content/hybrid_model.ipynb
+          - content/scale_effects.qmd
+          - content/hybrid_model.qmd
           - content/growth_acc.qmd
-          - content/slowinggrowth.ipynb
-          - content/robots.ipynb
+          - content/slowinggrowth.qmd
+          - content/robots.qmd
       - section: "Intertemporal Choice & Labor"
         contents:
           - content/two_period_consumption.qmd
@@ -87,7 +86,7 @@ website:
         contents:
           - content/is_curve_model.qmd
           - content/adassim.qmd
-          - content/adas_model.ipynb
+          - content/adas_model.qmd
           - content/lucas_island_model.qmd
           - content/equilibrium_model.qmd
           - content/rbc_simulation.qmd
@@ -112,7 +111,6 @@ format:
           <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=STIX+Two+Math&family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
     include-after-body:
       - theme/glossary-tooltips.js
-      - theme/widget-fallback.js
 
 execute:
   freeze: auto

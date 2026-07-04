@@ -1,0 +1,173 @@
+---
+title: "Robots vs. Labor: A CES Production Model"
+subtitle: "Whether automation raises or flattens wages comes down to one parameter — the elasticity of substitution"
+---
+
+{{< include ../_includes/generated/robots-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — The CES production function $Y = A[\beta R^{\rho} + (1-\beta)L^{\rho}]^{1/\rho}$ lets robots and labor be *substitutes* ($\sigma > 1$) or *complements* ($\sigma < 1$), with Cobb-Douglas as the knife-edge case $\sigma = 1$. Under the very same robot boom, wages soar when robots complement workers and stagnate when robots replace them. Which world we live in is an empirical question — not something the math decides.
+:::
+
+## You'll be able to
+
+- Read $\sigma = 1/(1-\rho)$ off the CES function and say what "substitutes" vs. "complements" means for two inputs.
+- Predict what sustained robot growth does to wages and labor's income share in the $\sigma > 1$ world versus the $\sigma < 1$ world.
+- Explain why Cobb-Douglas ($\sigma = 1$) is the special case where income shares never move, no matter how many robots arrive.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Pick a substitution parameter ρ and watch what a 30-year robot boom does to the wage
+:::
+
+```{ojs}
+//| echo: false
+viewof beta_rb = Inputs.range([0.05, 0.95], {value: 0.5, step: 0.05, label: "robot share β"})
+viewof rho_rb  = Inputs.range([-5, 0.9], {value: -1, step: 0.1, label: "substitution ρ (σ = 1/(1−ρ))"})
+viewof gR_rb   = Inputs.range([0, 0.10], {value: 0.04, step: 0.005, label: "robot growth gR"})
+viewof gL_rb   = Inputs.range([0, 0.05], {value: 0.01, step: 0.005, label: "labor growth gL"})
+viewof T_rb    = Inputs.range([10, 100], {value: 30, step: 1, label: "years T"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+// Y = A [β R^ρ + (1−β) L^ρ]^(1/ρ), with the notebook's Cobb-Douglas fallback when |ρ| < 1e-6.
+// A, R0, L0 fixed at the notebook defaults (A = 1, R0 = 1, L0 = 100).
+A_rb  = 1.0
+R0_rb = 1.0
+L0_rb = 100.0
+
+sigma_rb = Math.abs(rho_rb) < 1e-6 ? 1 : 1 / (1 - rho_rb)
+
+Yces_rb = (R, L, rho) => {
+  if (Math.abs(rho) < 1e-6) return A_rb * Math.pow(R, beta_rb) * Math.pow(L, 1 - beta_rb)
+  return A_rb * Math.pow(beta_rb * Math.pow(R, rho) + (1 - beta_rb) * Math.pow(L, rho), 1 / rho)
+}
+
+wage_rb = (R, L, rho) => {
+  if (Math.abs(rho) < 1e-6) return A_rb * (1 - beta_rb) * Math.pow(R, beta_rb) * Math.pow(L, -beta_rb)
+  const B = beta_rb * Math.pow(R, rho) + (1 - beta_rb) * Math.pow(L, rho)
+  return A_rb * (1 - beta_rb) * Math.pow(L, rho - 1) * Math.pow(B, 1 / rho - 1)
+}
+
+laborShare_rb = (R, L, rho) => {
+  if (Math.abs(rho) < 1e-6) return 1 - beta_rb
+  const B = beta_rb * Math.pow(R, rho) + (1 - beta_rb) * Math.pow(L, rho)
+  return (1 - beta_rb) * Math.pow(L, rho) / B
+}
+
+path_rb = {
+  const w0   = wage_rb(R0_rb, L0_rb, rho_rb)
+  const w0cd = wage_rb(R0_rb, L0_rb, 0)
+  const pts = []
+  for (let t = 0; t <= T_rb; t++) {
+    const R = R0_rb * Math.pow(1 + gR_rb, t)
+    const L = L0_rb * Math.pow(1 + gL_rb, t)
+    pts.push({
+      t,
+      wIndex:   wage_rb(R, L, rho_rb) / w0,
+      wIndexCD: wage_rb(R, L, 0) / w0cd,
+      share:    laborShare_rb(R, L, rho_rb),
+      Y:        Yces_rb(R, L, rho_rb)
+    })
+  }
+  return pts
+}
+
+end_rb = path_rb[path_rb.length - 1]
+
+Plot.plot({
+  marginLeft: 55,
+  marginRight: 70,
+  x: {label: "time (years) →"},
+  y: {label: "real wage index w(t)/w(0)", grid: true},
+  marks: [
+    Plot.ruleY([1], {stroke: "#9aa0a6", strokeOpacity: 0.5}),
+    Plot.line(path_rb, {x: "t", y: "wIndexCD", stroke: "#9aa0a6", strokeDasharray: "4 4", strokeWidth: 1.5}),
+    Plot.line(path_rb, {x: "t", y: "wIndex", stroke: "var(--im-accent)", strokeWidth: 2.5}),
+    Plot.text([{t: end_rb.t, w: end_rb.wIndex}], {x: "t", y: "w", text: d => `σ = ${sigma_rb.toFixed(2)}`, dx: 8, textAnchor: "start", fill: "var(--im-accent)"}),
+    Plot.text([{t: end_rb.t, w: end_rb.wIndexCD}], {x: "t", y: "w", text: d => "σ = 1", dx: 8, textAnchor: "start", fill: "#9aa0a6"})
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+md`With **σ = ${sigma_rb.toFixed(2)}** ${sigma_rb > 1 ? "(substitutes)" : sigma_rb < 1 ? "(complements)" : "(Cobb-Douglas)"}: after **${T_rb} years** the wage index is **${end_rb.wIndex.toFixed(2)}** (dashed gray Cobb-Douglas benchmark: ${end_rb.wIndexCD.toFixed(2)}), labor's income share moved from **${(path_rb[0].share * 100).toFixed(1)}%** to **${(end_rb.share * 100).toFixed(1)}%**, and total output reached **Y = ${end_rb.Y.toFixed(1)}**.`
+```
+
+The **blue** curve is the real wage (marginal product of labor) under your chosen σ, normalized to 1 at date 0. The **dashed gray** curve is the same robot boom pushed through the Cobb-Douglas benchmark (σ = 1).
+:::
+
+## Core intuition
+
+The CES function is a dial that Cobb-Douglas doesn't have. Cobb-Douglas hard-wires the elasticity of substitution to exactly 1: however many robots arrive, relative price movements exactly offset relative quantity movements, so labor's share of income never budges. CES frees that dial — one parameter, $\rho$, sets $\sigma = 1/(1-\rho)$, and as $\rho \to 0$ the CES form collapses back to Cobb-Douglas with [total factor productivity]{.im-glossary-term} $A$ scaling everything proportionally. Everything interesting about automation lives in whether σ sits above or below 1.
+
+When robots and labor are **substitutes** ($\sigma > 1$, i.e. $\rho > 0$), a robot is a rival for your job: firms can swap one input for the other easily, so as robot stocks grow and get cheap, the extra output they generate does not have to flow through workers. In the simulator, the wage curve goes nearly flat even while total output booms — labor's share of income drifts down. Push $\sigma$ toward infinity and robots and labor become perfectly interchangeable; the wage is pinned by what a robot costs.
+
+When they are **complements** ($\sigma < 1$, i.e. $\rho < 0$), a robot is a tool that needs you: each input has [diminishing returns]{.im-glossary-term} on its own, and neither can do much without the other. A robot boom then makes the still-scarce human hands *more* valuable, so labor demand and wages rise faster than they would under Cobb-Douglas. Nothing in the algebra tells you which world we are in — σ is an empirical quantity, and the evidence differs across tasks, industries, and time horizons. That is exactly why the automation debate is genuinely open.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math</summary>
+
+The CES production function with robots $R$ and labor $L$:
+$$Y = A\left[\beta R^{\rho} + (1-\beta)L^{\rho}\right]^{1/\rho}, \qquad \rho \le 1,\ \rho \neq 0, \qquad \sigma = \frac{1}{1-\rho}.$$
+
+**Cobb-Douglas limit.** As $\rho \to 0$ (so $\sigma \to 1$), taking logs and applying L'Hôpital's rule gives
+$$\lim_{\rho \to 0} Y = A\,R^{\beta}L^{1-\beta},$$
+which is exactly the Cobb-Douglas form with capital share $\beta$. As $\rho \to 1$, $\sigma \to \infty$ (perfect substitutes, $Y = A[\beta R + (1-\beta)L]$); as $\rho \to -\infty$, $\sigma \to 0$ (perfect complements, Leontief).
+
+**Marginal product of labor (the wage).** Writing $B = \beta R^{\rho} + (1-\beta)L^{\rho}$ so $Y = AB^{1/\rho}$:
+$$w = \frac{\partial Y}{\partial L} = A(1-\beta)\,L^{\rho-1}\,B^{\frac{1}{\rho}-1}.$$
+
+**Labor's share of income.** Multiply by $L/Y$:
+$$s_L = \frac{wL}{Y} = \frac{(1-\beta)L^{\rho}}{\beta R^{\rho} + (1-\beta)L^{\rho}}.$$
+As $R/L \to \infty$: if $\rho > 0$ ($\sigma > 1$) the $\beta R^{\rho}$ term dominates and $s_L \to 0$; if $\rho < 0$ ($\sigma < 1$) then $R^{\rho} \to 0$ and $s_L \to 1$. At $\rho = 0$ ($\sigma = 1$), $s_L = 1-\beta$ — constant forever, the Cobb-Douglas signature.
+
+</details>
+:::
+
+## What the simulator showed
+
+At the defaults — β = 0.5, gR = 4%, gL = 1%, **ρ = −1** (σ = 0.5, complements), T = 30 — the robot stock more than triples relative to labor, and the wage index climbs to **5.63**, far above the dashed Cobb-Douglas benchmark of **1.55**: scarce human hands become precious as their robot partners multiply, and labor's share *rises* (from 1.0% to 2.4% with these initial stocks — the direction, not the level, is the lesson; the level just reflects starting with 1 robot per 100 workers). Flip **ρ to +0.5** (σ = 2, substitutes) and the same boom leaves the wage index at just **1.05** while total output explodes to Y ≈ 45 — growth without wage gains, and labor's share falls (90.9% → 86.6%). Set **ρ = 0** and the blue curve lands exactly on the gray one: Cobb-Douglas, shares frozen.
+
+## Common confusions
+
+::: {.im-confusion}
+**"Automation lowers wages — the model proves it."** No. The model proves it *can*, if σ > 1. With σ < 1 the identical robot boom *raises* wages more than balanced growth would, because complements make the remaining human input more valuable. The sign of the effect is an empirical question about σ, not a theorem.
+:::
+
+::: {.im-confusion}
+**"Output boomed, so workers must be better off."** Not necessarily. In the σ = 2 run, output rose more than forty-fold from its robot-scarce start while the wage gained only 5% over 30 years. Who captures the output gains depends on marginal products, and with high substitutability the gains accrue to robot owners — that is exactly what a falling labor share means.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+In the CES model, robots get steadily better and more numerous. Under which condition does labor's share of income *rise*?
+
+<details><summary>a) σ &gt; 1 — robots and labor are substitutes</summary>
+No — with easy substitution, the growing input crowds labor out of the income distribution; labor's share falls toward zero.
+</details>
+<details><summary>b) σ &lt; 1 — robots and labor are complements</summary>
+**Correct**. When inputs are poor substitutes, the relatively scarce input (labor) becomes more valuable as robots accumulate: $s_L = (1-\beta)L^{\rho}/[\beta R^{\rho} + (1-\beta)L^{\rho}] \to 1$ as $R/L \to \infty$ when $\rho < 0$.
+</details>
+<details><summary>c) σ = 1 — the Cobb-Douglas case</summary>
+No — at σ = 1 labor's share is locked at $1-\beta$ no matter what happens to robots. That constancy is the defining feature of Cobb-Douglas.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Leave the simulator at its defaults: **β = 0.5, ρ = −1 (σ = 0.5), gR = 4%, gL = 1%, T = 30**. Roughly what wage index does the blue curve reach at year 30, and where does the dashed gray Cobb-Douglas benchmark end up?
+
+<details><summary>Reveal answer</summary>
+The blue curve reaches a wage index of about **5.63** — the wage more than quintuples — while the gray σ = 1 benchmark ends at about **1.55**. Same robot boom, wildly different wage outcomes: that gap is entirely the work of σ. (Flip ρ to +0.5 and the blue curve ends at ≈ **1.05**, *below* the benchmark.)
+</details>
+</div>
+
+{{< include ../_includes/generated/robots-related.md >}}

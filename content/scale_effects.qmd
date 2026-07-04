@@ -1,0 +1,142 @@
+---
+title: "Scale Effects in the Romer Model"
+subtitle: "Why the model says bigger countries should grow faster — and why the data says otherwise"
+---
+
+{{< include ../_includes/generated/scale_effects-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — In the Romer model the growth rate is g = z̄ℓL̄: linear in population. Double the number of people and — holding the research share fixed — you double the number of researchers, and because ideas are nonrival you double *everyone's* growth rate, forever. That is the *scale effect*, and it is the model's sharpest testable prediction. It fails: researchers have multiplied twenty-fold since the 1930s while U.S. growth has sat near 2% per year. The semi-endogenous fix (Jones) keeps the ideas engine but drops the knife-edge that produces the scale effect.
+:::
+
+## You'll be able to
+
+- State the scale-effect prediction g = z̄ℓL̄ and explain why nonrivalry makes growth proportional to the *number* of idea-makers.
+- Confront the prediction with the data: researchers exploded, growth rates did not — and say why that is a problem for the level-of-population term.
+- Sketch the semi-endogenous escape hatch: when ideas get harder to find (φ < 1), population *growth*, not population *level*, sustains growth.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — the predicted growth rate for every country size updates; the red dots compare a small country with one 10× its size
+:::
+
+```{ojs}
+//| echo: false
+viewof zbar_se = Inputs.range([0.0001, 0.002], {value: 0.0005, step: 0.0001, label: "idea productivity z̄"})
+viewof ell_se  = Inputs.range([0.01, 0.50], {value: 0.10, step: 0.01, label: "research share ℓ"})
+viewof Lmax_se = Inputs.range([200, 5000], {value: 1000, step: 100, label: "largest population L̄"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+// prediction:  g_Y = g_A = z̄·ℓ·L̄   (researchers L_A = ℓ·L̄; growth is linear in scale)
+curve_se = {
+  const nPts = 30, Lmin = 10;
+  const pts = [];
+  for (let i = 0; i < nPts; i++) {
+    const L = Lmin + (Lmax_se - Lmin) * i / (nPts - 1);
+    pts.push({L, g: zbar_se * ell_se * L * 100});
+  }
+  return pts;
+}
+
+small_se = ({L: Lmax_se / 10, g: zbar_se * ell_se * (Lmax_se / 10) * 100})
+large_se = ({L: Lmax_se, g: zbar_se * ell_se * Lmax_se * 100})
+
+Plot.plot({
+  marginLeft: 55,
+  marginRight: 20,
+  x: {label: "population / labor force L̄ →"},
+  y: {label: "predicted long-run growth g (%/yr)", grid: true},
+  marks: [
+    Plot.ruleY([2], {stroke: "#9aa0a6", strokeDasharray: "4 4"}),
+    Plot.text([{L: Lmax_se * 0.02, g: 2}], {x: "L", y: "g", text: () => "U.S. long-run growth ≈ 2%/yr", dy: -8, textAnchor: "start", fill: "#9aa0a6"}),
+    Plot.line(curve_se, {x: "L", y: "g", stroke: "var(--im-accent)", strokeWidth: 2}),
+    Plot.dot(curve_se, {x: "L", y: "g", r: 2, fill: "var(--im-accent)"}),
+    Plot.dot([small_se, large_se], {x: "L", y: "g", r: 5, fill: "var(--im-sim)"}),
+    Plot.text([small_se], {x: "L", y: "g", text: d => `small: g = ${d.g.toFixed(2)}%/yr`, dx: 8, dy: -10, textAnchor: "start", fill: "var(--im-sim)"}),
+    Plot.text([large_se], {x: "L", y: "g", text: d => `10× larger: g = ${d.g.toFixed(2)}%/yr`, dx: -8, dy: 16, textAnchor: "end", fill: "var(--im-sim)"})
+  ]
+})
+```
+
+Each blue dot is a hypothetical country; the line is the Romer prediction g = z̄ℓL̄. The two red dots mark a small country and one ten times its size — the larger one is predicted to grow exactly ten times faster, forever. The dashed gray line is the sobering benchmark: actual U.S. growth has hovered near 2%/yr for about 150 years, for a population that grew more than four-fold.
+:::
+
+## Core intuition
+
+The scale effect follows directly from the [Romer model](romer_model.qmd)'s two building blocks. Ideas are nonrival, so a new idea raises the productivity of *every* worker at once — its social payoff scales with the whole economy. And ideas come from researchers: with a fraction ℓ of the population L̄ in research, the flow of new ideas is proportional to ℓL̄. Put the two together and the growth rate g = z̄ℓL̄ is *linear in population*. Twice the people means twice the idea-makers, and because nobody has to share an idea the way they'd share a machine, twice the idea-makers means twice the growth rate for everyone. Unlike capital accumulation, there are no [diminishing returns]{.im-glossary-term} to dilute the effect — [total factor productivity]{.im-glossary-term} itself is what's being produced.
+
+The prediction is admirably sharp, and the data flatly reject it. Charles Jones's famous critique: the number of scientists and engineers in R&D in the U.S. and other advanced economies grew roughly *twenty-fold* over the postwar era, and world population quadrupled over the twentieth century — yet growth rates of output per person did not rise at all, let alone proportionally. U.S. growth has been strikingly stable near 2% per year since the late 1800s. Nor do bigger countries systematically outgrow smaller ones: India did not persistently outgrow Denmark by virtue of its billion people. (Part of that cross-country failure is that ideas cross borders — the relevant scale is closer to the researching world than to any one country — but even at world scale, the time-series version of the prediction fails.)
+
+The escape hatch: if new ideas get progressively harder to find as the stock of knowledge grows (φ < 1 in the idea production function), then a growing *level* of research effort is needed just to sustain a constant growth rate — so long-run growth is tied to population *growth*, not population *level*, which is Jones's semi-endogenous growth model.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full derivation)</summary>
+
+**Recap of the growth rate.** Researchers are a constant share of the population, $L_{at} = \ell \bar L$, and new ideas are produced by researchers standing on the existing stock:
+$$\Delta A_{t+1} = \bar z\, A_t L_{at} = \bar z\, \ell \bar L\, A_t \quad\Longrightarrow\quad g_A = \frac{\Delta A_{t+1}}{A_t} = \bar z\, \ell\, \bar L.$$
+Since output per person is $y_t = A_t(1-\ell)$, it inherits the same growth rate: $g_{y} = g_A = \bar z \ell \bar L$.
+
+**The scale-effect comparative static.** Differentiate with respect to scale:
+$$\frac{\partial g}{\partial \bar L} = \bar z\, \ell > 0, \qquad \frac{g(2\bar L)}{g(\bar L)} = 2.$$
+Growth is *linear* in population: doubling $\bar L$ permanently doubles $g$. That is the relationship the simulator plots — a straight line through the origin in $(\bar L, g)$ space.
+
+**What breaks empirically.** Two versions of the test, both failed:
+
+1. *Time series.* If population grows at rate $n > 0$, then $g_{A,t} = \bar z \ell L_t$ grows without bound — growth should have been visibly *accelerating* for a century. Instead, research employment rose roughly twenty-fold while U.S. per-capita growth stayed near 2%/yr (Jones 1995).
+2. *Cross section.* Countries with larger $L$ should grow permanently faster, all else equal. They don't — though this test is weakened by ideas flowing across borders.
+
+**The semi-endogenous fix.** Generalize the idea production function:
+$$\Delta A_{t+1} = \bar z\, L_{at}\, A_t^{\phi}, \qquad \phi < 1 \text{ ("fishing out": ideas get harder to find)}.$$
+Along a balanced growth path $g_A$ is constant, which requires $\bar z L_{at} A_t^{\phi-1}$ constant, i.e. research effort growing fast enough to offset $A^{\phi-1}$ shrinking. With population growth $n$, this pins down
+$$g_A = \frac{n}{1-\phi}.$$
+The *level* of population now affects only the *level* of income; long-run growth depends on population **growth**. The baseline Romer model is the knife-edge $\phi = 1$, where the scale effect is at its starkest.
+
+</details>
+:::
+
+## What the simulator showed
+
+At the default settings (z̄ = 0.0005, ℓ = 0.10, largest L̄ = 1000), the prediction is a straight line through the origin: the small country (L̄ = 100) grows at **0.50%/yr** and the country ten times larger grows at exactly **5.00%/yr** — ten times the population, ten times the growth rate, forever. Against the gray 2%/yr benchmark, every country with L̄ above 400 is predicted to beat 150 years of U.S. experience just by being populous. Doubling the research share to ℓ = 0.20 tilts the whole line up — the large red dot jumps to 10.00%/yr and the 2% threshold falls to L̄ = 200. Nothing you can do with the sliders changes the line's essential shape: growth *always* rises linearly with scale. That relentless linearity is exactly what the data refuse to show, and it is why the simple model needed fixing rather than tuning.
+
+## Common confusions
+
+::: {.im-confusion}
+**"So the model says China must outgrow Luxembourg."** Only under two readings the model itself doesn't insist on. First, "all else equal" — z̄ and ℓ differ enormously across countries. Second, and more importantly, ideas cross borders: a blueprint invented anywhere can be used everywhere, so the scale that matters is the idea-producing *world*, not one country's census. The honest failure of the scale effect is the time-series one — the world's research effort exploded and growth did not.
+:::
+
+::: {.im-confusion}
+**"The scale effect fails, so the Romer model is dead."** No — what fails is the knife-edge φ = 1, not the core insight. Nonrivalry of ideas is still why sustained growth is possible at all, and in the semi-endogenous (Jones) version ideas remain the engine of growth; the model simply concedes that ideas get harder to find, so a *growing* research workforce is needed to keep growth constant. The failed prediction disciplined the theory rather than destroying it.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+In the simple Romer model (φ = 1), country B has twice the population of country A but the same z̄ and ℓ. What does the model predict?
+
+<details><summary>a) B has twice the level of output per person, but the same growth rate</summary>
+No — that's how a *level* variable like the savings rate works in Solow. Here population enters the growth rate itself: g = z̄ℓL̄.
+</details>
+<details><summary>b) B grows twice as fast as A, permanently</summary>
+**Correct**. g = z̄ℓL̄ is linear in L̄, so doubling population doubles the growth rate forever — the scale effect. Its empirical failure (researchers grew ~20×, growth didn't budge) is what motivated semi-endogenous growth theory.
+</details>
+<details><summary>c) B grows faster only until it reaches its steady state</summary>
+No — there is no steady state to converge to here; the simple Romer model has no transition dynamics in g. The predicted growth gap is permanent.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Using the simulator above, set **z̄ = 0.0005, ℓ = 0.20, largest population L̄ = 1000**. What growth rates do the two red dots report, and at what population does the prediction line cross the gray 2%/yr benchmark?
+
+<details><summary>Reveal answer</summary>
+Large dot: `g = 0.0005 × 0.20 × 1000 = 0.10` → **10.00%/yr**. Small dot (L̄ = 100): `g = 0.0005 × 0.20 × 100 = 0.01` → **1.00%/yr** — exactly a 10× ratio for a 10× population. The line crosses 2%/yr at `L̄ = 0.02/(0.0005 × 0.20) = 200`: every country bigger than 200 is predicted to outgrow 150 years of U.S. experience.
+</details>
+</div>
+
+{{< include ../_includes/generated/scale_effects-related.md >}}

@@ -1,0 +1,150 @@
+---
+title: "The Solow-Romer Hybrid Model"
+subtitle: "One model, both lessons: savings moves the level, research moves the slope"
+---
+
+{{< include ../_includes/generated/hybrid_model-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — Combine Solow's capital accumulation with Romer's idea production and you get an economy that does both things real economies do: it *converges* (transition dynamics toward a balanced growth path) and it *keeps growing* (the path itself rises forever at g = z̄ℓL̄). The payoff is a clean policy taxonomy — changing the [savings rate]{.im-glossary-term} s shifts the path's **level**, while changing the research share ℓ tilts its **slope**.
+:::
+
+## You'll be able to
+
+- Explain why the hybrid has no steady state in *levels* but does have a balanced growth path where everything grows at g = z̄ℓL̄.
+- Classify a policy as a **level effect** (s, δ) or a **growth effect** (ℓ, z̄) and predict what each does to the log output path.
+- Trace how a capital-poor economy grows *faster than g* during its transition, then settles onto the rising path.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — the economy starts capital-poor and climbs toward the dashed balanced growth path
+:::
+
+```{ojs}
+//| echo: false
+viewof s_hy     = Inputs.range([0.05, 0.50], {value: 0.20, step: 0.01, label: "savings rate s"})
+viewof ell_hy   = Inputs.range([0.01, 0.50], {value: 0.10, step: 0.01, label: "research share ℓ"})
+viewof zbar_hy  = Inputs.range([0.0002, 0.002], {value: 0.001, step: 0.0001, label: "idea productivity z̄"})
+viewof delta_hy = Inputs.range([0.02, 0.15], {value: 0.05, step: 0.01, label: "depreciation δ"})
+viewof alpha_hy = Inputs.range([0.20, 0.50], {value: 0.33, step: 0.01, label: "capital share α"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+// ideas:   A_{t+1} = A_t (1 + z̄·ℓ·L̄)            (ΔA/A = z̄·L_A, L_A = ℓ·L̄)
+// capital: K_{t+1} = K_t + s·Y_t − δ·K_t          (Solow accumulation)
+// output:  Y_t = K_t^α (A_t·L_Y)^(1−α),  L_Y = (1−ℓ)·L̄,  L̄ fixed (n = 0 per the notebook's BGP case)
+// BGP:     k̃ = K/(A·L_Y) settles at k̃* = (s/(g+δ))^(1/(1−α)),  g = z̄·ℓ·L̄
+Lbar_hy = 100
+g_hy = zbar_hy * ell_hy * Lbar_hy
+
+sim_hy = {
+  const T = 150, A0 = 1, K0 = 10;
+  const LY = (1 - ell_hy) * Lbar_hy;
+  const ktilde_hy = Math.pow(s_hy / (g_hy + delta_hy), 1 / (1 - alpha_hy));
+  const ystar0_hy = Math.pow(ktilde_hy, alpha_hy) * (1 - ell_hy) * A0;
+  const pts = [];
+  let A = A0, K = K0;
+  for (let t = 0; t <= T; t++) {
+    const Y = Math.pow(K, alpha_hy) * Math.pow(A * LY, 1 - alpha_hy);
+    pts.push({t, y: Y / Lbar_hy, series: "economy"});
+    pts.push({t, y: ystar0_hy * Math.pow(1 + g_hy, t), series: "bgp"});
+    K = K + s_hy * Y - delta_hy * K;
+    A = A * (1 + g_hy);
+  }
+  return pts;
+}
+
+Plot.plot({
+  marginLeft: 55,
+  x: {label: "time (years) →"},
+  y: {label: "output per person y (log scale)", type: "log", grid: true},
+  marks: [
+    Plot.line(sim_hy.filter(d => d.series === "bgp"), {x: "t", y: "y", stroke: "var(--im-sim)", strokeDasharray: "4 4", strokeWidth: 1.5}),
+    Plot.text([sim_hy.filter(d => d.series === "bgp").at(-1)], {x: "t", y: "y", text: () => `balanced growth path, g = ${(g_hy * 100).toFixed(2)}%/yr`, dx: -8, dy: -10, textAnchor: "end", fill: "var(--im-sim)"}),
+    Plot.line(sim_hy.filter(d => d.series === "economy"), {x: "t", y: "y", stroke: "var(--im-accent)", strokeWidth: 2}),
+    Plot.text([sim_hy.filter(d => d.series === "economy").at(0)], {x: "t", y: "y", text: () => "economy starts capital-poor", dx: 8, dy: 10, textAnchor: "start", fill: "var(--im-accent)"})
+  ]
+})
+```
+
+The solid blue line is the economy, started with far less capital than its balanced growth path requires. The dashed red line is that path — rising forever at g = z̄ℓL̄. On a log scale, the transition shows up as extra *curvature*: the blue line is steeper than the dashed line while catching up, then locks onto its slope.
+:::
+
+## Core intuition
+
+The Solow model gets the medium run right and the long run wrong. Capital accumulation with [diminishing returns]{.im-glossary-term} produces exactly the convergence we see in the data — capital-poor economies grow fast, then slow down as they approach their [steady state]{.im-glossary-term}. But once there, growth stops unless technology improves for reasons the model never explains: [total factor productivity]{.im-glossary-term} falls from the sky. The Romer model has the opposite problem. Nonrival ideas produced by researchers deliver sustained, chosen growth at g = z̄ℓL̄ — but because output is linear in labor with no capital, every parameter change takes effect instantly. There are no transitions, no catch-up, no economies growing faster than others because they started behind.
+
+The hybrid simply lets each model do its job. Ideas grow Romer-style, A_{t+1} = A_t(1 + z̄ℓL̄), so productivity growth is endogenous and never stalls. Capital accumulates Solow-style out of savings, K_{t+1} = K_t + sY_t − δK_t, so the economy has a stock to build up and diminishing returns to fight against. The trick for taming this two-engine machine is to measure capital *per effective worker*: [capital per effective worker]{.im-glossary-term} k̃ = K/(AL_Y) is capital divided by the ever-growing idea stock, and *that* ratio behaves exactly like Solow's k̃ — it converges to a constant k̃* = (s/(g+δ))^{1/(1−α)}. There is no steady state in levels; there is a steady state in ratios, and the economy rides it upward forever.
+
+That structure yields the chapter's punchline: a taxonomy of policy. Raise the savings rate s and you raise k̃* — the whole balanced growth path shifts *up*, but its slope is untouched, because s appears nowhere in g = z̄ℓL̄. That is a **level effect**: temporarily faster growth during the transition, then back to the same g at a permanently higher altitude. Raise the research share ℓ (or z̄) and you change g itself — the path *tilts*. That is a **growth effect**, and on a log-scale chart the two are impossible to confuse: level effects are parallel shifts, growth effects are slope changes. Where δ eats capital and drags the level down, nothing in the model ever eats ideas — which is why the slope, once chosen, is forever.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full derivation)</summary>
+
+**Setup** (the notebook's equations, with population fixed at L̄, i.e. n = 0, and labor split by the research share $\ell$):
+$$Y_t = K_t^{\alpha}\,(A_t L_{Y})^{1-\alpha}, \qquad L_{Y} = (1-\ell)\bar L, \qquad L_{A} = \ell \bar L$$
+$$K_{t+1} = K_t + s\,Y_t - \delta\,K_t \qquad \text{(capital: Solow)}$$
+$$A_{t+1} = A_t\,(1 + \bar z\,L_A) = A_t\,(1 + \bar z\,\ell\,\bar L) \qquad \text{(ideas: Romer)}$$
+
+**Ideas grow at a constant rate.** Immediately, $g \equiv \Delta A_{t+1}/A_t = \bar z\,\ell\,\bar L$ — endogenous, chosen by ℓ, never diminishing.
+
+**Detrend by effective workers.** Define $\tilde k_t = K_t/(A_t L_Y)$ and $\tilde y_t = Y_t/(A_t L_Y) = \tilde k_t^{\alpha}$. Dividing the capital equation by $A_{t+1}L_Y = (1+g)A_t L_Y$:
+$$\tilde k_{t+1} = \frac{(1-\delta)\,\tilde k_t + s\,\tilde k_t^{\alpha}}{1+g}.$$
+This is Solow's transition equation with $g$ playing the role exogenous tech growth played there — except here $g$ is produced inside the model.
+
+**Balanced growth path.** Setting $\tilde k_{t+1} = \tilde k_t = \tilde k^*$ gives $s\,\tilde k^{*\alpha} = (g+\delta)\,\tilde k^*$, so
+$$\tilde k^* = \left(\frac{s}{g+\delta}\right)^{\frac{1}{1-\alpha}}, \qquad \tilde y^* = (\tilde k^*)^{\alpha} = \left(\frac{s}{g+\delta}\right)^{\frac{\alpha}{1-\alpha}}.$$
+
+**Output per person.** $y_t = Y_t/\bar L = A_t (1-\ell)\,\tilde k_t^{\alpha}$. On the BGP, $\tilde k_t$ is constant, so $y_t$ grows exactly as fast as $A_t$:
+$$g_y = g = \bar z\,\ell\,\bar L, \qquad y_t^* = \left(\frac{s}{g+\delta}\right)^{\frac{\alpha}{1-\alpha}}(1-\ell)\,A_0\,(1+g)^t.$$
+
+**Why s moves the level and ℓ moves the slope.** In $y_t^*$, the savings rate appears only inside the level term $(s/(g+\delta))^{\alpha/(1-\alpha)}$ — raising s shifts the whole path up by a constant factor without touching the exponent's growth factor $(1+g)^t$. The research share ℓ appears in the slope, $g = \bar z \ell \bar L$, as well as twice in the level (the goods-labor term $1-\ell$ and, mildly, through $g$ in the denominator $g+\delta$) — so raising ℓ tilts the path steeper while nudging its starting height down. Off the BGP, $\tilde k_t \to \tilde k^*$ with Solow-style convergence, which is why a capital-poor economy temporarily grows faster than $g$.
+
+</details>
+:::
+
+## What the simulator showed
+
+At the defaults (s = 0.20, ℓ = 0.10, z̄ = 0.001, δ = 0.05, α = 0.33), the BGP grows at g = 0.001 × 0.10 × 100 = **1.00%/yr** and starts at y* ≈ 1.63, while the economy starts at only y ≈ 0.44 — about 27% of its path. So the blue line is initially much steeper than 1%: pure Solow transition dynamics. By t ≈ 30 it has closed most of the gap (≈ 85% of the path), by t ≈ 100 it is within 1%, and by t = 150 it grows at almost exactly 1.00%/yr — Romer's engine has taken over. Now push **s** to 0.30: the dashed path jumps up ≈ 22% (to y*₀ ≈ 1.99) but keeps the *same* slope — a level effect, and the economy chases the higher path with a temporary growth burst. Push **ℓ** to 0.20 instead: the dashed path *tilts* to 2.00%/yr while starting slightly lower — a growth effect. One chart, two visually distinct kinds of policy.
+
+## Common confusions
+
+::: {.im-confusion}
+**"The hybrid economy converges to a steady state, so growth eventually stops."** Only the *ratio* k̃ = K/(AL_Y) converges. Because A grows forever at z̄ℓL̄, the levels of K, Y, and y all keep rising — the economy converges *to a moving target*. That's the whole point of the hybrid: Solow-style convergence toward a path, Romer-style growth of the path itself.
+:::
+
+::: {.im-confusion}
+**"Raising the savings rate raises growth — I can see the line get steeper."** Look again at *when* it's steeper. Raising s steepens the blue line only during the transition to the new, higher balanced growth path; the dashed path it converges to has exactly the same slope as before, because s does not appear in g = z̄ℓL̄. In this model only the idea parameters (ℓ, z̄, L̄) change long-run growth. Savings buys altitude, research buys climb rate.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+In the Solow-Romer hybrid, a country permanently raises its savings rate s. What happens to output per person in the long run?
+
+<details><summary>a) Its long-run growth rate rises, because more savings funds more R&D</summary>
+No — in this model savings funds only *capital*, and g = z̄ℓL̄ contains no s. Growth rises only temporarily, during the transition.
+</details>
+<details><summary>b) The balanced growth path shifts up, but its long-run slope is unchanged</summary>
+**Correct**. Higher s raises k̃* = (s/(g+δ))^{1/(1−α)}, lifting the level term of y*ₜ — a parallel upward shift on the log chart — while the growth rate stays g = z̄ℓL̄.
+</details>
+<details><summary>c) Nothing happens, because ideas are the only source of anything in this model</summary>
+No — ideas are the only source of long-run *growth*, but capital still determines the *level* of the path. Higher s makes the country permanently richer at every date.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Set **s = 0.30, ℓ = 0.20, z̄ = 0.001, δ = 0.05, α = 0.33**. What growth rate does the dashed balanced-growth-path label report? Then slide s back down to 0.20 — does the label change?
+
+<details><summary>Reveal answer</summary>
+`g = z̄·ℓ·L̄ = 0.001 × 0.20 × 100 = 0.02`, so the label reads **g = 2.00%/yr**. Sliding s back to 0.20 does **not** change the label — the dashed path drops to a lower level (its starting height falls from about 1.64 toward 1.34) but keeps the same 2.00%/yr slope. Savings is a level effect; only ℓ, z̄, and L̄ move the slope.
+</details>
+</div>
+
+{{< include ../_includes/generated/hybrid_model-related.md >}}

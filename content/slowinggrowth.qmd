@@ -1,0 +1,177 @@
+---
+title: "Slowing Growth and Declining TFP"
+subtitle: "What happens when ideas get harder to find and the engine of growth winds down"
+---
+
+{{< include ../_includes/generated/slowinggrowth-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — Since the 1970s, measured [total factor productivity]{.im-glossary-term} growth in advanced economies has slowed, and one leading explanation is that ideas are getting harder to find. This chapter models the simplest version: TFP growth $g_{A,t}$ declines a little each year. The punchline is compounding — a slowdown that looks tiny year-to-year (a fraction of a percentage point) accumulates into an economy that is *dramatically* poorer than its constant-growth counterfactual within a lifetime.
+:::
+
+## You'll be able to
+
+- Simulate an economy where TFP growth decays over time, $g_{A,t} = \max(0,\, g_{A,0} - \text{decay}\cdot t)$, and trace the consequences for capital, output, and output growth.
+- Explain the "ideas getting harder to find" evidence: research effort has risen enormously while idea output per researcher has fallen.
+- Distinguish a permanent *growth-rate* slowdown from a one-time *level* shock, and show with compounding arithmetic why the former is vastly more costly.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — blue is the slowing economy, gray is the constant-growth counterfactual
+:::
+
+```{ojs}
+//| echo: false
+viewof gA0_sg   = Inputs.range([0.0, 0.05], {value: 0.02, step: 0.001, label: "initial TFP growth g_A,0"})
+viewof decay_sg = Inputs.range([0.0, 0.001], {value: 0.0003, step: 0.00005, label: "TFP growth decay per year"})
+viewof s_sg     = Inputs.range([0.05, 0.5], {value: 0.20, step: 0.01, label: "savings rate s"})
+viewof alpha_sg = Inputs.range([0.10, 0.80], {value: 0.33, step: 0.01, label: "capital share α"})
+viewof T_sg     = Inputs.range([20, 300], {value: 100, step: 10, label: "time horizon T"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+// g_A,t = max(0, g_A0 − decay·t);  A_{t+1} = A_t(1+g_A,t)
+// Y_t = A_t K_t^α L^(1−α);  K_{t+1} = K_t + sY_t − δK_t;  L constant
+// fixed as in the notebook defaults: δ = 0.05, A0 = 1, K0 = 10, L0 = 100
+sim_sg = {
+  const delta = 0.05, A0 = 1.0, K0 = 10.0, L0 = 100.0;
+  const T = Math.round(T_sg);
+  const run = (decay) => {
+    const A = [A0], K = [K0], Y = [], gA = [], gY = [];
+    for (let t = 0; t < T; t++) {
+      Y.push(A[t] * Math.pow(K[t], alpha_sg) * Math.pow(L0, 1 - alpha_sg));
+      const g = Math.max(0, gA0_sg - decay * t);
+      gA.push(g);
+      A.push(A[t] * (1 + g));
+      K.push(Math.max(K[t] + s_sg * Y[t] - delta * K[t], 0));
+    }
+    Y.push(A[T] * Math.pow(K[T], alpha_sg) * Math.pow(L0, 1 - alpha_sg));
+    for (let t = 0; t < T; t++) gY.push(Y[t + 1] / Y[t] - 1);
+    return {A, K, Y, gA, gY};
+  };
+  const slow = run(decay_sg);          // declining TFP growth
+  const base = run(0);                 // constant-g counterfactual
+  const tZero = decay_sg > 0 && gA0_sg > 0 ? Math.ceil(gA0_sg / decay_sg) : null;
+  const ratio = slow.Y[T] / base.Y[T];
+  return {slow, base, T, tZero, ratio,
+          finalGY: slow.gY[T - 1], finalGA: slow.gA[T - 1]};
+}
+
+Plot.plot({
+  marginLeft: 55,
+  height: 220,
+  x: {label: "time t (years)"},
+  y: {label: "TFP growth rate g_A,t", tickFormat: d => (d * 100).toFixed(1) + "%", grid: true},
+  marks: [
+    Plot.ruleY([0], {stroke: "#9aa0a6"}),
+    Plot.line(sim_sg.base.gA.map((g, t) => ({t, g})),
+      {x: "t", y: "g", stroke: "#9aa0a6", strokeDasharray: "4 4"}),
+    Plot.line(sim_sg.slow.gA.map((g, t) => ({t, g})),
+      {x: "t", y: "g", stroke: "var(--im-sim)", strokeWidth: 2}),
+    ...(sim_sg.tZero !== null && sim_sg.tZero <= sim_sg.T ? [
+      Plot.ruleX([sim_sg.tZero], {stroke: "var(--im-sim)", strokeDasharray: "2 4"}),
+      Plot.text([{t: sim_sg.tZero, g: gA0_sg}],
+        {x: "t", y: "g", text: () => `g_A hits 0 at t = ${sim_sg.tZero}`,
+         dx: 6, textAnchor: "start", fill: "var(--im-sim)"})
+    ] : [])
+  ]
+})
+
+Plot.plot({
+  marginLeft: 55,
+  height: 300,
+  x: {label: "time t (years)"},
+  y: {label: "total output Y_t (log scale)", type: "log", grid: true},
+  marks: [
+    Plot.line(sim_sg.base.Y.map((y, t) => ({t, y})),
+      {x: "t", y: "y", stroke: "#9aa0a6", strokeWidth: 2, strokeDasharray: "4 4"}),
+    Plot.line(sim_sg.slow.Y.map((y, t) => ({t, y})),
+      {x: "t", y: "y", stroke: "var(--im-accent)", strokeWidth: 2}),
+    Plot.text([{t: sim_sg.T, y: sim_sg.base.Y[sim_sg.T]}],
+      {x: "t", y: "y", text: () => "constant g_A", dx: -6, dy: -8, textAnchor: "end", fill: "#9aa0a6"}),
+    Plot.text([{t: sim_sg.T, y: sim_sg.slow.Y[sim_sg.T]}],
+      {x: "t", y: "y", text: () => "declining g_A", dx: -6, dy: 12, textAnchor: "end", fill: "var(--im-accent)"})
+  ]
+})
+
+md`At t = ${sim_sg.T}: final output growth **g_Y = ${(sim_sg.finalGY * 100).toFixed(2)}%** (TFP growth ${(sim_sg.finalGA * 100).toFixed(2)}%)${sim_sg.tZero !== null ? `; TFP growth reaches zero at **t = ${sim_sg.tZero}**` : ""}. The slowing economy ends at **${(sim_sg.ratio * 100).toFixed(0)}%** of the constant-growth counterfactual — **${((1 - sim_sg.ratio) * 100).toFixed(0)}% lower** output from a decay of just ${(decay_sg * 100).toFixed(3)} pp per year.`
+```
+
+Both economies are identical except for one thing: in the blue economy, TFP growth erodes by a small fixed amount each year. On the log-scale chart the gray counterfactual is (eventually) a straight line; the blue path bends over and flattens as the growth engine winds down.
+:::
+
+## Core intuition
+
+For the middle decades of the twentieth century, [total factor productivity]{.im-glossary-term} in the United States grew at roughly 2% a year — and then, after the early 1970s, the residual collapsed to under 1% for a generation. A revival in 1995–2004 (the IT boom) faded again after the mid-2000s. This is the **productivity slowdown**: not a recession, not a crisis, just a persistent downshift in the rate at which the economy learns to do more with the same inputs. Because measured input growth barely changed, growth accounting places the blame squarely on the TFP term.
+
+Why would technological progress itself slow down? The most influential recent answer is that **ideas are getting harder to find**. Bloom, Jones, Van Reenen, and Webb documented a striking pattern: research effort has exploded — the number of researchers in the US economy is many times what it was in the 1930s — yet the resulting flow of productivity growth is flat or falling. Research productivity (idea output *per researcher*) has declined steadily, in the aggregate and within specific fields: sustaining Moore's Law today takes an order of magnitude more researchers than it did decades ago, and the same pattern shows up in seeds, drugs, and firm-level data. We keep the growth we have only by throwing ever more effort at it; if effort ever stops rising, growth erodes. The simulator's linear decay in $g_{A,t}$ is the simplest reduced form of exactly that "fishing out" dynamic.
+
+The reason economists lose sleep over this — and the reason the simulator compares against a counterfactual — is that a *growth-rate* change is categorically worse than a *level* shock. A one-time level shock (a bad recession, a natural disaster) costs you a gap that stays roughly constant thereafter. A permanent slowdown in $g$ costs you a gap that **compounds forever**: capital accumulation can't rescue you, because with a lower path for $A$, [diminishing returns]{.im-glossary-term} bite and investment eventually just covers [depreciation]{.im-glossary-term}, as in the Solow [steady state]{.im-glossary-term}. Drop trend growth from 2% to 1% and after 50 years output is about 39% below its old trajectory — and the gap keeps widening. That is why a slowdown that is invisible in any single year's data may be the most consequential macroeconomic fact of our era.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full derivation)</summary>
+
+The v1 notebook modifies the standard growth framework by making the TFP growth rate time-dependent:
+$$g_{A,t} = \max\!\left(0,\; g_{A,0} - \text{decay}\times t\right),$$
+so TFP growth falls linearly from $g_{A,0}$ and hits zero at $t = g_{A,0}/\text{decay}$ (it is never allowed to go negative). The level of TFP evolves as
+$$A_{t+1} = A_t\,(1 + g_{A,t}).$$
+
+Output is Cobb–Douglas in the current levels of $A_t$, $K_t$, and (constant) $L$:
+$$Y_t = A_t K_t^{\alpha} L^{1-\alpha},$$
+and capital accumulates exactly as in the Solow model with a constant savings rate and depreciation:
+$$K_{t+1} = K_t + s\,Y_t - \delta K_t.$$
+
+**Long-run behavior.** While $g_{A,t}$ is constant at $g$, balanced growth with constant $L$ has output growing at $g_Y = g/(1-\alpha)$ — TFP growth is amplified because induced capital deepening contributes too (with $\alpha = 0.33$, $g_A = 2\%$ sustains $g_Y \approx 3\%$). Once $g_{A,t}$ reaches zero, $A$ is fixed and the economy converges to an ordinary no-growth Solow steady state where $sY = \delta K$: output growth dies out entirely.
+
+**The compounding arithmetic of a growth-rate drop.** Suppose trend growth falls from 2% to 1%. After 50 years the level of output relative to the old trend is
+$$\frac{(1.01)^{50}}{(1.02)^{50}} \approx 0.61,$$
+i.e. output is about **39% lower** than the baseline path — from a slowdown of one percentage point. A one-time *level* shock of even 10% would be far cheaper: its cost stays 10% forever, while a growth-rate gap compounds without bound.
+
+</details>
+:::
+
+## What the simulator showed
+
+At the notebook defaults ($g_{A,0} = 2\%$, decay $= 0.0003$, $\alpha = 0.33$, $s = 0.20$, $T = 100$), TFP growth grinds linearly down and hits zero at **t = 67**. Final-period output growth is essentially dead — **g_Y ≈ 0.12%** — while the constant-growth counterfactual is still cruising at about 3% (TFP growth of 2% amplified by capital deepening, $g/(1-\alpha)$). The level consequence is the shocker: after 100 years the slowing economy produces only **17%** of the counterfactual's output — **83% lower** — even though the two paths are nearly indistinguishable for the first couple of decades. Push the decay slider to zero and the gap vanishes; push it higher and the blue path flattens sooner and the shortfall deepens. Small persistent slowdowns compound into enormous level differences.
+
+## Common confusions
+
+::: {.im-confusion}
+**"TFP growth slowing means the economy shrinks."** No — in this model output *level* never falls; it just grows more slowly and eventually plateaus. The loss is entirely relative to the path the economy *would have had*: a widening gap against the counterfactual, not a decline. That's exactly why slow-motion stagnation is politically invisible in a way a recession is not.
+:::
+
+::: {.im-confusion}
+**"We can offset slowing TFP growth by saving and investing more."** Only temporarily. A higher [savings rate]{.im-glossary-term} buys a one-time level gain, but with $A$ flattening, [diminishing returns]{.im-glossary-term} to capital guarantee that investment eventually just covers [depreciation]{.im-glossary-term} and growth dies out anyway. In the long run, only the rate of idea generation sustains growth — accumulation cannot substitute for it.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+Which is more costly for living standards in 2075: a one-time shock that permanently knocks output 10% below trend today, or a slowdown in trend growth from 2% to 1% starting today?
+
+<details><summary>a) The 10% level shock — losing a tenth of output is worse than losing one percentage point of growth</summary>
+No — the level shock costs 10% forever, but the growth gap *compounds*. After 50 years, $(1.01)^{50}/(1.02)^{50} \approx 0.61$: the slowdown leaves output about 39% below the old path, and the gap keeps widening.
+</details>
+<details><summary>b) The growth slowdown — a growth-rate gap compounds without bound and overtakes any fixed level loss</summary>
+**Correct**. By 2075 the 1-point slowdown has cost ≈39% of output versus the 10% cost of the level shock, and the growth gap keeps growing while the level gap does not. This asymmetry is why the productivity slowdown matters more than most recessions.
+</details>
+<details><summary>c) They are equivalent — both reduce output permanently</summary>
+No — "permanent" hides the difference. A level shock is a constant proportional gap; a growth-rate gap is a gap that compounds every year. Within about a decade the 2%→1% slowdown already exceeds a 10% level loss.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Keep every slider at its default ($g_{A,0} = 2\%$, s = 0.20, α = 0.33, T = 100) but raise the **decay rate to 0.0005**. In what year does TFP growth hit zero, and what does the readout report for the slowing economy's final output relative to the constant-growth counterfactual?
+
+<details><summary>Reveal answer</summary>
+TFP growth hits zero at `t = 0.02/0.0005 = 40`. The readout shows final output at **12%** of the counterfactual — **88% lower** — with final-period output growth ≈ **0.07%**. Compare with the default decay of 0.0003 (zero at t = 67, output 17% of counterfactual): a decay less than twice as fast kills growth 27 years sooner and deepens the century-long shortfall from 83% to 88%.
+</details>
+</div>
+
+{{< include ../_includes/generated/slowinggrowth-related.md >}}
