@@ -50,3 +50,27 @@
   short: "Inflation equals expected inflation plus a term in the output gap: π = πᵉ + λ(Y − Ȳ)."
   first_mention: adassim
   aka: ["AS curve"]
+- term: expenditure approach
+  short: "Measuring GDP as total final spending: Y = C + I + G + NX."
+  first_mention: measuring_gdp
+  aka: []
+- term: nominal GDP
+  short: "Output valued at current prices — price and quantity changes mixed together."
+  first_mention: realvsnom
+  aka: []
+- term: real GDP
+  short: "Output valued at constant prices, so changes reflect quantities rather than prices."
+  first_mention: realvsnom
+  aka: []
+- term: GDP deflator
+  short: "The ratio of nominal to real GDP (×100) — the economy-wide price index implied by the accounts."
+  first_mention: realvsnom
+  aka: []
+- term: chain-weighting
+  short: "Updating price weights every period and chaining the growth rates — the compromise between base-year choices used in official statistics."
+  first_mention: two_goods_twoperiods
+  aka: []
+- term: purchasing power parity
+  short: "Valuing every country's output at one common set of prices, so cross-country comparisons reflect quantities."
+  first_mention: realgdpacross
+  aka: ["PPP"]

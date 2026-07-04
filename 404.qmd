@@ -1,0 +1,32 @@
+---
+pagetitle: "Page not found"
+sidebar: false
+toc: false
+---
+
+```{=html}
+<div class="im-hero" style="border-bottom: none;">
+  <div>
+    <span class="im-hero-eyebrow">404 &middot; page not found</span>
+    <h1 class="im-hero-title">Out of<br>equilibrium</h1>
+    <p class="im-hero-sub">The page you were looking for has moved, been merged into
+    another chapter, or never existed. Like any good economy, this site converges —
+    head back to a steady state.</p>
+    <div class="im-hero-cta">
+      <a class="im-btn im-btn-primary" href="/intmacro/">Back to the course</a>
+      <a class="im-btn im-btn-ghost" href="/intmacro/_glossary.html">Browse the glossary</a>
+    </div>
+  </div>
+  <div class="im-hero-art" aria-hidden="true">
+    <svg viewBox="0 0 520 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="ink" d="M60 24 V340 H496" stroke-width="1.4"/>
+      <path class="curve-gray" d="M60 340 L430 76" stroke-width="1.6"/>
+      <path class="curve-blue" d="M60 340 C 130 208, 240 158, 470 122" stroke-width="2"/>
+      <path class="drop" d="M400 96 V340" stroke-width="1.2" stroke-dasharray="4 5"/>
+      <circle class="eq-dot" cx="400" cy="96" r="5.5"/>
+      <text class="lbl lbl-eq" x="386" y="362">404</text>
+      <text class="lbl" x="478" y="332">k</text>
+    </svg>
+  </div>
+</div>
+```

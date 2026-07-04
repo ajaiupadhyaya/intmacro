@@ -30,18 +30,18 @@ Renames are deferred to Phase 4 so that we don't break the Phase 1 TOC + early P
 | Model ID | Canonical | Title (current) | Status | Merge sources | Notes |
 |---|---|---|---|---|---|
 | `welcome` | `content/Preliminaries_new.ipynb` | 🌍 International Macroeconomics — A Comprehensive Guide | canonical | `Preliminaries_clean.ipynb` (merge best framing) | Becomes the book root and dashboard landing in Phase 1. Heavy link list will be trimmed to part cards. |
-| `math_primer` | `content/Preliminaries.ipynb` | 📘 Preliminaries: The Mathematics of Economic Growth | canonical | — | Distinct role from `welcome` — keep as an early chapter, not the root. |
+| `math_primer` | `content/Preliminaries.qmd` | Mathematical Preliminaries | canonical | — | ✅ 2026-07-03: converted to v2 OJS chapter (compounding/log-scale sim + annualized-growth calculator); v1 notebook archived. |
 | — | `content/Preliminaries_clean.ipynb` | (alt welcome) | superseded | — | Move to `_archive/Preliminaries_clean.ipynb` after Phase 1 merge. |
 
 ## Part 1 — Measurement & National Accounts
 
 | Model ID | Canonical | Title | Status | Merge sources | Notes |
 |---|---|---|---|---|---|
-| `gdp_expenditure` | `content/measuring_gdp.ipynb` | 📘 Measuring GDP: The Expenditure Approach | canonical | — | Strongest standalone page in this group. |
-| `real_vs_nominal_time` | `content/realvsnom.ipynb` | 📘 Real vs. Nominal GDP Over Time | canonical | `cash_money.ipynb` (near-duplicate intro), `_archive/qGDP.ipynb` (quarterly framing), `_archive/real_gdp_growth.ipynb` (price-change framing) | High-overlap cluster — merge into one richer page. |
-| `real_gdp_ppp` | `content/realgdpacross.ipynb` | 🌍 Comparing Real GDP Across Countries (PPP) | canonical | `_archive/mgcwrgdp.ipynb` (chain-weighting), `_archive/gabd.ipynb` only if PPP-relevant | — |
-| `chain_weighted_gdp` | `content/two_goods_twoperiods.ipynb` | 🛒 Measuring Real GDP with Changing Prices | canonical | `_archive/real_gdp_growth.ipynb` (same topic, simpler), `_archive/mgcwrgdp.ipynb` (chain index theory) | Pair conceptually with `real_vs_nominal_time`. |
-| — | `content/cash_money.ipynb` | 💰 Nominal vs. Real GDP | superseded | — | Best content folded into `realvsnom`; archive original. |
+| `gdp_expenditure` | `content/measuring_gdp.qmd` | Measuring GDP: The Expenditure Approach | canonical | — | ✅ 2026-07-03: converted to v2 OJS chapter (Y=C+I+G+NX bar decomposition); FRED/international dashboards dropped (need live keys); v1 archived. |
+| `real_vs_nominal_time` | `content/realvsnom.qmd` | Real vs. Nominal GDP | canonical | `_archive/qGDP.ipynb` (quarterly framing), `_archive/real_gdp_growth.ipynb` (price-change framing) | ✅ 2026-07-03: converted to v2 OJS chapter (nominal-vs-real paths + deflate-a-headline sim); `cash_money` MERGED IN, its .qmd is now a redirect stub; both v1 notebooks archived. qGDP/real_gdp_growth merges still pending. |
+| `real_gdp_ppp` | `content/realgdpacross.qmd` | Comparing GDP Across Countries | canonical | `_archive/mgcwrgdp.ipynb` (chain-weighting), `_archive/gabd.ipynb` only if PPP-relevant | ✅ 2026-07-03: converted to v2 OJS chapter (market-rate vs PPP two-country comparison); v1 archived. |
+| `chain_weighted_gdp` | `content/two_goods_twoperiods.qmd` | Real GDP with Changing Prices | canonical | `_archive/real_gdp_growth.ipynb` (same topic, simpler), `_archive/mgcwrgdp.ipynb` (chain index theory) | ✅ 2026-07-03: converted to v2 OJS chapter (Laspeyres/Paasche/Fisher grouped bars; chain framing from mgcwrgdp). v1 archived. |
+| — | `_archive/cash_money_v1.ipynb` | Nominal vs. Real GDP | superseded | — | ✅ 2026-07-03: merged into `realvsnom.qmd` (shopping-trip framing + deflate sim + 8%/5% exercise); `cash_money.qmd` is a redirect stub; archived with provenance. |
 | — | `_archive/qGDP.ipynb` | 🗓️ Quarterly GDP Data | merge-required | → `realvsnom` | Quarterly growth-rate annualization worth preserving. |
 | — | `_archive/real_gdp_growth.ipynb` | 🛒 Real GDP with Changing Prices | merge-required | → `two_goods_twoperiods` | — |
 | — | `_archive/mgcwrgdp.ipynb` | 🧺 Many Goods & Chain-Weighted Real GDP | merge-required | → `two_goods_twoperiods` or `realgdpacross` | Laspeyres/Paasche/chain table is gold; preserve it. |

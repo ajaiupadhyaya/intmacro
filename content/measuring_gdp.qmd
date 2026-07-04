@@ -1,0 +1,147 @@
+---
+title: "Measuring GDP: The Expenditure Approach"
+subtitle: "Y = C + I + G + NX — everything produced ends up bought by someone"
+---
+
+{{< include ../_includes/generated/measuring_gdp-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — GDP measured by the [expenditure approach]{.im-glossary-term} adds up all spending on domestically produced *final* goods and services: consumption, investment, government purchases, and net exports. Imports get subtracted not because they hurt the economy, but because C, I, and G already contain spending on foreign-made goods that isn't domestic production. The identity $Y = C + I + G + NX$ holds by construction — it's accounting, not a theory.
+:::
+
+## You'll be able to
+
+- Compute GDP from its four expenditure components and explain what belongs in each one (and what deliberately doesn't).
+- Explain why imports are subtracted — the correction that fixes the double-counting hidden inside C, I, and G.
+- Read a GDP release like an economist: recognize typical component shares and spot when a number (a negative NX, a huge I swing) is normal versus news.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — each bar is one spending component; the dashed rule is total GDP, their sum
+:::
+
+```{ojs}
+//| echo: false
+viewof C_gdp  = Inputs.range([0, 10000], {value: 2000, step: 100, label: "Consumption C"})
+viewof I_gdp  = Inputs.range([-500, 2000], {value: 500, step: 50, label: "Investment I"})
+viewof G_gdp  = Inputs.range([0, 3000], {value: 1000, step: 100, label: "Government G"})
+viewof NX_gdp = Inputs.range([-1000, 1000], {value: -200, step: 50, label: "Net exports NX"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+// Y = C + I + G + NX ; shares are each component / Y
+gdp_calc = {
+  const Y = C_gdp + I_gdp + G_gdp + NX_gdp;
+  const bars = [
+    {component: "Consumption (C)", v: C_gdp},
+    {component: "Investment (I)", v: I_gdp},
+    {component: "Government (G)", v: G_gdp},
+    {component: "Net exports (NX)", v: NX_gdp}
+  ];
+  const share = (v) => Math.abs(Y) > 1e-9 ? (v / Y) * 100 : NaN;
+  return {Y, bars, share};
+}
+
+gdp_color = ({
+  "Consumption (C)": "var(--im-accent)",
+  "Investment (I)": "#c77d2e",
+  "Government (G)": "#9aa0a6",
+  "Net exports (NX)": "var(--im-sim)"
+})
+
+Plot.plot({
+  marginLeft: 120,
+  x: {label: "spending (billions of dollars, example units)", grid: true},
+  y: {label: null},
+  marks: [
+    Plot.ruleX([0], {stroke: "#ccc"}),
+    Plot.barX(gdp_calc.bars, {y: "component", x: "v",
+      fill: d => gdp_color[d.component]}),
+    Plot.ruleX([gdp_calc.Y], {stroke: "var(--im-accent)", strokeDasharray: "4 4"}),
+    Plot.text([{v: gdp_calc.Y}], {x: "v", frameAnchor: "top",
+      text: () => `total Y = $${gdp_calc.Y.toLocaleString()}`,
+      dy: 8, dx: 4, textAnchor: "start", fill: "var(--im-accent)"}),
+    Plot.text(gdp_calc.bars, {y: "component", x: "v",
+      text: d => `$${d.v.toLocaleString()}`,
+      dx: d => d.v >= 0 ? 24 : -24, fill: "currentColor"})
+  ],
+  height: 240
+})
+```
+
+```{ojs}
+//| echo: false
+md`**Y = C + I + G + NX = $${gdp_calc.Y.toLocaleString()}** — shares of GDP: C ${gdp_calc.share(C_gdp).toFixed(1)}%, I ${gdp_calc.share(I_gdp).toFixed(1)}%, G ${gdp_calc.share(G_gdp).toFixed(1)}%, NX ${gdp_calc.share(NX_gdp).toFixed(1)}%${NX_gdp < 0 ? " (trade deficit)" : NX_gdp > 0 ? " (trade surplus)" : ""}.`
+```
+
+Net exports can go negative — the red bar then extends left of zero and *subtracts* from the total. Notice that the dashed total rule always lands exactly where the four bars sum.
+:::
+
+## Core intuition
+
+Why does adding up *spending* measure *production*? Because every final good or service produced ends up on someone's ledger as a purchase: households buy it (C), firms buy it or stock it as inventory (I), governments buy it (G), or foreigners buy it (exports). This is the circular flow: one agent's expenditure is another agent's income, which is the payment for output. That's why the same GDP number can be reached three ways — sum spending, sum incomes, or sum value added — and the [expenditure approach]{.im-glossary-term} is simply the spending route. Even goods nobody buys are caught: unsold output counts as *inventory investment*, a purchase by the firm from itself.
+
+What counts is *final* goods and services — things bought by their end user. Intermediate goods (the steel sold to the car factory) are excluded, because their value is already inside the price of the final car; counting both would double-count. For the same reason, GDP counts only *current production*: a used car changing hands adds nothing (it was counted the year it was built — only the dealer's service markup counts now), and pure transfers of money or assets — a Social Security check, a stock purchase — involve no production at all, so they're out too.
+
+The subtraction of imports is the step students misread most. When a household buys an imported TV, that purchase sits inside C — but nothing was produced domestically. The same contamination hides in I (imported machinery) and G (imported equipment). Rather than surgically stripping the foreign content out of each category, the accounts subtract *all* imports in one move: $NX = X - M$. Subtracting M doesn't say imports shrink the economy; it removes spending on foreign production that C, I, and G wrongly swept in, leaving exactly domestic output. All of this, measured at today's prices, is [nominal GDP]{.im-glossary-term} — comparing it across time requires the inflation adjustment to [real GDP]{.im-glossary-term} taken up in the next module.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (the accounting identity)</summary>
+
+The national income accounting identity:
+$$Y = C + I + G + NX, \qquad NX = X - M.$$
+
+**Why it's an identity, not a theory.** A theory can be wrong; this can't. Any produced good is, by definition, either sold to a household (C), a firm (I), the government (G), or a foreigner (X) — and if it's sold to no one, it enters the firm's inventories, which the accounts *define* as part of I. Inventory investment is the plug that makes the identity hold every period, boom or bust. The identity says nothing about *why* C or I take the values they do — that's what the behavioral models later in the course are for.
+
+**Decomposing each side per unit of GDP** gives the component *shares*, $C/Y + I/Y + G/Y + NX/Y = 1$. For the modern US economy the rough magnitudes to memorize:
+$$\frac{C}{Y} \approx 68\%, \qquad \frac{I}{Y} \approx 18\%, \qquad \frac{G}{Y} \approx 17\%, \qquad \frac{NX}{Y} \approx -3\%.$$
+Consumption dominates, investment is the volatile piece (it swings hard over the business cycle), G here is *purchases only* (total government budgets are far larger once transfers are included), and the persistent negative NX is the US trade deficit — the shares must sum to 100%, so the −3% is offset by the others.
+
+</details>
+:::
+
+## What the simulator showed
+
+At the defaults — C = \$2,000, I = \$500, G = \$1,000, NX = −\$200 — the dashed rule reads **Y = \$3,300**, with shares C = 60.6%, I = 15.2%, G = 30.3%, and NX = **−6.1%**: the red bar points left of zero and pulls the total *down* by \$200. Slide NX from −\$200 up to 0 and Y rises to \$3,500 with no change in domestic spending — that's the accounting effect of closing a trade deficit, not a free lunch (in a real economy the other components wouldn't sit still). Push I to its floor of −\$500 (a massive inventory drawdown) and you'll see investment is the one domestic component the accounts allow to go negative.
+
+## Common confusions
+
+::: {.im-confusion}
+**"Imports are subtracted, so buying imports lowers GDP."** No. When you buy a \$1,000 imported TV, C rises by \$1,000 *and* M rises by \$1,000 — the two cancel and GDP is unchanged, exactly as it should be: nothing was produced domestically. The −M term exists only to cancel the import content already hiding inside C, I, and G. GDP would be mismeasured *without* it, but the subtraction itself is neutral, not a penalty on trade.
+:::
+
+::: {.im-confusion}
+**"Government spending G includes Social Security and unemployment benefits."** It doesn't. G counts government *purchases* of goods and services — roads, teachers' salaries, fighter jets. Transfer payments move money between people without buying any current production, so they're excluded from G entirely. (When a retiree later spends the Social Security check on groceries, *that* shows up — in C.) This is why "G" in the identity is much smaller than the government's total budget.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+Which of the following adds to *this year's* US GDP?
+
+<details><summary>a) A family buys a three-year-old house from its previous owner</summary>
+No — the house was counted in GDP the year it was built. Reselling an existing asset is a transfer, not production (only the realtor's fee, a current service, counts).
+</details>
+<details><summary>b) A firm produces goods this year that sit unsold in its warehouse on December 31</summary>
+**Correct**. Unsold current production counts as inventory investment inside I — the accounting plug that makes Y = C + I + G + NX hold identically. Production is counted when it happens, not when it finally sells.
+</details>
+<details><summary>c) The government mails out this year's Social Security checks</summary>
+No — transfer payments buy no current goods or services, so they are excluded from G. The spending appears only if and when recipients buy something (in C).
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+An economy has C = \$800, I = \$200, G = \$300, exports of \$150 and imports of \$200 (all in billions). Compute NX, set the four sliders to match, and read off GDP. What is Y, and what share of it is consumption?
+
+<details><summary>Reveal answer</summary>
+`NX = 150 − 200 = −$50`, so set the sliders to **C = 800, I = 200, G = 300, NX = −50**. The dashed rule reads **Y = $1,250**, and the summary line shows consumption at `800/1250` = **64.0%** of GDP (I = 16.0%, G = 24.0%, NX = −4.0%).
+</details>
+</div>
+
+{{< include ../_includes/generated/measuring_gdp-related.md >}}

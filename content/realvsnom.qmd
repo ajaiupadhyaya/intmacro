@@ -1,0 +1,191 @@
+---
+title: "Real vs. Nominal GDP"
+subtitle: "Separating more stuff from higher prices"
+---
+
+{{< include ../_includes/generated/realvsnom-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — Nominal GDP mixes together two very different things: changes in the *quantity* of goods produced and changes in their *prices*. Real GDP strips out the price changes, so it tracks actual output. The gap between the two is measured by the GDP deflator, and the growth rates obey a simple accounting rule: nominal growth ≈ real growth + inflation.
+:::
+
+## You'll be able to
+
+- Decompose any nominal GDP growth rate into real growth and inflation, exactly and by the quick approximation.
+- Compute and interpret the GDP deflator as the ratio of nominal to real GDP.
+- Explain why real GDP — not nominal GDP — is the right measure for comparing output across time.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — the nominal and real GDP paths and the implied deflator update live
+:::
+
+```{ojs}
+//| echo: false
+viewof g_rvn    = Inputs.range([-0.02, 0.08], {value: 0.02, step: 0.005, label: "real growth gR"})
+viewof pi_rvn   = Inputs.range([-0.02, 0.10], {value: 0.03, step: 0.005, label: "inflation π"})
+viewof T_rvn    = Inputs.range([5, 50], {value: 20, step: 1, label: "years T"})
+viewof base_rvn = Inputs.range([100, 5000], {value: 1000, step: 100, label: "base-year GDP ($B)"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+paths_rvn = {
+  const rows = [];
+  for (let t = 0; t <= T_rvn; t++) {
+    const real = base_rvn * Math.pow(1 + g_rvn, t);
+    const defl = 100 * Math.pow(1 + pi_rvn, t);
+    const nominal = real * defl / 100;
+    rows.push({t, real, nominal, defl});
+  }
+  return rows;
+}
+
+end_rvn = paths_rvn[paths_rvn.length - 1]
+gN_rvn = (1 + g_rvn) * (1 + pi_rvn) - 1
+
+Plot.plot({
+  marginLeft: 60, height: 340,
+  x: {label: "years from base year →"},
+  y: {label: "GDP ($B)", grid: true},
+  marks: [
+    Plot.areaY(paths_rvn, {x: "t", y1: "real", y2: "nominal", fill: "#9aa0a6", fillOpacity: 0.15}),
+    Plot.line(paths_rvn, {x: "t", y: "nominal", stroke: "var(--im-accent)", strokeWidth: 2}),
+    Plot.line(paths_rvn, {x: "t", y: "real", stroke: "var(--im-sim)", strokeWidth: 2}),
+    Plot.text([{t: T_rvn, y: end_rvn.nominal}], {x: "t", y: "y", text: d => `nominal ${end_rvn.nominal.toFixed(0)}`, dy: -10, dx: -8, textAnchor: "end", fill: "var(--im-accent)"}),
+    Plot.text([{t: T_rvn, y: end_rvn.real}], {x: "t", y: "y", text: d => `real ${end_rvn.real.toFixed(0)}`, dy: 14, dx: -8, textAnchor: "end", fill: "var(--im-sim)"})
+  ]
+})
+
+md`Nominal GDP grows at **gN = ${(gN_rvn * 100).toFixed(2)}%** ≈ gR + π. Implied **GDP deflator at year ${T_rvn}: ${end_rvn.defl.toFixed(1)}** (base year = 100) — that is, 100 × ${end_rvn.nominal.toFixed(0)} / ${end_rvn.real.toFixed(0)}.`
+```
+
+The blue line is nominal GDP, the red line is real GDP, and the gray band between them is the part of nominal growth that is *only* price increases. Set π = 0 and the two lines collapse onto each other.
+:::
+
+## Core intuition
+
+[Nominal GDP]{.im-glossary-term} values this year's output at this year's prices, so it rises whenever quantities rise *or* prices rise. [Real GDP]{.im-glossary-term} values output at constant base-year prices, so it rises only when the economy actually produces more. That distinction is the whole point: if GDP is up 10% but prices also rose 10%, no additional goods or services exist — the increase is purely inflation, and real GDP is flat. A simple shopping metaphor makes it concrete: with \$50 you buy 10 items at \$5 each. If prices double to \$10, spending \$100 still buys the same 10 items — nominal spending doubled, real output didn't move.
+
+The bridge between the two measures is the [GDP deflator]{.im-glossary-term}, defined as 100 × nominal/real. It is a price index for everything in GDP: when the deflator reads 180, the overall price level is 80% higher than in the base year, and dividing nominal GDP by 1.80 recovers the real series. In growth-rate form the relationship is even handier — nominal growth splits, to a very good approximation, into real growth plus inflation. That is why a headline like "GDP grew 8%" tells you almost nothing until you know the inflation rate: with 5% inflation, real growth was only about 3%.
+
+This is also why economists care about *how* the price adjustment is done. Using one fixed base year distorts comparisons over long horizons as spending patterns shift toward goods whose relative prices fall (think electronics), so statistical agencies now use [chain-weighting]{.im-glossary-term} — updating the price weights every year and linking the growth rates together. The mechanics differ, but the goal is the same: measure quantities, not prices. Whenever you compare GDP across time, real GDP is the series that answers "is there more stuff?"
+
+Because deflating a nominal series is the everyday use of all this, the second simulator flips the exercise around: instead of choosing real growth and inflation, you *observe* a nominal growth rate — the way it arrives in a headline — and use the inflation slider to see how much of it survives as real growth.
+
+```{ojs}
+md`**Deflate a headline number** — you are told nominal GDP grows at gN per year; slide inflation to see what is left after deflating by the price index.`
+```
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Pick a nominal growth rate and an inflation rate — the deflated real path and the implied real growth update live
+:::
+
+```{ojs}
+//| echo: false
+viewof gN2_rvn = Inputs.range([-0.05, 0.15], {value: 0.05, step: 0.005, label: "nominal growth gN"})
+viewof pi2_rvn = Inputs.range([-0.05, 0.15], {value: 0.03, step: 0.005, label: "inflation π"})
+viewof T2_rvn  = Inputs.range([3, 40], {value: 10, step: 1, label: "years T"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+deflate_rvn = {
+  const base = 1000;
+  const rows = [];
+  for (let t = 0; t <= T2_rvn; t++) {
+    const nominal = base * Math.pow(1 + gN2_rvn, t);
+    const real = nominal / Math.pow(1 + pi2_rvn, t);
+    rows.push({t, nominal, real});
+  }
+  return rows;
+}
+
+end2_rvn = deflate_rvn[deflate_rvn.length - 1]
+gImpl_rvn = (1 + gN2_rvn) / (1 + pi2_rvn) - 1
+
+Plot.plot({
+  marginLeft: 60, height: 320,
+  x: {label: "years →"},
+  y: {label: "GDP ($B, base = 1000)", grid: true},
+  marks: [
+    Plot.areaY(deflate_rvn, {x: "t", y1: "real", y2: "nominal", fill: "#9aa0a6", fillOpacity: 0.15}),
+    Plot.line(deflate_rvn, {x: "t", y: "nominal", stroke: "var(--im-accent)", strokeWidth: 2}),
+    Plot.line(deflate_rvn, {x: "t", y: "real", stroke: "var(--im-sim)", strokeWidth: 2}),
+    Plot.text([{t: T2_rvn, y: end2_rvn.nominal}], {x: "t", y: "y", text: d => `nominal ${end2_rvn.nominal.toFixed(0)}`, dy: -10, dx: -8, textAnchor: "end", fill: "var(--im-accent)"}),
+    Plot.text([{t: T2_rvn, y: end2_rvn.real}], {x: "t", y: "y", text: d => `real ${end2_rvn.real.toFixed(0)}`, dy: 14, dx: -8, textAnchor: "end", fill: "var(--im-sim)"})
+  ]
+})
+
+md`Implied real growth: **${(gImpl_rvn * 100).toFixed(2)}%** exactly, vs the quick approximation gN − π = **${((gN2_rvn - pi2_rvn) * 100).toFixed(2)}%**.`
+```
+
+Try inflation *higher* than nominal growth — real GDP falls even though the nominal series keeps rising. Then try deflation (π < 0): the real line climbs *above* the nominal one.
+:::
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (deflator + growth decomposition)</summary>
+
+**The GDP deflator** converts between the two series:
+$$\text{Deflator}_t = 100 \times \frac{\text{Nominal GDP}_t}{\text{Real GDP}_t}, \qquad \text{Real GDP}_t = \frac{\text{Nominal GDP}_t}{\text{Deflator}_t} \times 100.$$
+
+**The simulators' paths.** With constant real growth $g_R$ and inflation $\pi$, and base-year value $Y_0$ (deflator $=100$):
+$$Y^{\text{real}}_t = Y_0 (1+g_R)^t, \qquad P_t = 100\,(1+\pi)^t, \qquad Y^{\text{nom}}_t = \frac{Y^{\text{real}}_t \, P_t}{100} = Y_0\,[(1+g_R)(1+\pi)]^t.$$
+
+**Growth-rate decomposition.** The exact relationship is multiplicative:
+$$1 + g_N = (1 + g_R)(1 + \pi),$$
+which expands to $g_N = g_R + \pi + g_R\pi$. Because the cross term $g_R\pi$ is tiny for ordinary rates, the workhorse approximation is
+$$\%\Delta \text{Nominal} \;\approx\; \%\Delta \text{Real} \;+\; \%\Delta \text{Prices}.$$
+At the first simulator's defaults ($g_R = 2\%$, $\pi = 3\%$): exact $g_N = 1.02 \times 1.03 - 1 = 5.06\%$ vs approximate $2\% + 3\% = 5\%$ — a gap of just $0.06$ points. The gap grows with the rates: at $g_R = \pi = 10\%$ the exact answer is $21\%$, not $20\%$.
+
+**Inverting for real growth** (the second simulator):
+$$1 + g_R = \frac{1 + g_N}{1 + \pi} \quad\Rightarrow\quad g_R \approx g_N - \pi.$$
+
+</details>
+:::
+
+## What the simulator showed
+
+At the first simulator's defaults (base GDP = \$1,000B, gR = 2%, π = 3%, T = 20) the two lines start together and steadily diverge: after 20 years real GDP reaches **\$1,486B** while nominal GDP reaches **\$2,684B** — nominal is 1.8× real, and the readout confirms a GDP deflator of **180.6**. Nominal GDP grew at **5.06%** per year, almost exactly gR + π = 5%. The gray band — the inflation effect — is most of the nominal increase: of the \$1,684B rise in nominal GDP, only \$486B is more actual output.
+
+The second simulator at its defaults (gN = 5%, π = 3%, T = 10) deflates a \$1,629B nominal figure down to **\$1,212B** in base-year prices, an implied real growth of **1.94%** — close to, but slightly below, the 2% approximation. Push inflation above nominal growth and the red line bends downward: the economy's nominal GDP rises every year while its real output shrinks.
+
+## Common confusions
+
+::: {.im-confusion}
+**"Nominal GDP doubled, so the economy produced twice as much."** Not necessarily — nominal GDP is prices × quantities, so it doubles just as easily from prices doubling with output flat. That is the \$50-shopping-trip case: same 10 items, twice the spending. Always deflate before comparing across time.
+:::
+
+::: {.im-confusion}
+**"The deflator and real GDP are separate facts about the economy."** They are two views of one adjustment: deflator = 100 × nominal/real by definition, so knowing any two of {nominal, real, deflator} pins down the third. If a problem gives you nominal GDP and the deflator, real GDP is not extra information to hunt for — it's nominal/deflator × 100.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+An economy's nominal GDP rises 6% in a year in which the GDP deflator also rises 6%. What happened to real GDP?
+
+<details><summary>a) It rose 6% — output grew with spending</summary>
+No — the deflator rising 6% means the entire nominal increase is higher prices. Deflating the 6%-larger nominal GDP by a 6%-larger price index leaves real GDP unchanged.
+</details>
+<details><summary>b) It stayed (essentially) flat — the growth was all prices</summary>
+**Correct**. Real growth satisfies (1 + gN) = (1 + gR)(1 + π), so 1.06 = (1 + gR)(1.06) gives gR = 0: the quantity of output did not change.
+</details>
+<details><summary>c) It fell 6% — inflation subtracts from output</summary>
+No — inflation subtracts from nominal *growth*, not from output itself. Here the subtraction exactly exhausts the 6% nominal growth, leaving real growth at zero, not −6%.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+In the second simulator ("Deflate a headline number"), set **gN = 8%, π = 5%, T = 10**. What implied real growth does the readout show, and roughly what real GDP does the red line reach at year 10?
+
+<details><summary>Reveal answer</summary>
+Implied real growth = 1.08/1.05 − 1 = **2.86%** (the approximation gN − π = 3% overstates it slightly). Nominal GDP reaches 1000 × 1.08¹⁰ ≈ **\$2,159B**, and deflating by 1.05¹⁰ ≈ 1.629 gives real GDP ≈ **\$1,325B** at year 10.
+</details>
+</div>
+
+{{< include ../_includes/generated/realvsnom-related.md >}}

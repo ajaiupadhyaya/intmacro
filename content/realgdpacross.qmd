@@ -1,0 +1,147 @@
+---
+title: "Comparing GDP Across Countries"
+subtitle: "Why market exchange rates understate poor countries' output — and how PPP fixes it"
+---
+
+{{< include ../_includes/generated/realgdpacross-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — A dollar buys more in a poor country than in a rich one, because nontraded goods and services are cheaper there. Converting GDP at market exchange rates therefore *understates* poor countries' real output. Dividing by the country's price level — the PPP adjustment — prices everyone's quantities at common prices, and typically shrinks measured income gaps a lot.
+:::
+
+## You'll be able to
+
+- Convert a country's market-rate GDP per capita into PPP-adjusted GDP per capita by dividing by its relative price level.
+- Explain *why* price levels are systematically lower in poorer countries (cheap nontradables), and what that does to cross-country income gaps.
+- Choose the right conversion for the question: PPP for living standards and output volumes, market rates for trade and financial flows.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — the PPP-adjusted bars and the income-gap readout update live
+:::
+
+```{ojs}
+//| echo: false
+viewof gdp1_ppp  = Inputs.range([10000, 120000], {value: 60000, step: 1000, label: "Country 1 GDP/cap (market $)"})
+viewof gdp2_ppp  = Inputs.range([500, 50000], {value: 8000, step: 500, label: "Country 2 GDP/cap (market $)"})
+viewof plvl2_ppp = Inputs.range([0.1, 1.5], {value: 0.3, step: 0.01, label: "Country 2 price level (Country 1 = 1)"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+// Country 1 is the base: its price level is fixed at 1 (the v1 slider was disabled).
+// PPP-adjusted GDP per capita = market-rate GDP per capita / price level index.
+calc_ppp = {
+  const p1 = 1.0;
+  const p2 = Math.max(plvl2_ppp, 1e-6);
+  const ppp1 = gdp1_ppp / p1;
+  const ppp2 = gdp2_ppp / p2;
+  const bars = [
+    {country: "Country 1 (base)", measure: "Market-rate GDP/cap", value: gdp1_ppp},
+    {country: "Country 1 (base)", measure: "PPP-adjusted GDP/cap", value: ppp1},
+    {country: "Country 2",        measure: "Market-rate GDP/cap", value: gdp2_ppp},
+    {country: "Country 2",        measure: "PPP-adjusted GDP/cap", value: ppp2}
+  ];
+  const ratioNom = gdp1_ppp / gdp2_ppp;
+  const ratioPPP = ppp1 / ppp2;
+  return {bars, ppp2, ratioNom, ratioPPP};
+}
+
+Plot.plot({
+  marginLeft: 70,
+  marginTop: 30,
+  x: {axis: null},
+  fx: {label: null},
+  y: {label: "GDP per capita ($)", grid: true, tickFormat: "$,.0f"},
+  color: {
+    domain: ["Market-rate GDP/cap", "PPP-adjusted GDP/cap"],
+    range: ["#c77d2e", "var(--im-accent)"],
+    legend: true
+  },
+  marks: [
+    Plot.barY(calc_ppp.bars, {fx: "country", x: "measure", y: "value", fill: "measure"}),
+    Plot.text(calc_ppp.bars, {
+      fx: "country", x: "measure", y: "value",
+      text: d => `$${Math.round(d.value).toLocaleString("en-US")}`,
+      dy: -8, fill: "var(--im-fg-primary)"
+    }),
+    Plot.ruleY([0], {stroke: "#9aa0a6"})
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+md`Income gap, Country 1 ÷ Country 2 — at **market exchange rates**: **${calc_ppp.ratioNom.toFixed(1)}×** · after **PPP adjustment**: **${calc_ppp.ratioPPP.toFixed(1)}×**`
+```
+
+Orange bars are GDP per capita converted at market exchange rates; blue bars divide by each country's price level. When Country 2's price level is below 1, its blue bar rises above its orange bar — the same money buys more there.
+:::
+
+## Core intuition
+
+Why are price levels lower in poor countries at all? Traded goods — cars, phones, wheat — cost roughly the same everywhere once shipped, but *nontradables* — haircuts, restaurant meals, childcare, rent — must be produced on the spot by local workers, and local wages in poor countries are low. That is the Balassa–Samuelson logic in one sentence: low productivity means low wages, low wages mean cheap services, and cheap services drag the whole price level down. So a dollar converted at the market exchange rate stretches much further in Delhi than in New York.
+
+This is exactly why market-rate comparisons mislead. GDP is supposed to measure the *volume* of goods and services an economy produces, but converting [nominal GDP]{.im-glossary-term} at the market exchange rate prices each country's output at its *own* prices. [Purchasing power parity]{.im-glossary-term} conversion instead asks what every country's quantities would cost at one *common* set of prices: divide market-rate GDP per capita by the country's price level relative to the base. A country whose prices are 30% of US prices gets its measured income scaled up by 1/0.3 ≈ 3.3 — not because it produced more, but because we were undercounting what its output could actually buy. That makes PPP-adjusted GDP the right yardstick for comparing [real GDP]{.im-glossary-term} and living standards across countries.
+
+None of this means market exchange rates are "wrong" — they answer a different question. If you want to know how many dollars India's exports earn, how much a US firm must pay to build a factory abroad, or the burden of dollar-denominated debt, actual currency conversion at market rates is exactly right, because those transactions happen at market rates. Use PPP for *how well people live and how much economies produce*; use market rates for *cross-border flows of money*.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (formula + worked example)</summary>
+
+Let $P_i$ be country $i$'s price level relative to the base country ($P_{\text{base}} = 1$). Then
+$$\text{PPP-adjusted GDP per capita}_i \;=\; \frac{\text{GDP per capita}_i \text{ (at market rates)}}{P_i}.$$
+
+**Worked example (the simulator's defaults).** Country 1 (base): GDP per capita \$60{,}000, $P_1 = 1$, so PPP-adjusted GDP is unchanged at \$60{,}000. Country 2: GDP per capita \$8{,}000 at market rates, $P_2 = 0.3$, so
+$$\text{PPP GDP}_2 = \frac{8{,}000}{0.3} \approx \$26{,}667.$$
+The income gap falls from $60{,}000/8{,}000 = 7.5\times$ at market rates to $60{,}000/26{,}667 \approx 2.25\times$ at PPP. If instead $P_2 > 1$ (prices *above* the base, as in Switzerland or Norway), the adjustment works in reverse and PPP GDP is *below* market-rate GDP.
+
+**In the real world**, this is implemented by the International Comparison Program and published as the **Penn World Table**: statisticians price a common basket of thousands of goods and services in every country, build each country's price level index from it, and deflate. Virtually every cross-country income figure you have seen — in growth textbooks, convergence plots, and the World Bank's tables — is a Penn-World-Table-style PPP number.
+
+</details>
+:::
+
+## What the simulator showed
+
+At the defaults — Country 1 at \$60,000 with price level 1, Country 2 at \$8,000 with price level 0.3 — Country 2's blue bar jumps to **\$26,667**, while Country 1's bars coincide at \$60,000. The readout shows the gap collapsing from **7.5×** at market rates to **2.2×** at PPP: over two-thirds of the apparent income gap was just cheaper prices, not lower output. Slide Country 2's price level up to 1.0 and the two bars merge — with equal prices, market-rate and PPP comparisons agree. Push it above 1.0 and the adjustment flips sign: the blue bar drops *below* the orange one, the high-price-country pattern.
+
+## Common confusions
+
+::: {.im-confusion}
+**"PPP proves market exchange rates are wrong."** No — the two answer different questions. Market rates are the actual terms on which currencies trade, and they are the right tool for trade flows, foreign investment, and debt. PPP rates are a *statistical construct* for comparing output volumes and living standards. A rate isn't wrong for failing to answer a question it was never asked.
+:::
+
+::: {.im-confusion}
+**"PPP adjustment is a fudge that inflates poor countries' numbers."** It's the opposite of a fudge: it removes a distortion. Market-rate GDP prices each country's output at its own prices, so a haircut in Mumbai counts for a fraction of an identical haircut in Boston. PPP prices everyone's *quantities* at one common set of prices — the same discipline as using real rather than nominal GDP over time, applied across countries instead of across years.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+A country's price level index is 0.5 relative to the US. Compared with converting its GDP at the market exchange rate, its PPP-adjusted GDP per capita will be —
+
+<details><summary>a) Half as large, since prices are half the US level</summary>
+No — that's the wrong direction. Low prices mean each market dollar *buys more*, so the adjustment scales measured income up, not down.
+</details>
+<details><summary>b) Twice as large, because each dollar of local spending buys twice the goods</summary>
+**Correct**. PPP GDP = market-rate GDP ÷ 0.5 = 2× the market-rate figure. Cheap nontradables mean the market-rate conversion was understating the real volume of goods and services.
+</details>
+<details><summary>c) Unchanged — PPP only matters for countries with floating exchange rates</summary>
+No — the exchange-rate regime is irrelevant. Any country whose price level differs from the base country's gets a nonzero adjustment.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+In the simulator, keep Country 1 at **\$60,000** and set Country 2's GDP per capita to **\$10,000** with a price level of **0.25**. What is Country 2's PPP-adjusted GDP per capita, and what happens to the income gap?
+
+<details><summary>Reveal answer</summary>
+PPP GDP₂ = 10,000 / 0.25 = **\$40,000**. The gap falls from 60,000/10,000 = **6.0×** at market rates to 60,000/40,000 = **1.5×** at PPP — the readout shows **6.0× → 1.5×**. A country that looks six times poorer at market rates is only 50% poorer once you price its output at common prices.
+</details>
+</div>
+
+{{< include ../_includes/generated/realgdpacross-related.md >}}

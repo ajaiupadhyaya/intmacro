@@ -1,0 +1,161 @@
+---
+title: "Real GDP with Changing Prices"
+subtitle: "Laspeyres, Paasche, and why statistical agencies chain-weight"
+---
+
+{{< include ../_includes/generated/two_goods_twoperiods-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — To measure [real GDP]{.im-glossary-term} growth you must value quantities at *some* set of prices, and the answer depends on which set you pick. Old prices (Laspeyres) overstate growth; new prices (Paasche) understate it. Neither is "the truth," so statistical agencies split the difference with [chain-weighting]{.im-glossary-term} — and in this simulator you can watch the three answers genuinely diverge.
+:::
+
+## You'll be able to
+
+- Compute real GDP growth three ways — base-period prices (Laspeyres), current-period prices (Paasche), and the chained Fisher index — from the same price and quantity data.
+- Explain *substitution bias*: why fixed base-year prices overstate growth when fast-growing goods have falling relative prices.
+- Say why the BEA abandoned fixed-base real GDP for chain-weighting, and what the chained measure does and doesn't fix.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — the same economy's growth rate is recomputed under three different price weights
+:::
+
+```{ojs}
+//| echo: false
+viewof pa2_cw = Inputs.range([0.50, 3.00], {value: 1.10, step: 0.05, label: "apple price, period 2 ($)"})
+viewof qa2_cw = Inputs.range([50, 200], {value: 102, step: 1, label: "apple quantity, period 2"})
+viewof pc2_cw = Inputs.range([2, 20], {value: 6.0, step: 0.5, label: "computer price, period 2 ($)"})
+viewof qc2_cw = Inputs.range([5, 60], {value: 20, step: 1, label: "computer quantity, period 2"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+// Period 1 is fixed: apples $1.00 × 100, computers $10.00 × 10 (nominal GDP = $200).
+// v1 computed real GDP at base-period prices (= Laspeyres); Paasche and the
+// chained Fisher index extend it per the chain-weighting merge plan.
+gdp_cw = {
+  const pa1 = 1.00, qa1 = 100, pc1 = 10.00, qc1 = 10;
+  const nom1 = pa1 * qa1 + pc1 * qc1;
+  const nom2 = pa2_cw * qa2_cw + pc2_cw * qc2_cw;
+  // Laspeyres quantity index: period-2 quantities at period-1 prices
+  const L = (pa1 * qa2_cw + pc1 * qc2_cw) / (pa1 * qa1 + pc1 * qc1);
+  // Paasche quantity index: both periods at period-2 prices
+  const P = (pa2_cw * qa2_cw + pc2_cw * qc2_cw) / (pa2_cw * qa1 + pc2_cw * qc1);
+  // Fisher (chained): geometric mean
+  const F = Math.sqrt(L * P);
+  const gN = (nom2 / nom1 - 1) * 100;
+  const bars = [
+    {measure: "Laspeyres (period-1 prices)", g: (L - 1) * 100},
+    {measure: "Chained (Fisher)", g: (F - 1) * 100},
+    {measure: "Paasche (period-2 prices)", g: (P - 1) * 100}
+  ];
+  return {bars, L, P, F, gN, nom1, nom2};
+}
+
+Plot.plot({
+  marginLeft: 55,
+  marginTop: 30,
+  height: 300,
+  x: {label: null, domain: gdp_cw.bars.map(d => d.measure)},
+  y: {label: "real GDP growth, period 1 → 2 (%)", grid: true},
+  marks: [
+    Plot.ruleY([0], {stroke: "#9aa0a6"}),
+    Plot.barY(gdp_cw.bars, {x: "measure", y: "g",
+      fill: d => d.measure.startsWith("Laspeyres") ? "var(--im-accent)"
+               : d.measure.startsWith("Paasche") ? "var(--im-sim)"
+               : "#c77d2e"}),
+    Plot.text(gdp_cw.bars, {x: "measure", y: "g",
+      text: d => d.g.toFixed(1) + "%",
+      dy: d => d.g >= 0 ? -8 : 12, fill: "var(--im-fg-primary)", fontWeight: "bold"})
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+md`Nominal GDP: **$${gdp_cw.nom1.toFixed(0)} → $${gdp_cw.nom2.toFixed(1)}** (nominal growth ${gdp_cw.gN.toFixed(1)}%). Real growth: Laspeyres **${((gdp_cw.L - 1) * 100).toFixed(2)}%**, Paasche **${((gdp_cw.P - 1) * 100).toFixed(2)}%**, chained Fisher **${((gdp_cw.F - 1) * 100).toFixed(2)}%**${gdp_cw.L > gdp_cw.P ? " — the chained measure lands between the other two." : gdp_cw.L < gdp_cw.P ? " — with relative prices moving *with* quantities, Paasche now exceeds Laspeyres; Fisher still lands between." : "."}`
+```
+
+Period 1 is held fixed (apples $1.00 × 100, computers $10.00 × 10). At the defaults computers get cheaper *and* more numerous — exactly the pattern that pulls the three measures apart. The blue and red bars are the same economy measured with different price tags; the orange bar is the compromise the official statistics actually use.
+:::
+
+## Core intuition
+
+Adding up an economy that makes apples *and* computers requires a common unit, and prices are that unit: [nominal GDP]{.im-glossary-term} values each good at its own current price. But when prices themselves change, nominal growth mixes "more stuff" with "higher price tags." To isolate the stuff — [real GDP]{.im-glossary-term} — you freeze prices and let only quantities move. The catch is that *which* prices you freeze matters, because prices are weights. At period-1 prices a computer counts for 10 apples; at period-2 prices, fewer than 6. So the same quantity changes can add up to a 51% expansion or a 37% one, with no arithmetic error anywhere.
+
+The gap isn't random — it has a systematic direction called **substitution bias**. Goods whose relative price falls (computers, historically and in this sim) are typically the goods whose quantities boom, both because buyers substitute toward them and because falling prices signal fast productivity growth. A Laspeyres index values that boom at the *old, high* price, so it overstates growth; a Paasche index values it at the *new, low* price and understates it — or, said the other way, wipes out most of the boom's measured value. The further apart the periods, and the faster relative prices shift, the worse a fixed base year performs. This is why "rebasing" real GDP used to *rewrite history*: switching the base year mechanically changed past growth rates.
+
+The fix statistical agencies adopted is [chain-weighting]{.im-glossary-term}. Instead of picking one base year forever, compute growth between *adjacent* periods using both periods' prices — the Fisher index, the geometric mean of Laspeyres and Paasche — then multiply (chain) those year-over-year links into a continuous series. Adjacent-year prices are never far apart, so the bias in each link is tiny, and no arbitrary base-year choice drives the answer. The US BEA switched real GDP to chained-Fisher in 1996 largely because computer prices were collapsing so fast that fixed-base measures had become unusable. The cost of chaining is a small one: chained components no longer add up exactly to chained GDP. Related bookkeeping also survives the switch — the ratio of nominal GDP to real GDP still defines the [GDP deflator]{.im-glossary-term}, so a deflator built from chained real GDP inherits the same superior weighting.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full derivation)</summary>
+
+Let $p_{it}$, $q_{it}$ be the price and quantity of good $i$ in period $t \in \{1,2\}$. Nominal GDP in each period is $\sum_i p_{it} q_{it}$. A *quantity index* holds prices fixed and asks how much the bundle grew.
+
+**Laspeyres** (period-1 prices):
+$$L = \frac{\sum_i p_{i1} q_{i2}}{\sum_i p_{i1} q_{i1}}$$
+
+**Paasche** (period-2 prices):
+$$P = \frac{\sum_i p_{i2} q_{i2}}{\sum_i p_{i2} q_{i1}}$$
+
+**Fisher** ("ideal", the chain link): the geometric mean,
+$$F = \sqrt{L \cdot P},$$
+so the chained growth rate is $F - 1$. Over many periods, chained real GDP multiplies the adjacent-period links: $\text{RGDP}_t = \text{RGDP}_{t-1} \cdot F_{t-1 \to t}$.
+
+**Worked example at the sim defaults.** Period 1: apples \$1.00 × 100, computers \$10.00 × 10. Period 2: apples \$1.10 × 102, computers \$6.00 × 20.
+
+$$L = \frac{1.00(102) + 10.00(20)}{1.00(100) + 10.00(10)} = \frac{302}{200} = 1.5100 \;\Rightarrow\; 51.00\%$$
+
+$$P = \frac{1.10(102) + 6.00(20)}{1.10(100) + 6.00(10)} = \frac{232.2}{170} = 1.3659 \;\Rightarrow\; 36.59\%$$
+
+$$F = \sqrt{1.5100 \times 1.3659} = 1.4361 \;\Rightarrow\; 43.61\%$$
+
+Laspeyres is 14 points above Paasche because the computer boom (q: 10 → 20) is valued at \$10 per unit in $L$ but only \$6 in $P$. One can show $L \ge F \ge P$ whenever price and quantity relatives are negatively correlated across goods — the empirically typical case.
+
+</details>
+:::
+
+## What the simulator showed
+
+At the defaults, the same economy's growth is **51.00%** at period-1 prices (Laspeyres, blue), **36.59%** at period-2 prices (Paasche, red), and **43.61%** chained (Fisher, orange) — a 14-point spread from nothing but the choice of price weights, with the chained measure landing between. The spread is driven entirely by the computer slider pair: push the period-2 computer price back up toward \$10 and the three bars converge (identical relative prices ⇒ no ambiguity); drop it further while raising computer quantity and the bars fan apart. Note also the readout line: nominal GDP grew only 16.1% — *less* than any real measure — because the price level here is falling.
+
+## Common confusions
+
+::: {.im-confusion}
+**"There is one true real GDP growth rate, and Laspeyres or Paasche measures it with error."** No — real growth is only defined *relative to a set of price weights*, and no weighting is privileged by economic theory. Laspeyres and Paasche are both internally correct answers to slightly different questions. Chaining is the profession's convention for a *reasonable* answer (it bounds the bias and passes index-number tests), not a discovery of the true one.
+:::
+
+::: {.im-confusion}
+**"Chain-weighting averages the quantities."** It averages the *indexes*, not the data: Fisher is the geometric mean of the Laspeyres and Paasche index numbers, computed between adjacent periods and then multiplied into a chain. Quantities and prices enter exactly as measured. A side effect worth knowing: chained components don't sum exactly to chained GDP, which is why BEA tables carry a "residual" line.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+Computer prices fall sharply while computer purchases boom. Compared with the chained measure, real GDP growth computed at *old* (period-1) prices will be…
+
+<details><summary>a) Lower — the old prices ignore the boom entirely</summary>
+No — old prices don't ignore the boom; they value it *generously*, at the old, high computer price. That pushes measured growth up, not down.
+</details>
+<details><summary>b) Higher — the boom in computers is valued at the old, high price</summary>
+**Correct**. This is substitution bias: Laspeyres weights fast-growing goods by their old (relatively high) prices, overstating growth. Paasche does the reverse, and the chained Fisher measure lands between.
+</details>
+<details><summary>c) The same — price weights cancel out of any growth rate</summary>
+No — weights only cancel when relative prices are unchanged. The whole point of the two-good example is that changing *relative* prices make the weighting choice bite.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Leave everything at the defaults but push **computer quantity (period 2) to 40** — a quadrupling of computer output. What do the three bars show, and is the ordering L > F > P preserved?
+
+<details><summary>Reveal answer</summary>
+`L = (1.00×102 + 10×40)/200 = 502/200 = 2.51 ⇒` **151.00%**; `P = (1.10×102 + 6×40)/170 = 352.2/170 ⇒` **107.18%**; `F = √(2.5100 × 2.0718) ⇒` **128.04%**. The ordering holds — and the L−P spread *widens* from 14 to 44 points, because the good with the falling relative price now accounts for even more of the growth.
+</details>
+</div>
+
+{{< include ../_includes/generated/two_goods_twoperiods-related.md >}}

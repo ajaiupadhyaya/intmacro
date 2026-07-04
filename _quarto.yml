@@ -9,18 +9,28 @@ project:
     - "content/*.ipynb"
     - "tracks/*.qmd"
     - "_glossary.qmd"
+    - "404.qmd"
     - "!content/_archive/**"
     - "!content/MODELS.md"
 
 website:
   title: "Intermediate Macroeconomics"
-  description: "An interactive dashboard of macroeconomic models for self-study."
+  description: "An interactive course companion: every chapter builds one macroeconomic model and hands you the controls."
+  site-url: https://ajaiupadhyaya.github.io/intmacro/
+  favicon: theme/favicon.svg
+  open-graph: true
+  twitter-card: true
   search:
     location: navbar
     type: overlay
   repo-url: https://github.com/ajaiupadhyaya/intmacro
   repo-actions: [edit, issue]
   page-navigation: true
+  page-footer:
+    left: "Intermediate Macroeconomics — an interactive course companion. Every chapter hands you the controls."
+    right:
+      - text: "Source on GitHub"
+        href: https://github.com/ajaiupadhyaya/intmacro
   navbar:
     background: light
     pinned: true
@@ -45,14 +55,13 @@ website:
     contents:
       - section: "Foundations"
         contents:
-          - content/Preliminaries.ipynb
+          - content/Preliminaries.qmd
       - section: "Measurement & National Accounts"
         contents:
-          - content/measuring_gdp.ipynb
-          - content/realvsnom.ipynb
-          - content/cash_money.ipynb
-          - content/two_goods_twoperiods.ipynb
-          - content/realgdpacross.ipynb
+          - content/measuring_gdp.qmd
+          - content/realvsnom.qmd
+          - content/two_goods_twoperiods.qmd
+          - content/realgdpacross.qmd
       - section: "Growth & Long-Run Dynamics"
         contents:
           - content/foundations_growth.qmd

@@ -17,7 +17,7 @@ sidebar: false
       <a class="im-btn im-btn-primary" href="content/foundations_growth.html">Start with Foundations</a>
       <a class="im-btn im-btn-ghost" href="_glossary.html">Browse the glossary</a>
     </div>
-    <p class="im-hero-meta">29 chapters &nbsp;&middot;&nbsp; 17 live models &nbsp;&middot;&nbsp; 5 tracks</p>
+    <p class="im-hero-meta">28 chapters &nbsp;&middot;&nbsp; 23 live models &nbsp;&middot;&nbsp; 5 tracks</p>
   </div>
   <div class="im-hero-art" role="img" aria-label="A Solow growth diagram: a concave saving curve crossing a straight break-even line, with the steady state k-star marked in red.">
     <svg viewBox="0 0 520 400" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -67,7 +67,7 @@ sidebar: false
     </svg></span>
     <h3>Measurement</h3>
     <p>How raw activity becomes GDP, price indices, and honest cross-country comparisons.</p>
-    <span class="im-track-meta">5 chapters</span>
+    <span class="im-track-meta">4 chapters</span>
   </a>
   <a class="im-track-card" href="tracks/growth.html">
     <span class="im-track-num">III</span>
@@ -114,7 +114,7 @@ prerequisites at the top — you can always trace a concept back.
 *The mathematical toolkit the rest of the course assumes.*
 
 ::: {.im-chapter-list}
-- [Mathematical Preliminaries](content/Preliminaries.ipynb) — growth rates, compounding, and the log approximation used throughout.
+- [Mathematical Preliminaries](content/Preliminaries.qmd) — growth rates, compounding, and the log approximation used throughout.
 :::
 
 ## II &nbsp;Measurement & National Accounts
@@ -122,11 +122,10 @@ prerequisites at the top — you can always trace a concept back.
 *How raw economic activity becomes the numbers we analyze.*
 
 ::: {.im-chapter-list}
-- [Measuring GDP: The Expenditure Approach](content/measuring_gdp.ipynb) — output as the sum of consumption, investment, government, and net exports.
-- [Real vs. Nominal GDP Over Time](content/realvsnom.ipynb) — separating genuine output changes from price changes.
-- [Deflators and Price Indices](content/cash_money.ipynb) — how a price index is built and why we deflate.
-- [Real GDP with Changing Prices](content/two_goods_twoperiods.ipynb) — base-year versus chain-weighted measures of real output.
-- [Comparing GDP Across Countries](content/realgdpacross.ipynb) — purchasing-power-parity adjustments for cross-country comparison.
+- [Measuring GDP: The Expenditure Approach](content/measuring_gdp.qmd) — output as the sum of consumption, investment, government, and net exports.
+- [Real vs. Nominal GDP](content/realvsnom.qmd) — separating genuine output changes from price changes, and the deflator that converts between them.
+- [Real GDP with Changing Prices](content/two_goods_twoperiods.qmd) — base-year versus chain-weighted measures of real output.
+- [Comparing GDP Across Countries](content/realgdpacross.qmd) — purchasing-power-parity adjustments for cross-country comparison.
 :::
 
 ## III &nbsp;Growth & Long-Run Dynamics

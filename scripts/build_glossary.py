@@ -19,17 +19,22 @@ Key terms used across the book. Each links back to the chapter where it first ap
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--glossary", default="_includes/glossary.yml")
+    ap.add_argument("--prereqs", default="_includes/prereqs.yml")
     ap.add_argument("--out", default="_glossary.qmd")
     args = ap.parse_args()
     entries = yaml.safe_load(pathlib.Path(args.glossary).read_text()) or []
     entries.sort(key=lambda e: e["term"].lower())
+    # chapter id -> human title, so links read "The Solow Growth Model"
+    # instead of the raw file stem
+    chapters = yaml.safe_load(pathlib.Path(args.prereqs).read_text()) or {}
+    titles = {cid: meta.get("title", cid) for cid, meta in chapters.items()}
     lines = [HEADER]
     for e in entries:
         aka = ""
         if e.get("aka"):
             aka = " _(also: " + ", ".join(e["aka"]) + ")_"
         fm = e.get("first_mention", "")
-        link = f" — [↪ first used in {fm}](content/{fm}.html)" if fm else ""
+        link = f" — [↪ first used in *{titles.get(fm, fm)}*](content/{fm}.html)" if fm else ""
         lines.append(f"### {e['term']}{aka}\n\n{e['short']}{link}\n")
     pathlib.Path(args.out).write_text("\n".join(lines))
     print(f"build_glossary: {len(entries)} terms -> {args.out}")

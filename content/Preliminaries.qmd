@@ -1,0 +1,158 @@
+---
+title: "Preliminaries: The Mathematics of Economic Growth"
+subtitle: "Growth rates, compounding, and why economists work in logarithms"
+---
+
+{{< include ../_includes/generated/Preliminaries-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — Growth compounds: a variable growing at a constant rate g follows $Y_T = Y_0(1+g)^T$, which curves ever upward on a normal axis but is a *straight line* on a log axis. Because $\ln(1+g) \approx g$ for small g, logs turn multiplication into addition and give the rule of 70: a quantity growing at g% per year doubles roughly every 70/g years.
+:::
+
+## You'll be able to
+
+- Compute percent changes, growth rates, and *annualized* growth rates between any two dates, exactly and via the log shortcut.
+- Read a log-scale chart: recognize that a straight line means constant growth and that its slope *is* the growth rate.
+- Apply the rule of 70 to estimate doubling times, and say when the approximation is safe (small g) and when it isn't.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — the compounding path and doubling-time marker update live; flip the axis to log to straighten the curve
+:::
+
+```{ojs}
+//| echo: false
+viewof g_pre     = Inputs.range([0.005, 0.10], {value: 0.02, step: 0.005, label: "growth rate g"})
+viewof T_pre     = Inputs.range([20, 150], {value: 100, step: 5, label: "horizon T (years)"})
+viewof scale_pre = Inputs.radio(["linear", "log"], {value: "linear", label: "y-axis scale"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+// compounding:   Y_T = Y_0 (1 + g)^T
+// doubling time: t* = ln 2 / ln(1 + g)  ≈  70 / (100·g)   (rule of 70)
+Y0_pre = 100
+
+path_pre = {
+  const pts = [];
+  for (let t = 0; t <= T_pre; t++) pts.push({t, y: Y0_pre * Math.pow(1 + g_pre, t)});
+  return pts;
+}
+
+tdouble_pre = Math.log(2) / Math.log(1 + g_pre)
+rule70_pre  = 70 / (100 * g_pre)
+
+Plot.plot({
+  marginLeft: 60,
+  x: {label: "years →"},
+  y: {label: `value Y (${scale_pre} scale)`, type: scale_pre === "log" ? "log" : "linear", grid: true},
+  marks: [
+    ...(tdouble_pre <= T_pre ? [
+      Plot.ruleY([2 * Y0_pre], {stroke: "#9aa0a6", strokeDasharray: "4 4"}),
+      Plot.ruleX([tdouble_pre], {stroke: "var(--im-sim)", strokeDasharray: "4 4"}),
+      Plot.text([{t: tdouble_pre, y: 2 * Y0_pre}], {x: "t", y: "y", text: () => `doubles at t ≈ ${tdouble_pre.toFixed(1)} yrs (rule of 70 says ${rule70_pre.toFixed(1)})`, dx: 8, dy: -10, textAnchor: "start", fill: "var(--im-sim)"})
+    ] : []),
+    Plot.line(path_pre, {x: "t", y: "y", stroke: "var(--im-accent)", strokeWidth: 2}),
+    Plot.text([path_pre.at(-1)], {x: "t", y: "y", text: () => `Y_T = ${(Y0_pre * Math.pow(1 + g_pre, T_pre)).toFixed(0)}  (${Math.pow(1 + g_pre, T_pre).toFixed(1)}×)`, dx: -8, dy: -8, textAnchor: "end", fill: "var(--im-accent)"})
+  ]
+})
+```
+
+The blue curve is $Y_t = 100\,(1+g)^t$. The dashed red line marks the exact doubling time; the gray dashed line is the doubling *level* $2Y_0$. Below, the notebook's annualized-growth calculator: pick any start value, end value, and span of years, and compare the exact annualized rate with the log approximation.
+
+```{ojs}
+//| echo: false
+viewof Y0c_pre = Inputs.range([50, 1000], {value: 100, step: 10, label: "initial value Y₀"})
+viewof YTc_pre = Inputs.range([50, 2000], {value: 200, step: 10, label: "final value Y_T"})
+viewof Tc_pre  = Inputs.range([1, 100], {value: 20, step: 1, label: "years between (T)"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+// exact:  g = (Y_T / Y_0)^{1/T} − 1
+// approx: g ≈ [ln Y_T − ln Y_0] / T
+exact_g_pre     = Math.pow(YTc_pre / Y0c_pre, 1 / Tc_pre) - 1
+logapprox_g_pre = (Math.log(YTc_pre) - Math.log(Y0c_pre)) / Tc_pre
+
+md`**Exact annualized rate** $g = (Y_T/Y_0)^{1/T} - 1$ = **${(exact_g_pre * 100).toFixed(2)}%/yr** · **Log approximation** $[\ln Y_T - \ln Y_0]/T$ = **${(logapprox_g_pre * 100).toFixed(2)}%/yr** · gap = ${(Math.abs(exact_g_pre - logapprox_g_pre) * 100).toFixed(3)} percentage points`
+```
+:::
+
+## Core intuition
+
+Growth economics runs on one deceptively simple object: the growth rate, $g = (Y_{t+1} - Y_t)/Y_t$ — a percent change written as a decimal. Rearranging gives $Y_{t+1} = Y_t(1+g)$: each year the economy multiplies itself by the *same factor*, so after T years $Y_T = Y_0(1+g)^T$. Multiplication, repeated, is compounding — and compounding is why "small" numbers matter enormously in macro. A country whose [real GDP]{.im-glossary-term} per person grows at 2% a year doesn't add a constant amount each year; it adds 2% *of an ever-larger base*. Over a century that turns 100 into about 724 — a seven-fold gain from a rate that sounds barely noticeable.
+
+That multiplicative structure is also why raw level charts mislead. On a normal (linear) axis, constant-rate growth looks like an accelerating explosion: the curve gets steeper every year even though *nothing about the economy's behavior changed*. The fix is to plot the logarithm of the series. Since $\ln Y_t = \ln Y_0 + t\ln(1+g)$, constant growth becomes a straight line whose slope is (approximately) g. A log-scale chart lets your eye do growth accounting: parallel lines mean equal growth rates, a kink means the growth rate changed, and a steeper segment means faster growth — regardless of whether the country is rich or poor. This is the single most useful chart-reading skill in the course.
+
+Logs earn their keep a second way: they turn awkward compound-growth algebra into arithmetic. Because $\ln(1+g) \approx g$ when g is small, the growth rate of a *product* of variables is roughly the *sum* of their growth rates, a ratio's is the difference, and a power's is the exponent times the base's. Those three rules are the entire toolkit behind growth accounting later in the course. They also yield the famous rule of 70: since doubling requires $(1+g)^{t^*} = 2$, we need $t^* = \ln 2/\ln(1+g) \approx 0.70/g$ — about 70 divided by the growth rate in percent. At 2% growth, incomes double every 35 years; at 7%, every 10. Keep the *level* of income (how rich a country is) firmly separate in your mind from its *growth rate* (how fast it is getting richer): the United States has been rich and slow-growing for 150 years, while China was poor and fast-growing for decades — the two concepts often move in opposite directions.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full derivation)</summary>
+
+**Percent change and the growth rate.**
+$$g = \frac{Y_{t+1} - Y_t}{Y_t} \quad\Longrightarrow\quad Y_{t+1} = Y_t(1+g), \qquad Y_T = Y_0(1+g)^T.$$
+
+**Annualized growth between two distant dates.** Solve $Y_T = Y_0(1+g)^T$ for g:
+$$\frac{Y_T}{Y_0} = (1+g)^T \;\Longrightarrow\; g_{\text{annualized}} = \left(\frac{Y_T}{Y_0}\right)^{1/T} - 1.$$
+
+**The log approximation.** Take logs of $Y_{t+1} = Y_t(1+g)$:
+$$\ln Y_{t+1} = \ln Y_t + \ln(1+g).$$
+The Taylor expansion of $\ln(1+g)$ around $g=0$ is $g - \tfrac{g^2}{2} + \tfrac{g^3}{3} - \cdots$, so for small g,
+$$\ln(1+g) \approx g \quad\Longrightarrow\quad g \approx \ln Y_{t+1} - \ln Y_t = \Delta \ln Y,$$
+and the annualized version becomes
+$$g_{\text{annualized}} \approx \frac{\ln Y_T - \ln Y_0}{T}.$$
+At $g = 0.02$, $\ln(1.02) = 0.019803$ — an error of about 1% of the rate. At $g = 0.10$, $\ln(1.10) = 0.0953$ — the error is nearly 5% of the rate, so the shortcut degrades as g grows.
+
+**Growth-rate rules** (from the log rules $\ln(xy) = \ln x + \ln y$, $\ln(x/y) = \ln x - \ln y$, $\ln(x^a) = a\ln x$, applied to changes over time):
+$$z = xy \;\Rightarrow\; g_z \approx g_x + g_y, \qquad z = x/y \;\Rightarrow\; g_z \approx g_x - g_y, \qquad z = x^a \;\Rightarrow\; g_z \approx a\,g_x.$$
+These are exact for logs and approximate for discrete growth rates; the power rule is what later delivers Cobb–Douglas growth accounting.
+
+**Rule of 70.** Doubling means $(1+g)^{t^*} = 2$, so
+$$t^* = \frac{\ln 2}{\ln(1+g)} \approx \frac{\ln 2}{g} = \frac{0.693\ldots}{g} \approx \frac{70}{100\,g}.$$
+(70 rather than 69.3 because it divides evenly by more growth rates.) At $g = 2\%$: exact $t^* = \ln 2/\ln 1.02 = 35.0$ years; rule of 70 gives $70/2 = 35$ — essentially identical.
+
+</details>
+:::
+
+## What the simulator showed
+
+At the defaults **g = 2%, T = 100**, the endpoint label read **Y_T = 724 (7.2×)** — a century of "slow" 2% growth multiplies income more than sevenfold — and the dashed red doubling marker sat at **t ≈ 35.0 years**, exactly what the rule of 70 predicts (70/2 = 35.0). On the linear axis the path curved upward ever more steeply; flipping the axis to **log** turned the *same* path into a perfectly straight line, the visual signature of a constant growth rate. Pushing g to 10% showed the approximation fraying: the exact doubling time was 7.3 years while the rule of 70 said 7.0. In the calculator below, doubling from 100 to 200 over 20 years gave an exact annualized rate of **3.53%** against a log approximation of **3.47%** — a gap of only 0.061 percentage points, which is why economists use the shortcut without apology at ordinary growth rates.
+
+## Common confusions
+
+::: {.im-confusion}
+**"GDP rose by the same amount each year, so growth was constant."** No — a constant *level* change means a *falling* growth rate. If GDP goes 103 → 105 → 107 → 109, each +2 step is a smaller percent of an ever-larger base: 1.94%, then 1.90%, then 1.87%. Constant growth means a constant *proportional* change, i.e. multiplying by (1+g) each year — which is a growing absolute change. This is exactly why linear-axis charts of growing economies are hard to read, and why we switch to logs.
+:::
+
+::: {.im-confusion}
+**"The log approximation ln(1+g) ≈ g is always fine."** It's fine when g is small — that's the whole condition. At g = 2%, ln(1.02) = 0.0198, an error of about 1% of the rate. But at g = 10%, ln(1.10) = 0.0953, an error of nearly 5%, and the rule of 70 already misses the true doubling time by a third of a year (7.0 vs 7.3). For quarterly or annual macro rates the shortcut is excellent; for hyperinflation rates or multi-decade cumulative changes, use the exact formula $(Y_T/Y_0)^{1/T} - 1$.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+Two countries are plotted on a **log-scale** chart of GDP per capita. Country A's line is higher; Country B's line is steeper. What can you conclude?
+
+<details><summary>a) Country A is growing faster, because its line is higher</summary>
+No — on a log scale, *height* is the level (how rich) and *slope* is the growth rate (how fast it's getting richer). A higher line only means A is richer.
+</details>
+<details><summary>b) Country B is growing faster, even though it is currently poorer</summary>
+**Correct**. Slope on a log axis is the growth rate, so B's steeper line means faster growth; A's greater height means a higher level. Level and growth rate are different concepts and often move oppositely (convergence).
+</details>
+<details><summary>c) Country B will always be poorer than country A</summary>
+No — a steeper line eventually crosses a higher, flatter one. Faster growth from a lower level is exactly the convergence pattern.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+In the simulator, set **g = 2%** (the default). Where does the dashed red doubling-time marker sit, and what does the rule of 70 predict?
+
+<details><summary>Reveal answer</summary>
+The rule of 70 predicts 70/2 = **35 years**, and the marker sits at the exact value $t^* = \ln 2 / \ln(1.02) = 35.0$ years — the two agree to one decimal place at this growth rate. (Check: the blue path passes the gray $2Y_0 = 200$ line at that instant — $100 \times 1.02^{35} = 200.0$.)
+</details>
+</div>
+
+{{< include ../_includes/generated/Preliminaries-related.md >}}

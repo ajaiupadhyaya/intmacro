@@ -64,5 +64,31 @@
     "aka": [
       "AS curve"
     ]
+  },
+  "expenditure approach": {
+    "short": "Measuring GDP as total final spending: Y = C + I + G + NX.",
+    "aka": []
+  },
+  "nominal GDP": {
+    "short": "Output valued at current prices \u2014 price and quantity changes mixed together.",
+    "aka": []
+  },
+  "real GDP": {
+    "short": "Output valued at constant prices, so changes reflect quantities rather than prices.",
+    "aka": []
+  },
+  "GDP deflator": {
+    "short": "The ratio of nominal to real GDP (\u00d7100) \u2014 the economy-wide price index implied by the accounts.",
+    "aka": []
+  },
+  "chain-weighting": {
+    "short": "Updating price weights every period and chaining the growth rates \u2014 the compromise between base-year choices used in official statistics.",
+    "aka": []
+  },
+  "purchasing power parity": {
+    "short": "Valuing every country's output at one common set of prices, so cross-country comparisons reflect quantities.",
+    "aka": [
+      "PPP"
+    ]
   }
 }

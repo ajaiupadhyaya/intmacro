@@ -84,3 +84,28 @@ rbc_simulation:
   title: "The Real Business Cycle Model"
   tldr: "Fluctuations as the economy's efficient response to technology shocks — no market failure required, which is exactly the controversy."
   prereqs: [equilibrium_model]
+Preliminaries:
+  track: foundations
+  title: "Mathematical Preliminaries"
+  tldr: "Growth rates, ratios, and logs — the compounding arithmetic every model in this course leans on."
+  prereqs: []
+measuring_gdp:
+  track: measurement
+  title: "Measuring GDP: The Expenditure Approach"
+  tldr: "GDP adds up final spending — Y = C + I + G + NX — because every dollar of output is someone's expenditure."
+  prereqs: []
+realvsnom:
+  track: measurement
+  title: "Real vs. Nominal GDP"
+  tldr: "Nominal GDP mixes prices and quantities; real GDP holds prices fixed so changes reflect actual output. The deflator is their ratio."
+  prereqs: [measuring_gdp]
+two_goods_twoperiods:
+  track: measurement
+  title: "Real GDP with Changing Prices"
+  tldr: "With many goods, 'real GDP' depends on whose prices you use — Laspeyres, Paasche, or the chain-weighted compromise."
+  prereqs: [realvsnom]
+realgdpacross:
+  track: measurement
+  title: "Comparing GDP Across Countries"
+  tldr: "Market exchange rates mislead; PPP prices make quantities comparable across countries."
+  prereqs: [realvsnom]

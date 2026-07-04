@@ -1,0 +1,11 @@
+---
+title: "Redirecting…"
+format:
+  html:
+    include-in-header:
+      text: |
+        <meta http-equiv="refresh" content="0; url=realvsnom.html">
+        <link rel="canonical" href="realvsnom.html">
+---
+
+This chapter's material was merged into [Real vs. Nominal GDP](realvsnom.html).

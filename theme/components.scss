@@ -611,6 +611,17 @@ details.im-math-toggle {
 .im-chapter-list a { font-weight: 520; text-decoration: none; }
 .im-chapter-list a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
+// ---- Footer ----------------------------------------------------------
+.nav-footer {
+  border-top: 1px solid var(--im-border);
+  background: var(--im-bg-page);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.72rem;
+  color: var(--im-fg-muted);
+  a { color: var(--im-fg-secondary); text-decoration: none; }
+  a:hover { color: var(--im-sim); }
+}
+
 // ---- Motion / a11y --------------------------------------------------
 html { scroll-behavior: smooth; }
 a, button { -webkit-tap-highlight-color: transparent; }
