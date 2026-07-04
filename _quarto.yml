@@ -91,6 +91,8 @@ format:
     toc: true
     toc-depth: 2
     code-tools: false
+    mermaid:
+      theme: neutral
     grid:
       sidebar-width: 250px
       body-width: 950px
