@@ -44,10 +44,10 @@ appear as hover definitions throughout and are collected in the
 - [Human Capital](content/humancapital.qmd) — adding a second accumulable factor to the Solow framework.
 - [The Convergence Hypothesis](content/convergence_hypo.qmd) — when poorer economies do, and do not, catch up.
 - [Solow Model: Exercises & Case Studies](content/solow_model.ipynb) — applied problems built on the Solow framework.
-- [The Romer Model of Endogenous Growth](content/romer_model.ipynb) — ideas, nonrivalry, and growth driven from within.
+- [The Romer Model of Endogenous Growth](content/romer_model.qmd) — ideas, nonrivalry, and growth driven from within.
 - [Scale Effects in the Romer Model](content/scale_effects.ipynb) — how population size influences the rate of innovation.
 - [The Solow–Romer Hybrid Model](content/hybrid_model.ipynb) — combining capital accumulation with endogenous ideas.
-- [Growth Accounting](content/growth_acc.ipynb) — decomposing output growth into capital, labor, and total factor productivity.
+- [Growth Accounting](content/growth_acc.qmd) — decomposing output growth into capital, labor, and total factor productivity.
 - [Slowing Growth and Declining TFP](content/slowinggrowth.ipynb) — what a falling rate of technological advance implies.
 - [Robots vs. Labor](content/robots.ipynb) — automation and substitution in a CES production model.
 
@@ -66,6 +66,6 @@ appear as hover definitions throughout and are collected in the
 - [The IS Curve](content/is_curve_model.qmd) — interest rates, demand, and goods-market equilibrium.
 - [Dynamic AD–AS with a Taylor Rule](content/adassim.qmd) — inflation and output dynamics under a policy rule, and how the economy absorbs demand and supply shocks.
 - [AD–AS: Exercises & Case Studies](content/adas_model.ipynb) — applied problems using the AD–AS framework.
-- [The Lucas Island Model](content/lucas_island_model.ipynb) — imperfect information and the source of real fluctuations.
-- [Equilibrium Business Cycles with Persistence](content/equilibrium_model.ipynb) — propagation that stretches shocks over time.
-- [The Real Business Cycle Model](content/rbc_simulation.ipynb) — fluctuations as the efficient response to productivity shocks.
+- [The Lucas Island Model](content/lucas_island_model.qmd) — imperfect information and the source of real fluctuations.
+- [Equilibrium Business Cycles with Persistence](content/equilibrium_model.qmd) — propagation that stretches shocks over time.
+- [The Real Business Cycle Model](content/rbc_simulation.qmd) — fluctuations as the efficient response to productivity shocks.

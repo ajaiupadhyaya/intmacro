@@ -58,10 +58,10 @@ Renames are deferred to Phase 4 so that we don't break the Phase 1 TOC + early P
 | `solow_pop_tech` | `content/solow_pop&_tech_growth.ipynb` | 📘 Solow Model with Population + Tech Growth | canonical | — | URL-unfriendly filename — Phase 4 rename to `solow_pop_tech_growth.ipynb`. |
 | `solow_tech_progress` | `content/humancapital.ipynb` | 📚 Solow Growth Model with Technological Progress | rename-required | — | Filename misleads (says "humancapital", content is Solow+g). Phase 4 rename. |
 | `solow_exercises` | `content/solow_model.ipynb` | 🎯 Advanced Exercises and Case Studies (Solow) | rename-required | — | Capstone exercises for the Solow block. |
-| `romer` | `content/romer_model.ipynb` | 💡 Romer Model of Endogenous Growth | canonical | `_archive/romer_model_endogen.ipynb`, `_archive/romerendogenous.ipynb` | Three Romer variants; canonical wins, archives merge. |
+| `romer` | `content/romer_model.qmd` | The Romer Model of Endogenous Growth | canonical | `_archive/romer_model_endogen.ipynb`, `_archive/romerendogenous.ipynb` | ✅ 2026-07-03: converted to v2 OJS chapter; v1 notebook archived. Archive-variant merges still pending. |
 | `romer_scale` | `content/scale_effects.ipynb` | 📈 Scale Effects in the Romer Model | canonical | — | — |
 | `solow_romer_hybrid` | `content/hybrid_model.ipynb` | 🧬 Solow-Romer Hybrid Growth Model | canonical | `_archive/solow_romer_hybrid.ipynb` | — |
-| `growth_accounting` | `content/growth_acc.ipynb` | 📊 Growth Accounting | canonical | `_archive/gabd.ipynb` | — |
+| `growth_accounting` | `content/growth_acc.qmd` | Growth Accounting | canonical | `_archive/gabd.ipynb` | ✅ 2026-07-03: converted to v2 OJS chapter (decomposition + residual calculator; live-FRED section noted in math toggle, can't run statically); v1 notebook archived. `gabd` merge still pending. |
 | `convergence` | `content/convergence_hypo.ipynb` | 📉 Convergence Hypothesis | canonical | — | — |
 | `slowing_growth` | `content/slowinggrowth.ipynb` | 📉 Slowing Growth? Declining TFP Advancement | canonical | — | — |
 | `robots_ces` | `content/robots.ipynb` | 🤖 Robots vs. Labor: CES Production | canonical | — | — |
@@ -84,9 +84,9 @@ Renames are deferred to Phase 4 so that we don't break the Phase 1 TOC + early P
 | `adas_sim` | `content/adassim.qmd` | Dynamic AD-AS with Monetary Policy | canonical | — | Primary AD-AS simulator. ✅ 2026-07-02: shock typology + impulse-response sim merged in from `dynamicshock`. |
 | `adas_shocks` | `_archive/dynamicshock_v1.ipynb` | AD-AS Shocks and Dynamic Adjustment | superseded | — | ✅ 2026-07-02: merged into `adassim.qmd`; archived with provenance. |
 | `adas_exercises` | `content/adas_model.ipynb` | 🎯 Advanced AD-AS Exercises and Case Studies | rename-required | — | Capstone exercises for AD-AS block. |
-| `lucas_island` | `content/lucas_island_model.ipynb` | 💥 Equilibrium Business Cycles: Lucas Model | canonical | — | — |
-| `eq_business_cycles` | `content/equilibrium_model.ipynb` | 🔁 Equilibrium Business Cycles with Persistence | canonical | — | Builds on Lucas — pair adjacent in TOC. |
-| `rbc` | `content/rbc_simulation.ipynb` | 💡 Real Business Cycle (RBC) Model | canonical | — | — |
+| `lucas_island` | `content/lucas_island_model.qmd` | The Lucas Island Model | canonical | — | ✅ 2026-07-03: converted to v2 OJS chapter (AD-AS surprise diagram + seeded islands sim); v1 notebook archived. |
+| `eq_business_cycles` | `content/equilibrium_model.qmd` | Equilibrium Business Cycles with Persistence | canonical | — | ✅ 2026-07-03: converted to v2 OJS chapter; v1 notebook archived. Paired after Lucas in TOC. |
+| `rbc` | `content/rbc_simulation.qmd` | The Real Business Cycle Model | canonical | — | ✅ 2026-07-03: converted to v2 OJS chapter. v1 code's consumption-smoothing rule was non-convergent (capital fell below old SS after a positive shock); v2 implements the capital partial-adjustment rule the v1 *text* specified — disclosed in the chapter's math toggle. v1 notebook archived. |
 
 ## Archive disposition summary
 

@@ -1,0 +1,169 @@
+---
+title: "Equilibrium Business Cycles with Persistence"
+subtitle: "How a one-period monetary surprise becomes a years-long cycle"
+---
+
+{{< include ../_includes/generated/equilibrium_model-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — In a Lucas-style economy, money only moves output while it is a *surprise* — one period, here. But that one burst of output builds capital, and capital decays slowly. The shock is the **impulse**; capital accumulation is the **propagation mechanism** that stretches it into a drawn-out cycle.
+:::
+
+## You'll be able to
+
+- Distinguish the *impulse* (a shock) from the *propagation mechanism* (what carries its effects forward in time).
+- Explain why, under rational expectations, only *unanticipated* money moves output — and why the effect lasts exactly one period.
+- Compute the impact response of output, `γ/(1+γ)·εₘ`, and the half-life of the cycle it leaves behind.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — a single monetary surprise hits at t = 5; watch how long its footprint lasts
+:::
+
+```{ojs}
+//| echo: false
+viewof gamma  = Inputs.range([0.1, 5.0], {value: 1.5, step: 0.1, label: "supply sensitivity γ"})
+viewof phi    = Inputs.range([0.01, 0.99], {value: 0.33, step: 0.01, label: "output elasticity of capital ϕ"})
+viewof deltap = Inputs.range([0.01, 0.20], {value: 0.08, step: 0.01, label: "depreciation δ"})
+viewof sy     = Inputs.range([0.0, 0.5], {value: 0.10, step: 0.01, label: "investment sensitivity s_y"})
+viewof rho    = Inputs.range([0.0, 0.99], {value: 0.80, step: 0.01, label: "monetary persistence ρ"})
+viewof epsm   = Inputs.range([-0.10, 0.10], {value: 0.05, step: 0.01, label: "shock size εₘ"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+// Deterministic: one unanticipated shock ε_m at t = 5, horizon T = 50.
+sim = {
+  const T = 50, shock_time = 5;
+  const k = new Array(T + 1).fill(0);
+  const m = new Array(T + 1).fill(0);
+  const y = new Array(T).fill(0);
+  const p = new Array(T).fill(0);
+  const p_e = new Array(T).fill(0);
+  for (let t = 0; t < T; t++) {
+    const shock_now = (t === shock_time) ? epsm : 0.0;
+    m[t] = t > 0 ? rho * m[t - 1] + shock_now : shock_now;          // m_t = ρ m_{t−1} + ε_t
+    p_e[t] = (t > 0 ? rho * m[t - 1] : 0) - phi * k[t];             // pᵉ_t = ρ m_{t−1} − ϕ k_t
+    p[t] = (m[t] - phi * k[t] + gamma * p_e[t]) / (1.0 + gamma);    // AD = AS solved for p_t
+    y[t] = m[t] - p[t];                                             // y_t = m_t − p_t
+    k[t + 1] = (1.0 - deltap) * k[t] + sy * y[t];                   // k_{t+1} = (1−δ)k_t + s_y y_t
+  }
+  const pts = [];
+  for (let t = 0; t < T; t++) {
+    pts.push({t, series: "money m (impulse)", v: m[t]});
+    pts.push({t, series: "output y", v: y[t]});
+    pts.push({t, series: "capital k (propagation)", v: k[t]});
+  }
+  let iy = 0;
+  for (let t = 1; t < T; t++) if (Math.abs(y[t]) > Math.abs(y[iy])) iy = t;
+  return {pts, peakT: iy, peakY: y[iy], shock_time};
+}
+
+Plot.plot({
+  marginLeft: 55,
+  x: {label: "time t →"},
+  y: {label: "log deviation from steady state", grid: true},
+  color: {
+    domain: ["money m (impulse)", "output y", "capital k (propagation)"],
+    range: ["#9aa0a6", "var(--im-accent)", "var(--im-sim)"],
+    legend: true
+  },
+  marks: [
+    Plot.ruleY([0], {stroke: "#ccc"}),
+    Plot.ruleX([sim.shock_time], {stroke: "#9aa0a6", strokeDasharray: "4 4"}),
+    Plot.line(sim.pts, {x: "t", y: "v", stroke: "series", strokeWidth: 2,
+      strokeDasharray: d => d.series === "output y" ? null : "4 3"}),
+    Plot.dot([{t: sim.peakT, v: sim.peakY}], {x: "t", y: "v", fill: "var(--im-accent)"}),
+    Plot.text([{t: sim.peakT, v: sim.peakY}], {
+      x: "t", y: "v",
+      text: d => `peak y = ${sim.peakY.toFixed(3)} at t = ${sim.peakT}`,
+      dy: -10, dx: 4, textAnchor: "start", fill: "var(--im-accent)"
+    })
+  ]
+})
+```
+
+The gray dashed line is the monetary impulse `m`; the solid line is output `y`; the green dashed line is the capital stock `k` it leaves behind. The vertical rule marks the one-time surprise at t = 5.
+:::
+
+## Core intuition
+
+Business-cycle theory separates two questions that are easy to conflate. What *hits* the economy? That is the **impulse** — here, a single unanticipated monetary shock `εₘ`. And what makes the effects *last*? That is the **propagation mechanism** — the internal structure that carries a one-off disturbance forward in time.
+
+The impulse works through imperfect information. When the surprise arrives, agents' price expectations were formed last period, so the price level overshoots what they expected. Suppliers read the price surprise partly as a real opportunity and expand, so output rises above its capital-determined potential — a positive [output gap]{.im-glossary-term}. But under rational expectations this trick works exactly once: from the next period on, agents fold the (now known) shock into their forecasts, prices match expectations, and the surprise channel shuts off. Even a monetary deviation that *persists* (ρ > 0) has no further real effect — anticipated money is absorbed one-for-one by prices.
+
+So why doesn't output snap straight back? Because during the surprise period, higher output meant higher investment, and the extra capital doesn't vanish when the information catches up. Capital raises potential output and erodes only slowly through [depreciation]{.im-glossary-term}. The economy glides back to its [steady state]{.im-glossary-term} along a slow capital-decay path — a drawn-out, serially correlated cycle produced by a single impulse. This supply curve, where output responds to price *surprises* rather than prices, is a close cousin of the [expectations-augmented Phillips curve]{.im-glossary-term}.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full derivation)</summary>
+
+All variables are log-deviations from steady state. The model is four equations:
+
+$$\text{AD:}\quad y_t = m_t - p_t$$
+$$\text{AS:}\quad y_t = \phi k_t + \gamma\,(p_t - p_t^e)$$
+$$\text{Capital:}\quad k_{t+1} = (1-\delta)\,k_t + s_y\,y_t$$
+$$\text{Money:}\quad m_t = \rho\, m_{t-1} + \epsilon_{m,t}$$
+
+**Expectations.** Agents know the model and the state $(k_t, m_{t-1})$, but not $\epsilon_{m,t}$. Taking $E_{t-1}$ of AD and AS and using $E_{t-1}[p_t - p_t^e] = 0$:
+$$p_t^e = \rho\, m_{t-1} - \phi k_t.$$
+
+**Equilibrium each period.** Setting AD = AS and solving for the price level:
+$$p_t = \frac{m_t - \phi k_t + \gamma\, p_t^e}{1+\gamma}, \qquad y_t = m_t - p_t.$$
+
+**Impact response.** At the shock date, $m_t = \rho m_{t-1} + \epsilon_m$ while $p_t^e$ was formed without $\epsilon_m$. Substituting gives a price surprise $p_t - p_t^e = \epsilon_m/(1+\gamma)$ and hence
+$$y_t - \phi k_t = \frac{\gamma}{1+\gamma}\,\epsilon_m.$$
+A flatter supply curve (larger $\gamma$) sends more of the shock into output, less into prices.
+
+**Propagation.** After the shock date there are no further surprises, so $p_t = p_t^e$ and AS collapses to $y_t = \phi k_t$: output rides entirely on capital. Substituting into the accumulation equation:
+$$k_{t+1} = \left(1 - \delta + s_y \phi\right) k_t \equiv \lambda\, k_t, \qquad y_{t+1} = \lambda\, y_t.$$
+Output inherits a first-order autoregression with coefficient $\lambda = 1 - \delta + s_y\phi < 1$. The **half-life** of the cycle is
+$$t_{1/2} = \frac{\ln 2}{-\ln \lambda}.$$
+At the defaults ($\delta = 0.08$, $s_y = 0.1$, $\phi = 0.33$), $\lambda = 0.953$ and $t_{1/2} \approx 14$ periods — one period of surprise, a decade and a half of echo.
+
+</details>
+:::
+
+## What the simulator showed
+
+At the defaults, output spikes to `γ/(1+γ)·εₘ = 0.6 × 0.05 = 0.030` exactly at t = 5, then drops sharply — but not to zero. It lands on `ϕk` and decays at rate `λ = 1 − δ + s_yϕ ≈ 0.953` per period. Now try the sliders. Raising **ρ** makes the gray money line linger, yet the output path after t = 5 barely changes: persistent-but-anticipated money moves prices, not output. What *does* stretch the cycle is the propagation block — raise **s_y** or **ϕ**, or lower **δ**, and `λ` climbs toward 1, so the tail of the output line flattens out. Raising **γ** changes the impulse's split: a bigger output spike and a smaller price move from the same shock.
+
+## Common confusions
+
+::: {.im-confusion}
+**"Output stays high because the shock keeps hitting."** No — there is exactly one shock, at t = 5, and the surprise channel closes the very next period. Everything after that is propagation: the capital built during the boom decays slowly. Persistence in the *data* does not require persistence in the *shocks*.
+:::
+
+::: {.im-confusion}
+**"If money is persistent (ρ high), it keeps stimulating output."** Once agents observe the shock, they expect `ρm_{t−1}` and prices adjust one-for-one — the persistent part of money is fully anticipated and has no real effect. Slide ρ from 0 to 0.99 and watch the output path after t = 5 stay almost unchanged while prices do all the work.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+In this model, what makes the effect of a one-time monetary surprise last for many periods?
+
+<details><summary>a) Agents keep being fooled by the same shock</summary>
+No — rational expectations means agents fold the shock into their forecasts one period later. The surprise channel operates exactly once.
+</details>
+<details><summary>b) The capital built during the boom depreciates only slowly</summary>
+**Correct**. The one-period output burst raises investment; the resulting capital raises potential output and erodes at rate δ, so output follows `y_{t+1} = (1 − δ + s_yϕ)·y_t` long after the shock is understood.
+</details>
+<details><summary>c) The money supply itself stays high because ρ is close to 1</summary>
+No — the persistent part of money is anticipated, so prices absorb it one-for-one with no output effect. Set s_y = 0 and even ρ = 0.99 gives a one-period blip in output.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Set the sliders to their defaults: **γ = 1.5, ϕ = 0.33, δ = 0.08, s_y = 0.10, ρ = 0.80, εₘ = 0.05**. What is the peak output deviation, and in which period does it occur?
+
+<details><summary>Reveal answer</summary>
+The peak is on impact: `y = γ/(1+γ)·εₘ = (1.5/2.5) × 0.05 = 0.030` at **t = 5** (the shock period, when capital is still at zero and the whole response is the surprise term). The chart's marker should read **peak y = 0.030 at t = 5**.
+</details>
+</div>
+
+{{< include ../_includes/generated/equilibrium_model-related.md >}}

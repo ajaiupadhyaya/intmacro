@@ -1,0 +1,170 @@
+---
+title: "Growth Accounting"
+subtitle: "Decomposing output growth into capital, labor, and the residual we can't see"
+---
+
+{{< include ../_includes/generated/growth_acc-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — Take output growth and subtract what capital and labor growth can explain (weighted by their income shares). Whatever is left over is [total factor productivity]{.im-glossary-term} growth — the *Solow residual*. It isn't measured; it's inferred. Yet this residual, "a measure of our ignorance," turns out to carry most of the story of long-run growth and of famous episodes like the post-1973 productivity slowdown.
+:::
+
+## You'll be able to
+
+- Apply the growth accounting equation $g_Y = g_A + \alpha g_K + (1-\alpha) g_L$ and explain where the income-share weights come from.
+- Compute the Solow residual from data on output, capital, and labor growth.
+- Diagnose growth episodes: distinguish input-driven growth (accumulation) from TFP-driven growth (efficiency) and say why the difference matters for the future.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — each bar is one component's contribution; they stack to total output growth
+:::
+
+```{ojs}
+//| echo: false
+viewof alpha_ga = Inputs.range([0.10, 0.90], {value: 0.33, step: 0.01, label: "capital share α"})
+viewof gA_ga = Inputs.range([-0.02, 0.05], {value: 0.02, step: 0.001, label: "TFP growth g_A"})
+viewof gK_ga = Inputs.range([-0.02, 0.10], {value: 0.04, step: 0.001, label: "capital growth g_K"})
+viewof gL_ga = Inputs.range([-0.02, 0.05], {value: 0.01, step: 0.001, label: "labor growth g_L"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+// g_Y = g_A + α·g_K + (1−α)·g_L ;  contributions are the three addends
+acct = {
+  const cA = gA_ga;
+  const cK = alpha_ga * gK_ga;
+  const cL = (1 - alpha_ga) * gL_ga;
+  const gY = cA + cK + cL;
+  const bars = [
+    {component: "TFP  (g_A)", v: cA},
+    {component: "Capital  (α·g_K)", v: cK},
+    {component: "Labor  ((1−α)·g_L)", v: cL}
+  ];
+  return {bars, gY, cA, cK, cL};
+}
+
+Plot.plot({
+  marginLeft: 120,
+  x: {label: "contribution to output growth", tickFormat: d => (d * 100).toFixed(1) + "%", grid: true},
+  y: {label: null},
+  marks: [
+    Plot.ruleX([0], {stroke: "#ccc"}),
+    Plot.barX(acct.bars, {y: "component", x: "v",
+      fill: d => d.component.startsWith("TFP") ? "var(--im-accent)" : "var(--im-sim)"}),
+    Plot.ruleX([acct.gY], {stroke: "var(--im-accent)", strokeDasharray: "4 4"}),
+    Plot.text([{v: acct.gY}], {x: "v", frameAnchor: "top",
+      text: () => `total g_Y = ${(acct.gY * 100).toFixed(2)}%`,
+      dy: 8, dx: 4, textAnchor: "start", fill: "var(--im-accent)"}),
+    Plot.text(acct.bars, {y: "component", x: "v",
+      text: d => (d.v * 100).toFixed(2) + "%",
+      dx: d => d.v >= 0 ? 18 : -18, fill: "currentColor"})
+  ],
+  height: 220
+})
+```
+
+The dashed rule is total output growth $g_Y$ — always exactly the sum of the three bars. TFP's bar (accent color) enters with weight 1; capital and labor enter scaled by their income shares.
+:::
+
+## Core intuition
+
+Suppose you learn that a country's output grew 4% last year. Was that *earned* — more machines built, more people working — or was it *efficiency*: the same inputs producing more? Growth accounting is the tool that splits the difference, and the split matters enormously, because input-driven growth runs into [diminishing returns]{.im-glossary-term} while efficiency-driven growth need not.
+
+The equation does the split with weights, and the weights are the clever part. Under competition, a factor is paid its marginal product, so capital's share of income α measures exactly how much an extra percent of capital raises output. If capital grew 4% and its share is one third, capital *contributed* 0.33 × 4% ≈ 1.3 points of growth — no more, however impressive the investment boom looked. Same for labor with weight (1 − α).
+
+The catch: TFP growth appears in the equation but in no statistical agency's data. Nobody surveys the economy's "technology level." So we compute it backwards — output growth *minus* the input contributions — which is why $g_A$ is called the **Solow residual** and, in Moses Abramovitz's phrase, "a measure of our ignorance." Everything that isn't measured input growth lands there: real innovation, but also better management, reallocation from farms to factories, mismeasured input quality, even output mismeasurement. Applied to US data this method delivers the field's classic findings: roughly *half* of long-run US growth is TFP, the celebrated post-1973 **productivity slowdown** was a TFP event (inputs kept growing; the residual collapsed), and the 1995–2004 revival was a TFP revival. Applied to the East Asian miracles it delivered a famous surprise — much of that growth was accumulation, not efficiency, prompting Krugman's warning that input-driven growth must eventually slow.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full derivation)</summary>
+
+Start from a Cobb-Douglas production function with constant returns:
+$$Y_t = A_t K_t^{\alpha} L_t^{1-\alpha}.$$
+
+Take logs:
+$$\ln Y_t = \ln A_t + \alpha \ln K_t + (1-\alpha) \ln L_t,$$
+and differentiate with respect to time (a growth rate is the time-derivative of a log):
+$$g_Y = g_A + \alpha\, g_K + (1-\alpha)\, g_L.$$
+
+**Why income shares are the right weights.** Competitive factor markets pay capital its marginal product: $R = \partial Y/\partial K = \alpha Y/K$, so capital's income share is $RK/Y = \alpha$ — the same α that measures capital's output elasticity. The weight we need (elasticity) is directly observable as a share in the national accounts. Ditto labor: $wL/Y = 1 - \alpha$. This is what makes growth accounting *operational* — every term except $g_A$ is measurable.
+
+**The residual, rearranged.** In practice the equation is run backwards:
+$$g_A = g_Y - \alpha\, g_K - (1-\alpha)\, g_L.$$
+With annual data on real GDP, the capital stock, employment, and the labor share (the v1 notebook pulled GDPC1, RKNANPUSA666NRUG, PAYEMS, and LABSHPUSA156NRUG from FRED), this yields a TFP growth series. The v1 notebook's live-FRED section required an API key and a running Python kernel, so it can't run on this static site; the calculator below does the same arithmetic for any numbers you bring.
+
+**Refinements to know exist**: human capital as a third input (quality-adjusting L), capacity utilization corrections (raw TFP is procyclical partly because idle machines aren't idle in the data), and letting α vary over time as the labor share moves.
+
+</details>
+:::
+
+```{ojs}
+//| echo: false
+md`**The residual calculator** — growth accounting as actually used: enter measured growth rates and back out the TFP residual.`
+```
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Enter data — the calculator backs out the Solow residual g_A = g_Y − α·g_K − (1−α)·g_L
+:::
+
+```{ojs}
+//| echo: false
+viewof gY_in = Inputs.range([-0.05, 0.12], {value: 0.031, step: 0.001, label: "measured output growth g_Y"})
+viewof gK_in = Inputs.range([-0.02, 0.12], {value: 0.032, step: 0.001, label: "measured capital growth g_K"})
+viewof gL_in = Inputs.range([-0.02, 0.06], {value: 0.014, step: 0.001, label: "measured labor growth g_L"})
+viewof alpha_in = Inputs.range([0.10, 0.60], {value: 0.33, step: 0.01, label: "capital share α"})
+
+residual = {
+  const gA = gY_in - alpha_in * gK_in - (1 - alpha_in) * gL_in;
+  const share = Math.abs(gY_in) > 1e-9 ? gA / gY_in : NaN;
+  return {gA, share};
+}
+
+md`Implied TFP growth: **g_A = ${(residual.gA * 100).toFixed(2)}%** — ${Number.isNaN(residual.share) ? "" : `**${(residual.share * 100).toFixed(0)}%** of measured output growth is residual`}${residual.gA < 0 ? " (negative: inputs grew faster than output — efficiency *fell*)" : ""}.`
+```
+:::
+
+## What the simulator showed
+
+At the defaults (α = 0.33, g_A = 2%, g_K = 4%, g_L = 1%), total growth is **g_Y = 3.99%**, of which TFP contributes 2.00 points — just over half — capital 1.32 and labor 0.67. Notice the leverage of α: slide it from 0.33 to 0.6 with everything else fixed and capital's contribution nearly doubles while labor's shrinks, moving total growth even though no input changed. In the residual calculator, the preset (g_Y = 3.1%, g_K = 3.2%, g_L = 1.4%, α = 0.33) implies g_A ≈ 1.1% — around a third of growth left unexplained by inputs, a typical postwar-US-flavored magnitude.
+
+## Common confusions
+
+::: {.im-confusion}
+**"TFP growth is measured technology improvement."** It's not measured at all — it's what's *left over* after subtracting measured input contributions. Real innovation raises it, but so do better institutions, reallocation, utilization swings, and any mismeasurement of inputs or output. Treat a TFP number as a diagnosis to investigate, not an answer.
+:::
+
+::: {.im-confusion}
+**"Capital grew 4%, so it added 4 points to growth."** It added α × 4% ≈ 1.3 points. An input's contribution is its growth *times its income share* — the share is the elasticity. Forgetting the weights is the single most common growth-accounting error, and it flatters accumulation-heavy growth stories exactly where they deserve skepticism.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+Why is TFP growth called a "residual," and why is that a warning label?
+
+<details><summary>a) Because it is small — a leftover after the important terms</summary>
+No — empirically it is often the *largest* contribution to long-run growth. "Residual" describes how it's computed, not its size.
+</details>
+<details><summary>b) Because it is computed as what remains of output growth after subtracting input contributions, so it absorbs everything unmeasured — including errors</summary>
+**Correct**. $g_A = g_Y - \alpha g_K - (1-\alpha)g_L$ is inference, not measurement. Genuine innovation lands there, but so does anything else the input data missed — which is why Abramovitz called it "a measure of our ignorance."
+</details>
+<details><summary>c) Because statistical agencies publish it with a long lag</summary>
+No — the issue is conceptual, not timeliness: no agency observes an economy's technology level directly at any lag.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Set the decomposition sliders to their defaults: **α = 0.33, g_A = 2%, g_K = 4%, g_L = 1%**. What is total output growth, and what fraction of it is TFP? Then set g_A = 0 — what happens to the total?
+
+<details><summary>Reveal answer</summary>
+Total growth is `g_Y = 0.02 + 0.33×0.04 + 0.67×0.01 = 3.99%` (the dashed rule reads **3.99%**), and TFP's 2.00 points are **≈ 50%** of it. With g_A = 0, growth falls to 1.99% — all accumulation. Diminishing returns imply that without a residual, g_K itself would eventually fade toward g_L: efficiency growth is what keeps the whole thing going.
+</details>
+</div>
+
+{{< include ../_includes/generated/growth_acc-related.md >}}

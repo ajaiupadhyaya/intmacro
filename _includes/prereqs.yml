@@ -34,6 +34,16 @@ convergence_hypo:
   title: "The Convergence Hypothesis"
   tldr: "Economies sharing the same parameters converge to the same steady state (absolute); with different parameters they converge only to their own (conditional)."
   prereqs: [solow_transition]
+romer_model:
+  track: growth
+  title: "The Romer Model"
+  tldr: "Ideas are nonrival: growth comes from researchers producing knowledge everyone can use, so the growth rate itself is chosen inside the model."
+  prereqs: [cobb_d_prod]
+growth_acc:
+  track: growth
+  title: "Growth Accounting"
+  tldr: "Decompose output growth into contributions from capital, labor, and the TFP residual — the part we cannot see directly."
+  prereqs: [cobb_d_prod]
 two_period_consumption:
   track: intertemporal
   title: "Two-Period Consumption"
@@ -59,3 +69,18 @@ adassim:
   title: "Dynamic AD-AS with a Taylor Rule"
   tldr: "IS + Phillips curve + Taylor rule generate output and inflation dynamics; the Taylor principle (φπ>1) is what makes them converge."
   prereqs: [is_curve_model]
+lucas_island_model:
+  track: business_cycles
+  title: "The Lucas Island Model"
+  tldr: "When producers cannot tell relative from aggregate price changes, only monetary surprises move output — anticipated policy does nothing."
+  prereqs: []
+equilibrium_model:
+  track: business_cycles
+  title: "Equilibrium Cycles with Persistence"
+  tldr: "One-off shocks generate drawn-out booms and recessions once capital and habits propagate them forward in time."
+  prereqs: [lucas_island_model]
+rbc_simulation:
+  track: business_cycles
+  title: "The Real Business Cycle Model"
+  tldr: "Fluctuations as the economy's efficient response to technology shocks — no market failure required, which is exactly the controversy."
+  prereqs: [equilibrium_model]

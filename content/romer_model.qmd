@@ -1,0 +1,142 @@
+---
+title: "The Romer Model of Endogenous Growth"
+subtitle: "Why ideas — nonrival and deliberately produced — let growth be chosen inside the model"
+---
+
+{{< include ../_includes/generated/romer_model-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — Ideas are *nonrival*: once discovered, everyone can use them at once without using them up. That single property lets an economy escape [diminishing returns]{.im-glossary-term} and grow forever. And because new ideas come from researchers the economy chooses to employ, the long-run growth rate is *endogenous* — set by the research share ℓ, researcher productivity z̄, and population L̄, not handed down from outside as in Solow.
+:::
+
+## You'll be able to
+
+- Derive the long-run growth rate g = z̄ℓL̄ from the idea production function and explain why it never slows down.
+- Explain the level–growth tradeoff: moving workers into research lowers output *today* but raises its growth rate *forever*.
+- Distinguish nonrivalry (an economic property of ideas) from excludability (a policy choice), and say why each matters for growth.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — your economy's output path updates against the dashed ℓ = 0.10 reference
+:::
+
+```{ojs}
+//| echo: false
+viewof ell  = Inputs.range([0.01, 0.50], {value: 0.10, step: 0.01, label: "research share ℓ"})
+viewof zbar = Inputs.range([0.0001, 0.002], {value: 0.0005, step: 0.0001, label: "idea productivity z̄"})
+viewof Lbar = Inputs.range([50, 1000], {value: 100, step: 10, label: "population L̄"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+// ideas:  A_{t+1} = A_t · (1 + z̄·ℓ·L̄)   (ΔA/A = z̄·L_A, with L_A = ℓ·L̄)
+// goods:  y_t = Y_t / L̄ = A_t · (1 − ℓ)
+// growth: g = z̄·ℓ·L̄  (constant — population fixed at L̄)
+g = zbar * ell * Lbar
+
+paths = {
+  const T = 100, A0 = 1, ellRef = 0.10;
+  const pts = [];
+  let A = A0, Aref = A0;
+  for (let t = 0; t <= T; t++) {
+    pts.push({t, y: A * (1 - ell), series: "chosen"});
+    pts.push({t, y: Aref * (1 - ellRef), series: "reference"});
+    A = A * (1 + zbar * ell * Lbar);
+    Aref = Aref * (1 + zbar * ellRef * Lbar);
+  }
+  return pts;
+}
+
+Plot.plot({
+  marginLeft: 55,
+  x: {label: "time (years) →"},
+  y: {label: "output per person y (log scale)", type: "log", grid: true},
+  marks: [
+    Plot.line(paths.filter(d => d.series === "reference"), {x: "t", y: "y", stroke: "var(--im-sim)", strokeDasharray: "4 4", strokeWidth: 1.5}),
+    Plot.text([paths.filter(d => d.series === "reference").at(-1)], {x: "t", y: "y", text: () => "ℓ = 0.10 reference", dx: -8, dy: 12, textAnchor: "end", fill: "var(--im-sim)"}),
+    Plot.line(paths.filter(d => d.series === "chosen"), {x: "t", y: "y", stroke: "var(--im-accent)", strokeWidth: 2}),
+    Plot.text([paths.filter(d => d.series === "chosen").at(-1)], {x: "t", y: "y", text: () => `g = ${(g * 100).toFixed(2)}%/yr`, dx: -8, dy: -8, textAnchor: "end", fill: "var(--im-accent)"})
+  ]
+})
+```
+
+The solid line is *your* economy; the dashed line holds the research share at ℓ = 0.10 with the same z̄ and L̄. On a log scale, a straight line means constant growth — its **slope** is g = z̄ℓL̄, and its **starting height** is (1 − ℓ). Raise ℓ and watch the line start *lower* but climb *steeper*.
+:::
+
+## Core intuition
+
+In Solow, growth eventually stalls because capital is *rival*: a machine used by one worker can't be used by another, so piling up more machines per worker runs into [diminishing returns]{.im-glossary-term}. Ideas are different. A formula, a blueprint, a bit of software — once it exists, every worker in the economy can use it *simultaneously*, at no extra cost. The stock of ideas A plays the role of [total factor productivity]{.im-glossary-term}, and because it is nonrival it never gets "spread thin" over the population.
+
+Where do ideas come from? From people. The Romer model splits the workforce: a fraction ℓ works in research producing new ideas, and the rest, 1 − ℓ, produces goods using the current idea stock. This creates the model's central tension. Moving a worker from the factory to the lab means fewer goods *today* — a permanent hit to the *level* of the output path. But that researcher adds to A, and every idea she finds raises the productivity of *everyone*, *forever* — a permanent boost to the *growth rate*. Unlike a machine, an idea never depreciates and never gets congested. That's why the choice of ℓ — a decision made inside the model, shaped by institutions, patents, and R&D policy — pins down long-run growth itself. Growth is no longer exogenous manna; it's chosen.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full derivation)</summary>
+
+**Setup.** A fixed population L̄ is split by a constant research share $\ell$:
+$$L_{at} = \ell \bar L \quad \text{(researchers)}, \qquad L_{yt} = (1-\ell)\bar L \quad \text{(goods workers)}.$$
+
+**Goods production** is linear in labor, with the whole (nonrival) idea stock $A_t$ multiplying every worker:
+$$Y_t = A_t L_{yt} = A_t (1-\ell)\bar L.$$
+
+**Idea production**: new ideas are made by researchers, standing on the existing stock:
+$$\Delta A_{t+1} = \bar z\, A_t L_{at} = \bar z\, \ell \bar L\, A_t.$$
+
+**Growth rate of ideas.** Divide through by $A_t$:
+$$g \;=\; \frac{\Delta A_{t+1}}{A_t} \;=\; \bar z\, \ell\, \bar L.$$
+Constant — no diminishing returns, because the right-hand side doesn't shrink as $A$ grows.
+
+**Output per person.** Divide production by $\bar L$:
+$$y_t = \frac{Y_t}{\bar L} = A_t (1-\ell) \quad\Longrightarrow\quad y_t = A_0 (1-\ell)\,(1+\bar z \ell \bar L)^t.$$
+So $y_t$ inherits the growth rate of ideas: $g_y = g_A = \bar z \ell \bar L$. The research share $\ell$ appears twice, working in opposite directions — in the **level** term $(1-\ell)$ (higher ℓ = fewer goods workers = lower path) and in the **growth** term $\bar z \ell \bar L$ (higher ℓ = more researchers = steeper path). In continuous time the same equations give the exponential closed form $A(t) = A_0 e^{\bar z \ell \bar L t}$.
+
+**Scale effects and the φ generalization.** Because $g = \bar z \ell \bar L$, a bigger population means permanently faster growth — a *scale effect*. Taken country-by-country this is counterfactual (India did not always outgrow Denmark); ideas flow across borders, so the relevant scale is closer to the researching world as a whole. Richer versions write idea production as
+$$\Delta A_{t+1} = \bar z\, L_{at}\, A_t^{\phi},$$
+where $\phi$ measures how much existing knowledge helps ($\phi > 0$: "standing on shoulders"; $\phi < 0$: the easy ideas get "fished out"). Our baseline sets $\phi = 1$, the knife-edge that delivers constant exponential growth; with $\phi < 1$, sustained growth requires ongoing population growth. If population grows at rate $n > 0$ in the $\phi=1$ model, $g_A = \bar z \ell L_t$ itself *accelerates* over time — which is why the baseline holds $\bar L$ fixed.
+
+</details>
+:::
+
+## What the simulator showed
+
+When you raised **ℓ**, the solid line did two things at once: it started *below* the dashed reference (the level cost — fewer goods workers, so $(1-\ell)$ is smaller) but climbed with a *steeper slope* (the growth payoff — $g = \bar z \ell \bar L$ is larger). On a log scale the two straight lines must therefore cross: the high-ℓ economy is poorer at first and richer forever after. That crossing point is the whole policy debate about R&D in one picture — how long are you willing to wait? Raising **z̄** or **L̄** had no level cost at all: the line kept its starting height and simply tilted up, because researcher productivity and population enter only the growth term. That last effect is the model's famous *scale effect* — more people means more idea-makers, and since everyone shares each idea, bigger is faster.
+
+## Common confusions
+
+::: {.im-confusion}
+**"More researchers always means richer."** Not right away — and for a while, the opposite. Every researcher is a worker *not* making goods, so raising ℓ *lowers* output per person today: $y_0 = A_0(1-\ell)$ falls. The payoff is a permanently higher growth rate, so the high-ℓ path eventually crosses and overtakes the old one. And the tradeoff bites at the top too: at ℓ close to 1 nearly nobody makes goods, so consumption collapses no matter how fast ideas arrive. More research buys *growth*, at the price of *level*.
+:::
+
+::: {.im-confusion}
+**"Nonrival means free for everyone, so no one will pay to invent."** Nonrivalry and excludability are different axes. Nonrival = my use doesn't diminish yours (true of ideas by their nature — an economic fact you can't legislate away). Excludable = the owner can prevent my use (a *policy choice*: patents, copyright, trade secrecy). Ideas are nonrival but can be made partially excludable, and that's precisely how markets fund R&D — temporary monopoly profits are the carrot that pays researchers' wages. The model's ℓ is best read as the outcome of those institutions.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+A country permanently doubles its research share ℓ (say from 0.1 to 0.2). According to the Romer model, what happens to output per person?
+
+<details><summary>a) It rises immediately and grows faster forever</summary>
+No — there's no free lunch on impact. The extra researchers had to come from the goods sector, so output per person *falls* today.
+</details>
+<details><summary>b) It falls at first, but its growth rate is permanently higher</summary>
+**Correct**. The level term $(1-\ell)$ drops (fewer goods workers) while the growth rate $g = \bar z \ell \bar L$ doubles. The new path starts lower but is steeper, and eventually overtakes the old one.
+</details>
+<details><summary>c) It grows faster only temporarily, then growth returns to its old rate</summary>
+No — that's Solow logic (transition dynamics back to an exogenous g). In Romer, ℓ enters the growth rate itself, so the change is permanent.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Using the simulator above, set **ℓ = 0.20, z̄ = 0.0005, L̄ = 200**. What long-run growth rate g does the label on the solid line report?
+
+<details><summary>Reveal answer</summary>
+`g = z̄·ℓ·L̄ = 0.0005 × 0.20 × 200 = 0.02`. The label should read **g = 2.00%/yr** — and the solid line should sit below the dashed ℓ = 0.10 reference at t = 0 (level cost) but climb steeply enough to cross it well before t = 100.
+</details>
+</div>
+
+{{< include ../_includes/generated/romer_model-related.md >}}

@@ -1,0 +1,167 @@
+---
+title: "The Real Business Cycle Model"
+subtitle: "Fluctuations as the economy's efficient response to technology shocks"
+---
+
+{{< include ../_includes/generated/rbc_simulation-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — RBC theory flips the usual story: business cycles need no market failure, no sticky prices, no misperception. A shock to [total factor productivity]{.im-glossary-term} changes what the economy *can* produce, and optimizing households and firms respond — investing hard, smoothing consumption. Output, investment, and consumption then comove with realistic relative volatilities. The controversy is the implication: if cycles are efficient responses to technology, stabilization policy fixes nothing.
+:::
+
+## You'll be able to
+
+- Trace a permanent TFP shock through the neoclassical growth model: impact on output, then a capital-accumulation transition to a higher [steady state]{.im-glossary-term}.
+- Explain the volatility ranking the model delivers — investment ≫ output > consumption — and why consumption smoothing produces it.
+- Compute the new steady state: every quantity scales by $(1+\Delta A)^{1/(1-\alpha)}$, so a 5% TFP shock raises long-run output by about 7.9% (at α = 0.36).
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — a permanent TFP shock hits at t = 5; watch investment surge while consumption creeps
+:::
+
+```{ojs}
+//| echo: false
+viewof shock_pct = Inputs.range([0, 20], {value: 5, step: 0.5, label: "tech shock ΔA (%)"})
+viewof alpha_rbc = Inputs.range([0.20, 0.60], {value: 0.36, step: 0.01, label: "capital share α"})
+viewof beta_rbc  = Inputs.range([0.85, 0.99], {value: 0.96, step: 0.01, label: "discount factor β"})
+viewof delta_rbc = Inputs.range([0.01, 0.15], {value: 0.08, step: 0.005, label: "depreciation δ"})
+
+// --- model (ported from the v1 Python notebook; investment rule per its stated
+//     spec — see the math toggle for the one deliberate fix) ---
+rbc = {
+  const T = 40, st = 5, adj = 0.2, Abar = 1.0;
+  const Anew = Abar * (1 + shock_pct / 100);
+  const a = alpha_rbc, b = beta_rbc, d = delta_rbc;
+  const ucf = 1 / b - (1 - d);                       // user cost of capital ≈ r + δ
+  const kss = A => Math.pow((a * A * b) / (1 - b * (1 - d)), 1 / (1 - a));
+  const k1 = kss(Abar), y1 = Abar * Math.pow(k1, a), i1 = d * k1, c1 = y1 - i1;
+  const k2 = kss(Anew), y2 = Anew * Math.pow(k2, a), i2 = d * k2, c2 = y2 - i2;
+
+  const k = new Array(T + 1).fill(0);
+  const A = Array.from({length: T}, (_, t) => (t >= st ? Anew : Abar));
+  k[0] = k1;
+  const pts = [];
+  for (let t = 0; t < T; t++) {
+    const y = A[t] * Math.pow(k[t], a);
+    const ktarget = t >= st ? k2 : k1;
+    const knext = k[t] + adj * (ktarget - k[t]);      // partial adjustment toward new K*
+    const i = Math.max(knext - (1 - d) * k[t], 0);    // I_t = K_{t+1} − (1−δ)K_t
+    const c = Math.max(y - i, 0);                     // resource constraint: C = Y − I
+    k[t + 1] = (1 - d) * k[t] + i;
+    pts.push({t, v: (A[t] / Abar - 1) * 100, series: "technology A"});
+    pts.push({t, v: (y / y1 - 1) * 100, series: "output Y"});
+    pts.push({t, v: (c / c1 - 1) * 100, series: "consumption C"});
+    pts.push({t, v: (i / i1 - 1) * 100, series: "investment I"});
+  }
+  const ssPct = (k2 / k1 - 1) * 100;
+  return {pts, st, ssPct};
+}
+
+Plot.plot({
+  marginLeft: 55,
+  x: {label: "time t →"},
+  y: {label: "% deviation from initial steady state", grid: true},
+  color: {
+    domain: ["technology A", "output Y", "consumption C", "investment I"],
+    range: ["#9aa0a6", "var(--im-accent)", "var(--im-sim)", "#c77d2e"],
+    legend: true
+  },
+  marks: [
+    Plot.ruleY([0], {stroke: "#ccc"}),
+    Plot.ruleY([rbc.ssPct], {stroke: "#9aa0a6", strokeDasharray: "2 4"}),
+    Plot.ruleX([rbc.st], {stroke: "#9aa0a6", strokeDasharray: "4 4"}),
+    Plot.line(rbc.pts, {x: "t", y: "v", stroke: "series", strokeWidth: 2,
+      strokeDasharray: d => d.series === "technology A" ? "4 3" : null}),
+    Plot.text([{t: 39, v: rbc.ssPct}], {
+      x: "t", y: "v",
+      text: () => `new steady state: +${rbc.ssPct.toFixed(1)}%`,
+      dy: -8, textAnchor: "end", fill: "#9aa0a6"
+    })
+  ]
+})
+```
+
+The dashed gray line is the TFP shock itself; the dotted horizontal rule marks the new steady state that *every* series eventually reaches. Investment (orange) overshoots hardest; consumption (green) barely moves on impact and glides up.
+:::
+
+## Core intuition
+
+Every other business-cycle model on this site needs a friction — misperceived prices in the [Lucas island model](lucas_island_model.qmd), slow expectations in [AD-AS](adassim.qmd). RBC theory asks: what if we need *nothing*? Take the frictionless neoclassical growth model — rational households, competitive firms, flexible prices — and hit it with shocks to technology. The result already looks like a business cycle.
+
+The mechanism runs through capital. A positive TFP shock makes existing capital and labor more productive, so output jumps immediately. But it also raises the *marginal product of capital*: the optimal capital stock is now higher, so firms invest heavily to build toward it. Households, meanwhile, know the windfall is spread over the whole future — [consumption smoothing]{.im-glossary-term} says raise consumption a little now and let it grow, rather than binge on impact. Investment is the shock absorber: it takes the full brunt of the impulse. That is exactly the pattern in the data — investment is several times more volatile than output, consumption less volatile than output — and the model produces it from optimization alone, not from any assumed rigidity.
+
+The deep claim — and the controversy — is welfare. In this model the recession after a *negative* technology shock is not a failure to be fixed: it is the economy's *optimal* response to genuinely worse production possibilities. Households rationally work less when productivity is low. If you believe the model, stabilization policy attacks a symptom that isn't a disease. Critics respond that measured TFP drops (was technology *forgotten*?) are hard to interpret, and that unemployment in recessions doesn't look voluntary. That debate — real shocks plus optimal responses versus nominal frictions plus demand failures — still organizes modern macroeconomics.
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full derivation)</summary>
+
+The economy is the neoclassical growth model with fixed labor (L = 1):
+
+$$\text{Production:}\quad Y_t = A_t K_t^{\alpha}$$
+$$\text{Accumulation:}\quad K_{t+1} = (1-\delta) K_t + I_t$$
+$$\text{Resources:}\quad Y_t = C_t + I_t$$
+
+**Steady state.** In the optimizing model, capital is held where its marginal product covers the user cost:
+$$\alpha A (K^*)^{\alpha-1} = \frac{1}{\beta} - (1-\delta) \quad\Longrightarrow\quad K^* = \left(\frac{\alpha A \beta}{1 - \beta(1-\delta)}\right)^{\frac{1}{1-\alpha}},$$
+with $Y^* = A (K^*)^{\alpha}$, $I^* = \delta K^*$, $C^* = Y^* - I^*$. Since $K^* \propto A^{1/(1-\alpha)}$ and $Y^* = A(K^*)^\alpha \propto A^{1/(1-\alpha)}$, a permanent shock $A \to A(1+\Delta)$ scales **all** steady-state quantities by $(1+\Delta)^{1/(1-\alpha)}$. At $\alpha = 0.36$: $1.05^{1/0.64} - 1 \approx 7.9\%$ — the shock's long-run effect exceeds its direct 5% because induced capital deepening compounds it.
+
+**Transition.** After the shock, capital closes a fraction of the gap to the new target each period:
+$$K_{t+1} = K_t + \lambda\,(K^{*}_{new} - K_t), \qquad \lambda = 0.2,$$
+so investment is $I_t = K_{t+1} - (1-\delta)K_t = \delta K_t + \lambda (K^{*}_{new} - K_t)$ — replacement plus gap-closing — and consumption is the residual $C_t = Y_t - I_t$. This partial-adjustment rule stands in for the full Euler-equation dynamics (the true policy function of the optimizing model has the same qualitative shape).
+
+**A note on the port.** The v1 notebook's *text* specified exactly this investment rule, but its *code* instead smoothed consumption toward the new steady state and made investment the residual. That rule is not internally consistent: consumption reaches its (higher) target before output can support it, investment turns negative relative to replacement, and capital ends *below* its original steady state 40 periods after a **positive** technology shock. This v2 implements the rule the notebook specified; the steady-state formulas and all other equations are ported 1:1.
+
+**Impact decomposition at the defaults** ($\Delta A = 5\%$, $\alpha = 0.36$, $\beta = 0.96$, $\delta = 0.08$): output jumps exactly 5% at t = 5 (capital is predetermined, so only the $A$ term moves). Investment jumps
+$$\frac{\delta K_1 + \lambda(K_2^* - K_1)}{\delta K_1} - 1 = \frac{\lambda}{\delta}\cdot\frac{K_2^* - K_1}{K_1} = \frac{0.2}{0.08} \times 7.9\% \approx 19.8\%,$$
+while consumption rises only about 0.4% — the ranking $\sigma_I \gg \sigma_Y > \sigma_C$ on display.
+
+</details>
+:::
+
+## What the simulator showed
+
+At the defaults, the shock at t = 5 produces three very different responses from one impulse: output jumps **+5.0%** on impact (pure TFP — capital hasn't moved yet), investment spikes **+19.8%** (replacement plus a λ/δ-amplified gap-closing term), and consumption rises just **+0.4%** (households smooth). All three then converge to **+7.9%**, the new steady state. Now experiment: raise **α** and the long-run multiplier $(1+\Delta)^{1/(1-\alpha)}$ steepens — at α = 0.6 a 5% shock ends up +13% in the long run. Raise **δ** and investment's impact spike shrinks (λ/δ falls) while the transition speeds up. β barely moves the *shape* — it scales the steady-state capital level itself.
+
+## Common confusions
+
+::: {.im-confusion}
+**"Output jumps 5% and that's the whole effect."** The 5% is only the impact. The shock also raises the optimal capital stock, and the investment boom it triggers keeps raising output for years — to +7.9% eventually. Most of the long-run effect arrives through induced capital accumulation, not the direct TFP term.
+:::
+
+::: {.im-confusion}
+**"Consumption barely responds, so households barely benefit."** Consumption's *impact* is small precisely because households are doing well: they spread a permanent windfall over all future periods rather than consuming it now, financing the investment boom in the meantime. By the new steady state, consumption is up the full 7.9% — the most of any series in level terms.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+In the RBC model, why is investment so much more volatile than consumption?
+
+<details><summary>a) Firms are irrationally exuberant while households are cautious</summary>
+No — everyone here is fully rational. The asymmetry comes from optimization itself, not from behavioral differences.
+</details>
+<details><summary>b) Households smooth consumption over time, so investment absorbs the shock as the economy builds toward its new optimal capital stock</summary>
+**Correct**. A permanent shock changes lifetime resources a little each period — so consumption moves a little. But it changes the *target capital stock* a lot at once — and closing that gap runs entirely through investment, which is a small share of output to begin with.
+</details>
+<details><summary>c) Because prices are sticky, quantities like investment must do all the adjusting</summary>
+No — there are no sticky prices anywhere in this model. That is its defining feature.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Set the sliders to their defaults: **ΔA = 5%, α = 0.36, β = 0.96, δ = 0.08**. Read off the impact responses at t = 5 for output and investment, and the new steady state every series converges to.
+
+<details><summary>Reveal answer</summary>
+Output jumps to **+5.0%** exactly (capital is predetermined at t = 5, so only the direct TFP effect operates). Investment spikes to **+19.8%** — replacement investment plus (λ/δ) × the 7.9% capital gap = (0.2/0.08) × 7.9% ≈ 19.8%. All series converge to **+7.9%** = 1.05^(1/(1−0.36)) − 1, the common scaling of the new steady state.
+</details>
+</div>
+
+{{< include ../_includes/generated/rbc_simulation-related.md >}}

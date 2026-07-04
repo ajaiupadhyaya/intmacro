@@ -63,10 +63,10 @@ website:
           - content/humancapital.qmd
           - content/convergence_hypo.qmd
           - content/solow_model.ipynb
-          - content/romer_model.ipynb
+          - content/romer_model.qmd
           - content/scale_effects.ipynb
           - content/hybrid_model.ipynb
-          - content/growth_acc.ipynb
+          - content/growth_acc.qmd
           - content/slowinggrowth.ipynb
           - content/robots.ipynb
       - section: "Intertemporal Choice & Labor"
@@ -79,9 +79,9 @@ website:
           - content/is_curve_model.qmd
           - content/adassim.qmd
           - content/adas_model.ipynb
-          - content/lucas_island_model.ipynb
-          - content/equilibrium_model.ipynb
-          - content/rbc_simulation.ipynb
+          - content/lucas_island_model.qmd
+          - content/equilibrium_model.qmd
+          - content/rbc_simulation.qmd
 
 format:
   html:

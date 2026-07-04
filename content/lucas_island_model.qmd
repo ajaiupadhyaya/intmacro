@@ -1,0 +1,224 @@
+---
+title: "The Lucas Island Model"
+subtitle: "How imperfect information turns monetary surprises into real fluctuations"
+---
+
+{{< include ../_includes/generated/lucas_island_model-prereqs.md >}}
+
+::: {.im-tldr}
+**TL;DR** — Producers see the price in *their* market but not the economy-wide average, so they can't tell a relative price change ("my good is in demand") from an aggregate one ("all prices rose"). When an *unanticipated* monetary injection lifts all prices, some of that increase gets misread as real opportunity and output rises. But only the *surprise* works: anticipated money is priced in and does nothing real.
+:::
+
+## You'll be able to
+
+- Solve the AD–Lucas-supply system for the equilibrium response to a monetary surprise: `p = εₘ/(1+γ)`, `y = γεₘ/(1+γ)`.
+- Explain why γ — how easily producers are "fooled" — controls the split of a shock between output and prices.
+- State the policy punchline: systematic, predictable monetary policy can't stabilize output in this model, because only surprises have real effects.
+
+## Explore the model
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Drag a slider — the AD curve shifts with the surprise, and the AS slope tilts with γ
+:::
+
+```{ojs}
+//| echo: false
+viewof gamma_lucas = Inputs.range([0.1, 5.0], {value: 1.0, step: 0.1, label: "supply sensitivity γ"})
+viewof shock_lucas = Inputs.range([-3.0, 3.0], {value: 2.0, step: 0.1, label: "monetary surprise εₘ"})
+
+// --- model (ported 1:1 from the v1 Python notebook) ---
+// AD: y = m − p   AS: y = γ(p − pᵉ), with pᵉ = 0 (shock is unanticipated)
+// Equilibrium: p = εₘ/(1+γ),  y = γ·εₘ/(1+γ)
+eq = {
+  const g = Math.max(gamma_lucas, 1e-6);
+  const p_eq = shock_lucas / (1 + g);
+  const y_eq = g * p_eq;
+  const yMax = Math.max(Math.abs(y_eq) * 2, 1);
+  const pts = [];
+  const N = 200;
+  for (let j = 0; j <= N; j++) {
+    const y = -yMax + (2 * yMax * j) / N;
+    pts.push({y, p: y / g, curve: "AS"});
+    pts.push({y, p: -y, curve: "AD (expected, m = 0)"});
+    pts.push({y, p: shock_lucas - y, curve: "AD (shock)"});
+  }
+  return {pts, p_eq, y_eq, yMax};
+}
+
+Plot.plot({
+  marginLeft: 55,
+  x: {label: "output deviation y →", domain: [-eq.yMax, eq.yMax]},
+  y: {label: "price-level deviation p", grid: true},
+  color: {
+    domain: ["AS", "AD (expected, m = 0)", "AD (shock)"],
+    range: ["var(--im-sim)", "#9aa0a6", "var(--im-accent)"],
+    legend: true
+  },
+  marks: [
+    Plot.ruleY([0], {stroke: "#ccc"}),
+    Plot.ruleX([0], {stroke: "#ccc"}),
+    Plot.line(eq.pts, {x: "y", y: "p", stroke: "curve", strokeWidth: 2,
+      strokeDasharray: d => d.curve === "AD (expected, m = 0)" ? "4 4" : null}),
+    Plot.dot([{y: eq.y_eq, p: eq.p_eq}], {x: "y", y: "p", fill: "var(--im-accent)", r: 5}),
+    Plot.text([{y: eq.y_eq, p: eq.p_eq}], {
+      x: "y", y: "p",
+      text: () => `y = ${eq.y_eq.toFixed(2)}, p = ${eq.p_eq.toFixed(2)}`,
+      dy: -12, dx: 6, textAnchor: "start", fill: "var(--im-accent)"
+    })
+  ]
+})
+```
+
+The gray dashed line is aggregate demand where agents expected it (m = 0); the solid line is where the surprise actually put it. The supply curve's slope is 1/γ: a larger γ makes it flatter, so more of the same shock shows up as output.
+:::
+
+## Core intuition
+
+Picture an economy of separate islands, each with its own market. A producer on one island observes exactly one price — the price of her own good. When that price rises, two very different things could be happening: demand for *her* good rose (a relative price change worth responding to), or *all* prices rose (pure inflation, worth ignoring). She cannot tell which from her island, so she rationally responds to a weighted average of the two possibilities — she raises production *somewhat*.
+
+Now let the central bank inject money no one expected. Every price in the economy rises, every producer sees her own price rise, and every producer attributes part of it to real demand. Output rises economy-wide — a boom built entirely on a misperception, a positive [output gap]{.im-glossary-term} with no real cause. The supply curve this generates, `y = γ(p − pᵉ)`, says output responds only to the *gap between actual and expected prices* — the same surprise logic as the [expectations-augmented Phillips curve]{.im-glossary-term}.
+
+The sting is in what happens next. Producers are not fools: once the money injection is public knowledge, they expect the higher prices, `pᵉ` catches up, the misperception vanishes, and output snaps back. Only *unanticipated* money moves output. A central bank that follows a predictable rule is fully priced in and moves nothing real — the **policy ineffectiveness** result that made this model famous.
+
+```{ojs}
+//| echo: false
+md`**Below:** many islands at once. Each period, every island's price is aggregate shock + island-specific shock; producers respond to the gap between their price and the average they expected. Aggregate output fluctuates purely from misperceptions.`
+```
+
+::: {.im-sim-hero}
+::: {.im-sim-label}
+Raise the aggregate noise relative to local noise — misperceptions, and output swings, grow
+:::
+
+```{ojs}
+//| echo: false
+viewof std_agg   = Inputs.range([0.0, 0.10], {value: 0.05, step: 0.005, label: "aggregate shock σ_agg"})
+viewof std_local = Inputs.range([0.0, 0.10], {value: 0.02, step: 0.005, label: "island-specific shock σ_local"})
+
+// --- model (ported 1:1 from the v1 Python notebook; JS PRNG replaces numpy's,
+//     seeded so the picture is reproducible) ---
+islands = {
+  const periods = 50, numIslands = 50, a = 1.0;
+  // deterministic PRNG (mulberry32) + Box-Muller, so redraws are stable
+  let s = 123456789;
+  const rand = () => {
+    s |= 0; s = (s + 0x6D2B79F5) | 0;
+    let t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const randn = () => {
+    const u = Math.max(rand(), 1e-12), v = rand();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  };
+  const agg = Array.from({length: periods}, () => randn() * std_agg);
+  const prices = Array.from({length: numIslands}, () =>
+    agg.map(g => g + randn() * std_local));
+  const avgOut = new Array(periods).fill(0);
+  for (let t = 1; t < periods; t++) {
+    let lastAvg = 0;
+    for (let i = 0; i < numIslands; i++) lastAvg += prices[i][t - 1];
+    lastAvg /= numIslands;                       // expected aggregate = last period's average
+    let out = 0;
+    for (let i = 0; i < numIslands; i++) out += a * (prices[i][t] - lastAvg);
+    avgOut[t] = out / numIslands;
+  }
+  let cum = 0;
+  const pts = [];
+  for (let t = 0; t < periods; t++) {
+    cum += agg[t];
+    pts.push({t, v: cum, series: "cumulative aggregate price shock"});
+    pts.push({t, v: avgOut[t], series: "average output across islands"});
+  }
+  return pts;
+}
+
+Plot.plot({
+  marginLeft: 55,
+  x: {label: "time t →"},
+  y: {label: "deviation", grid: true},
+  color: {
+    domain: ["cumulative aggregate price shock", "average output across islands"],
+    range: ["#9aa0a6", "var(--im-accent)"],
+    legend: true
+  },
+  marks: [
+    Plot.ruleY([0], {stroke: "#ccc"}),
+    Plot.line(islands, {x: "t", y: "v", stroke: "series", strokeWidth: 2,
+      strokeDasharray: d => d.series === "average output across islands" ? null : "4 3"})
+  ]
+})
+```
+:::
+
+::: {.im-math-toggle}
+<details>
+<summary>Show the math (full derivation)</summary>
+
+All variables are log-deviations from their expected/baseline levels.
+
+**Aggregate demand** comes from the quantity theory $MV = PY$ with constant velocity:
+$$y_t = m_t - p_t.$$
+
+**Aggregate supply** is the Lucas supply curve — output responds only to price surprises:
+$$y_t = \gamma\,(p_t - p_t^e).$$
+
+**Expectations.** Agents expect no money growth, $E_{t-1}[m_t] = 0$. Taking expectations of both equations and imposing rationality gives $p_t^e = 0$.
+
+**Equilibrium after a surprise** $m_t = \epsilon_m$. Set AD = AS with $p_t^e = 0$:
+$$\gamma p_t = \epsilon_m - p_t \quad\Longrightarrow\quad p_t = \frac{\epsilon_m}{1+\gamma}, \qquad y_t = \frac{\gamma}{1+\gamma}\,\epsilon_m.$$
+The shock splits between prices and output in proportions $1 : \gamma$. As $\gamma \to 0$ (producers never fooled) money is neutral even on impact; as $\gamma \to \infty$ the shock goes entirely into output.
+
+**Where γ comes from.** In the full signal-extraction model, a producer seeing her price $p_i = p + z_i$ (aggregate plus local) attributes to the *relative* component the regression fraction
+$$\theta = \frac{\sigma_z^2}{\sigma_z^2 + \sigma_p^2},$$
+and γ is increasing in θ. An economy with historically *stable* aggregate prices (small $\sigma_p^2$) has producers who trust their local signals — a *flat* AS, so a given monetary surprise causes a big output boom. An economy used to volatile inflation has a *steep* AS: everyone assumes price moves are aggregate noise and ignores them. This is the model's second famous prediction: the output–inflation tradeoff is weakest exactly where inflation is most volatile — and cross-country data (Lucas 1973) supports it.
+
+**The islands simulation** implements the mechanism directly: island $i$'s price is $p_{it} = g_t + z_{it}$ with $g_t \sim N(0, \sigma_{agg}^2)$, $z_{it} \sim N(0, \sigma_{local}^2)$; producers expect the aggregate to equal last period's cross-island average and set $y_{it} = a\,(p_{it} - E[p_t])$. Averaging over islands, the local shocks wash out and what remains is the economy-wide misperception of the aggregate shock.
+
+</details>
+:::
+
+## What the simulator showed
+
+At the defaults (γ = 1, εₘ = 2), the surprise splits evenly: `p = 1.00` and `y = 1.00`. Slide γ up to 4 and the AS line flattens — the same shock now delivers `y = 1.60` of output and only `p = 0.40` of prices: confused producers absorb money into quantities. Slide γ down toward 0.1 and it's the reverse — money is nearly neutral even on impact. In the islands panel, raising σ_agg with σ_local low produces large output swings tracking the (misperceived) aggregate shocks; raising σ_local instead adds island-level noise that mostly *averages out* of aggregate output.
+
+## Common confusions
+
+::: {.im-confusion}
+**"So money doesn't matter in this model."** It does — but only when it's a surprise. An unanticipated injection raises real output on impact; γ decides by how much. What has no real effect is *anticipated* money: anything agents saw coming is already in `pᵉ` and passes straight into prices.
+:::
+
+::: {.im-confusion}
+**"Higher γ means smarter producers."** The opposite. γ is large when producers attribute price moves to *relative* demand — i.e., when they are easily fooled by aggregate shocks. Ironically, that happens in economies where the central bank has historically been well behaved (stable aggregate prices), which is exactly what makes surprise inflation potent there.
+:::
+
+## Self-check
+
+<div class="im-mcq">
+<div class="im-q-label">Q1 · concept</div>
+
+Why does an *anticipated* increase in the money supply have no effect on output in the Lucas model?
+
+<details><summary>a) Because prices are sticky, output cannot respond</summary>
+No — prices here are fully flexible. Stickiness is the *Keynesian* route to monetary non-neutrality; the Lucas model deliberately avoids it.
+</details>
+<details><summary>b) Because expected money is already built into expected prices, so there is no price surprise to misread</summary>
+**Correct**. Output moves only with `p − pᵉ`. If agents saw the money coming, `pᵉ` rises one-for-one with `p`, the surprise term is zero, and the AS curve pins output at potential.
+</details>
+<details><summary>c) Because the central bank cannot actually change the money supply</summary>
+No — it can, and unanticipated changes have real effects. The claim is about *anticipated* changes only.
+</details>
+</div>
+
+<div class="im-mcq">
+<div class="im-q-label">Q2 · simulator challenge</div>
+
+Set **γ = 1.0** and **εₘ = 2.0** (the defaults). What are the equilibrium output and price deviations? Then double γ to 2.0 — which way does the split move?
+
+<details><summary>Reveal answer</summary>
+At γ = 1: `p = εₘ/(1+γ) = 2/2 = 1.00` and `y = γ·p = 1.00` — an even split; the marker reads **y = 1.00, p = 1.00**. At γ = 2: `p = 2/3 ≈ 0.67`, `y = 4/3 ≈ 1.33` — the flatter AS sends *more* of the same shock into output and less into prices.
+</details>
+</div>
+
+{{< include ../_includes/generated/lucas_island_model-related.md >}}
