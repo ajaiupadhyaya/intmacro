@@ -118,13 +118,13 @@ When you raised **ℓ**, the solid line did two things at once: it started *belo
 
 A country permanently doubles its research share ℓ (say from 0.1 to 0.2). According to the Romer model, what happens to output per person?
 
-<details><summary>a) It rises immediately and grows faster forever</summary>
+<details><summary>a\) It rises immediately and grows faster forever</summary>
 No — there's no free lunch on impact. The extra researchers had to come from the goods sector, so output per person *falls* today.
 </details>
-<details><summary>b) It falls at first, but its growth rate is permanently higher</summary>
+<details><summary>b\) It falls at first, but its growth rate is permanently higher</summary>
 **Correct**. The level term $(1-\ell)$ drops (fewer goods workers) while the growth rate $g = \bar z \ell \bar L$ doubles. The new path starts lower but is steeper, and eventually overtakes the old one.
 </details>
-<details><summary>c) It grows faster only temporarily, then growth returns to its old rate</summary>
+<details><summary>c\) It grows faster only temporarily, then growth returns to its old rate</summary>
 No — that's Solow logic (transition dynamics back to an exogenous g). In Romer, ℓ enters the growth rate itself, so the change is permanent.
 </details>
 </div>

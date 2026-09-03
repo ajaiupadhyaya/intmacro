@@ -72,7 +72,7 @@ viewof Tc_pre  = Inputs.range([1, 100], {value: 20, step: 1, label: "years betwe
 exact_g_pre     = Math.pow(YTc_pre / Y0c_pre, 1 / Tc_pre) - 1
 logapprox_g_pre = (Math.log(YTc_pre) - Math.log(Y0c_pre)) / Tc_pre
 
-md`**Exact annualized rate** $g = (Y_T/Y_0)^{1/T} - 1$ = **${(exact_g_pre * 100).toFixed(2)}%/yr** · **Log approximation** $[\ln Y_T - \ln Y_0]/T$ = **${(logapprox_g_pre * 100).toFixed(2)}%/yr** · gap = ${(Math.abs(exact_g_pre - logapprox_g_pre) * 100).toFixed(3)} percentage points`
+md`**Exact annualized rate** g = (Y_T/Y₀)^(1/T) − 1 = **${(exact_g_pre * 100).toFixed(2)}%/yr** · **Log approximation** [ln Y_T − ln Y₀]/T = **${(logapprox_g_pre * 100).toFixed(2)}%/yr** · gap = ${(Math.abs(exact_g_pre - logapprox_g_pre) * 100).toFixed(3)} percentage points`
 ```
 :::
 
@@ -134,13 +134,13 @@ At the defaults **g = 2%, T = 100**, the endpoint label read **Y_T = 724 (7.2×)
 
 Two countries are plotted on a **log-scale** chart of GDP per capita. Country A's line is higher; Country B's line is steeper. What can you conclude?
 
-<details><summary>a) Country A is growing faster, because its line is higher</summary>
+<details><summary>a\) Country A is growing faster, because its line is higher</summary>
 No — on a log scale, *height* is the level (how rich) and *slope* is the growth rate (how fast it's getting richer). A higher line only means A is richer.
 </details>
-<details><summary>b) Country B is growing faster, even though it is currently poorer</summary>
+<details><summary>b\) Country B is growing faster, even though it is currently poorer</summary>
 **Correct**. Slope on a log axis is the growth rate, so B's steeper line means faster growth; A's greater height means a higher level. Level and growth rate are different concepts and often move oppositely (convergence).
 </details>
-<details><summary>c) Country B will always be poorer than country A</summary>
+<details><summary>c\) Country B will always be poorer than country A</summary>
 No — a steeper line eventually crosses a higher, flatter one. Faster growth from a lower level is exactly the convergence pattern.
 </details>
 </div>

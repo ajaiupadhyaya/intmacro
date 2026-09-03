@@ -392,6 +392,11 @@ details.im-math-toggle {
   color: var(--im-accent);
   font-weight: 550;
   width: fit-content;
+  // Pandoc can wrap summary content in a block element; keep the disclosure
+  // marker and the option text on the same line rather than stacking them.
+  > p, > ol, > ul { display: inline; margin: 0; padding: 0; }
+  > ol, > ul { list-style: none; }
+  > ol li, > ul li { display: inline; }
 }
 .im-mcq summary:hover { color: var(--im-sim); }
 
@@ -631,3 +636,18 @@ a, button { -webkit-tap-highlight-color: transparent; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+// ---- Wide display equations ----------------------------------------
+// MathJax sizes display math to its natural width, which overflows the column
+// on narrow screens (34 equations across 18 chapters were clipped at 390px).
+// Let each block scroll inside itself rather than run off the page.
+mjx-container[display="true"] {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.25rem;
+  // keep the scrollbar unobtrusive where the platform supports it
+  scrollbar-width: thin;
+}
+// Same treatment for the tables and code blocks that can exceed the column.
+.im-sim-hero table, .cell-output table { display: block; max-width: 100%; overflow-x: auto; }

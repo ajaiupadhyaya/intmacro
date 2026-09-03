@@ -1,4 +1,6 @@
-# Scientific stack still used by the 27 static .ipynb chapters Quarto renders
+# Scientific stack. No rendered chapter executes Python any more (all 28 are
+# {ojs}/Observable), so these are needed only to re-run the archived v1
+# notebooks in content/_archive/. Safe to drop if you never touch those.
 numpy>=1.24,<3.0
 pandas>=2.0,<3.0
 matplotlib>=3.7,<4.0

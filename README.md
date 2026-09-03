@@ -17,15 +17,16 @@ Five tracks, organized in the sidebar of [`_quarto.yml`](./_quarto.yml):
 4. **Intertemporal Choice & Labor** — two-period consumption, labor-leisure, Tobin's q.
 5. **Business Cycles & Policy Dynamics** — IS curve, dynamic AD-AS with Taylor rule, Lucas Island, equilibrium business cycles, RBC.
 
-Chapters come in two generations while the v2 migration is in progress:
+All 28 chapters use the same template: hand-authored Quarto `.qmd` pages whose
+simulators run client-side via Observable JS (`{ojs}` cells with `Inputs.range`
+sliders + `Plot.plot`), so every model is fully interactive on the static
+deployed site with no server or Python kernel involved. The legacy `.ipynb`
+notebooks the chapters were ported from are preserved in `content/_archive/`.
 
-- **v2 `.qmd` chapters** — the current template: hand-authored Quarto pages
-  whose simulators run client-side via Observable JS (`{ojs}` cells with
-  `Inputs.range` sliders + `Plot.plot`). These are fully interactive on the
-  static deployed site.
-- **v1 `.ipynb` chapters** — legacy notebooks rendered statically (their
-  `ipywidgets` interactivity does not run in the browser). These are being
-  converted to the v2 template chapter by chapter.
+Each chapter follows a fixed structure: TL;DR → "You'll be able to" →
+**Explore the model** (the simulator) → Core intuition → a collapsible full
+derivation → "What the simulator showed" → Common confusions → self-check
+questions with revealable answers.
 
 The canonical inventory (one row per model, including the merge map for
 archive material) lives in [`content/MODELS.md`](./content/MODELS.md).
@@ -41,7 +42,7 @@ Python 3.11+.
 git clone https://github.com/ajaiupadhyaya/intmacro
 cd intmacro
 
-# Python deps (notebook execution + build scripts)
+# Python deps (build scripts + checks only — chapters need no kernel)
 uv venv && uv pip install -r requirements.txt   # or: pip install -r requirements.txt
 
 # Generate nav partials + glossary, then preview with live reload
@@ -81,7 +82,7 @@ the archive policy, and the TOC-consistency check that runs in CI.
 ├── _quarto.yml                # Quarto config: render list, sidebar, themes
 ├── index.qmd                  # Landing page
 ├── _glossary.qmd              # Generated glossary page
-├── requirements.txt           # Python deps for notebook execution + scripts
+├── requirements.txt           # Python deps for the build scripts + checks
 ├── theme/                     # Design system
 │   ├── intmacro-light.scss    #   light theme tokens
 │   ├── intmacro-dark.scss     #   dark theme tokens
@@ -90,9 +91,8 @@ the archive policy, and the TOC-consistency check that runs in CI.
 │   └── widget-fallback.js     #   legacy-widget fallback notice
 ├── content/
 │   ├── MODELS.md              # Canonical inventory + archive merge map
-│   ├── *.qmd                  # v2 interactive chapters (Observable JS)
-│   ├── *.ipynb                # v1 legacy chapters (static, pending conversion)
-│   └── _archive/              # Historical variants, preserved with provenance
+│   ├── *.qmd                  # The 28 interactive chapters (Observable JS)
+│   └── _archive/              # Superseded v1 notebooks, kept with provenance
 ├── tracks/                    # Track overview pages
 ├── _includes/                 # Glossary/prereq data + generated partials
 ├── scripts/

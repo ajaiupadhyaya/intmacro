@@ -126,13 +126,13 @@ At the defaults (s = 0.20, ℓ = 0.10, z̄ = 0.001, δ = 0.05, α = 0.33), the B
 
 In the Solow-Romer hybrid, a country permanently raises its savings rate s. What happens to output per person in the long run?
 
-<details><summary>a) Its long-run growth rate rises, because more savings funds more R&D</summary>
+<details><summary>a\) Its long-run growth rate rises, because more savings funds more R&D</summary>
 No — in this model savings funds only *capital*, and g = z̄ℓL̄ contains no s. Growth rises only temporarily, during the transition.
 </details>
-<details><summary>b) The balanced growth path shifts up, but its long-run slope is unchanged</summary>
+<details><summary>b\) The balanced growth path shifts up, but its long-run slope is unchanged</summary>
 **Correct**. Higher s raises k̃* = (s/(g+δ))^{1/(1−α)}, lifting the level term of y*ₜ — a parallel upward shift on the log chart — while the growth rate stays g = z̄ℓL̄.
 </details>
-<details><summary>c) Nothing happens, because ideas are the only source of anything in this model</summary>
+<details><summary>c\) Nothing happens, because ideas are the only source of anything in this model</summary>
 No — ideas are the only source of long-run *growth*, but capital still determines the *level* of the path. Higher s makes the country permanently richer at every date.
 </details>
 </div>

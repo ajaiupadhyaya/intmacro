@@ -143,13 +143,13 @@ At the defaults, the shock at t = 5 produces three very different responses from
 
 In the RBC model, why is investment so much more volatile than consumption?
 
-<details><summary>a) Firms are irrationally exuberant while households are cautious</summary>
+<details><summary>a\) Firms are irrationally exuberant while households are cautious</summary>
 No — everyone here is fully rational. The asymmetry comes from optimization itself, not from behavioral differences.
 </details>
-<details><summary>b) Households smooth consumption over time, so investment absorbs the shock as the economy builds toward its new optimal capital stock</summary>
+<details><summary>b\) Households smooth consumption over time, so investment absorbs the shock as the economy builds toward its new optimal capital stock</summary>
 **Correct**. A permanent shock changes lifetime resources a little each period — so consumption moves a little. But it changes the *target capital stock* a lot at once — and closing that gap runs entirely through investment, which is a small share of output to begin with.
 </details>
-<details><summary>c) Because prices are sticky, quantities like investment must do all the adjusting</summary>
+<details><summary>c\) Because prices are sticky, quantities like investment must do all the adjusting</summary>
 No — there are no sticky prices anywhere in this model. That is its defining feature.
 </details>
 </div>

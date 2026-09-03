@@ -61,10 +61,13 @@ Plot.plot({
     Plot.ruleX([gdp_calc.Y], {stroke: "var(--im-accent)", strokeDasharray: "4 4"}),
     Plot.text([{v: gdp_calc.Y}], {x: "v", frameAnchor: "top",
       text: () => `total Y = $${gdp_calc.Y.toLocaleString()}`,
-      dy: 8, dx: 4, textAnchor: "start", fill: "var(--im-accent)"}),
-    Plot.text(gdp_calc.bars, {y: "component", x: "v",
+      dy: 8, dx: -6, textAnchor: "end", fill: "var(--im-accent)"}),
+    Plot.text(gdp_calc.bars.filter(d => d.v >= 0), {y: "component", x: "v",
       text: d => `$${d.v.toLocaleString()}`,
-      dx: d => d.v >= 0 ? 24 : -24, fill: "currentColor"})
+      dx: 6, textAnchor: "start", fill: "currentColor"}),
+    Plot.text(gdp_calc.bars.filter(d => d.v < 0), {y: "component", x: 0,
+      text: d => `−$${Math.abs(d.v).toLocaleString()}`,
+      dx: 6, textAnchor: "start", fill: "currentColor"})
   ],
   height: 240
 })
@@ -123,13 +126,13 @@ At the defaults — C = \$2,000, I = \$500, G = \$1,000, NX = −\$200 — the d
 
 Which of the following adds to *this year's* US GDP?
 
-<details><summary>a) A family buys a three-year-old house from its previous owner</summary>
+<details><summary>a\) A family buys a three-year-old house from its previous owner</summary>
 No — the house was counted in GDP the year it was built. Reselling an existing asset is a transfer, not production (only the realtor's fee, a current service, counts).
 </details>
-<details><summary>b) A firm produces goods this year that sit unsold in its warehouse on December 31</summary>
+<details><summary>b\) A firm produces goods this year that sit unsold in its warehouse on December 31</summary>
 **Correct**. Unsold current production counts as inventory investment inside I — the accounting plug that makes Y = C + I + G + NX hold identically. Production is counted when it happens, not when it finally sells.
 </details>
-<details><summary>c) The government mails out this year's Social Security checks</summary>
+<details><summary>c\) The government mails out this year's Social Security checks</summary>
 No — transfer payments buy no current goods or services, so they are excluded from G. The spending appears only if and when recipients buy something (in C).
 </details>
 </div>

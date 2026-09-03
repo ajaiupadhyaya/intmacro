@@ -200,13 +200,13 @@ At the defaults (γ = 1, εₘ = 2), the surprise splits evenly: `p = 1.00` and 
 
 Why does an *anticipated* increase in the money supply have no effect on output in the Lucas model?
 
-<details><summary>a) Because prices are sticky, output cannot respond</summary>
+<details><summary>a\) Because prices are sticky, output cannot respond</summary>
 No — prices here are fully flexible. Stickiness is the *Keynesian* route to monetary non-neutrality; the Lucas model deliberately avoids it.
 </details>
-<details><summary>b) Because expected money is already built into expected prices, so there is no price surprise to misread</summary>
+<details><summary>b\) Because expected money is already built into expected prices, so there is no price surprise to misread</summary>
 **Correct**. Output moves only with `p − pᵉ`. If agents saw the money coming, `pᵉ` rises one-for-one with `p`, the surprise term is zero, and the AS curve pins output at potential.
 </details>
-<details><summary>c) Because the central bank cannot actually change the money supply</summary>
+<details><summary>c\) Because the central bank cannot actually change the money supply</summary>
 No — it can, and unanticipated changes have real effects. The claim is about *anticipated* changes only.
 </details>
 </div>

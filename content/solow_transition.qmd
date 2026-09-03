@@ -54,8 +54,8 @@ Plot.plot({
     Plot.ruleY([ystar], {stroke: "var(--im-sim)", strokeDasharray: "3 3", opacity: 0.5}),
     Plot.line(trpath, {x: "t", y: "k", stroke: "var(--im-accent)", strokeWidth: 2.5}),
     Plot.line(trpath, {x: "t", y: "y", stroke: "var(--im-sim)", strokeWidth: 2.5}),
-    Plot.text([{t: Ttr * 0.5, y: kstar}], {text: d => `k* = ${kstar.toFixed(2)}`, dy: -8, fill: "var(--im-accent)"}),
-    Plot.text([{t: Ttr * 0.5, y: ystar}], {text: d => `y* = ${ystar.toFixed(2)}`, dy: -8, fill: "var(--im-sim)"})
+    Plot.text([{t: Ttr * 0.5, y: kstar}], {x: "t", y: "y", text: d => `k* = ${kstar.toFixed(2)}`, dy: -8, fill: "var(--im-accent)"}),
+    Plot.text([{t: Ttr * 0.5, y: ystar}], {x: "t", y: "y", text: d => `y* = ${ystar.toFixed(2)}`, dy: -8, fill: "var(--im-sim)"})
   ]
 })
 ```
@@ -105,13 +105,13 @@ Starting from a tiny $k_0$, both lines shot up steeply, then bent over and level
 
 Two economies have identical $s$, $\delta$, $\alpha$, $A$ but different starting capital: one far below $k^{*}$, one just below it. Which grows faster initially?
 
-<details><summary>a) The one far below k*</summary>
+<details><summary>a\) The one far below k*</summary>
 **Correct**. The further below $k^{*}$, the larger the gap between investment and depreciation, so the faster capital grows. This is the convergence mechanism.
 </details>
-<details><summary>b) The one just below k*</summary>
+<details><summary>b\) The one just below k*</summary>
 No — near $k^{*}$ investment and depreciation nearly balance, so growth is slow.
 </details>
-<details><summary>c) They grow at the same rate since the parameters match</summary>
+<details><summary>c\) They grow at the same rate since the parameters match</summary>
 No — growth rate depends on the *distance* from $k^{*}$, not just the parameters.
 </details>
 </div>

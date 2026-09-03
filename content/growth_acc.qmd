@@ -55,10 +55,13 @@ Plot.plot({
     Plot.ruleX([acct.gY], {stroke: "var(--im-accent)", strokeDasharray: "4 4"}),
     Plot.text([{v: acct.gY}], {x: "v", frameAnchor: "top",
       text: () => `total g_Y = ${(acct.gY * 100).toFixed(2)}%`,
-      dy: 8, dx: 4, textAnchor: "start", fill: "var(--im-accent)"}),
-    Plot.text(acct.bars, {y: "component", x: "v",
+      dy: 8, dx: -6, textAnchor: "end", fill: "var(--im-accent)"}),
+    Plot.text(acct.bars.filter(d => d.v >= 0), {y: "component", x: "v",
       text: d => (d.v * 100).toFixed(2) + "%",
-      dx: d => d.v >= 0 ? 18 : -18, fill: "currentColor"})
+      dx: 6, textAnchor: "start", fill: "currentColor"}),
+    Plot.text(acct.bars.filter(d => d.v < 0), {y: "component", x: 0,
+      text: d => (d.v * 100).toFixed(2) + "%",
+      dx: 6, textAnchor: "start", fill: "currentColor"})
   ],
   height: 220
 })
@@ -146,13 +149,13 @@ At the defaults (α = 0.33, g_A = 2%, g_K = 4%, g_L = 1%), total growth is **g_Y
 
 Why is TFP growth called a "residual," and why is that a warning label?
 
-<details><summary>a) Because it is small — a leftover after the important terms</summary>
+<details><summary>a\) Because it is small — a leftover after the important terms</summary>
 No — empirically it is often the *largest* contribution to long-run growth. "Residual" describes how it's computed, not its size.
 </details>
-<details><summary>b) Because it is computed as what remains of output growth after subtracting input contributions, so it absorbs everything unmeasured — including errors</summary>
+<details><summary>b\) Because it is computed as what remains of output growth after subtracting input contributions, so it absorbs everything unmeasured — including errors</summary>
 **Correct**. $g_A = g_Y - \alpha g_K - (1-\alpha)g_L$ is inference, not measurement. Genuine innovation lands there, but so does anything else the input data missed — which is why Abramovitz called it "a measure of our ignorance."
 </details>
-<details><summary>c) Because statistical agencies publish it with a long lag</summary>
+<details><summary>c\) Because statistical agencies publish it with a long lag</summary>
 No — the issue is conceptual, not timeliness: no agency observes an economy's technology level directly at any lag.
 </details>
 </div>

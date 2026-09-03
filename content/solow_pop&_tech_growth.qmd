@@ -26,7 +26,7 @@ Crank up population growth n and watch the steady state fall — then add tech g
 //| echo: false
 viewof sSpt      = Inputs.range([0.05, 0.9], {value: 0.30, step: 0.01, label: "savings rate s"})
 viewof deltaSpt  = Inputs.range([0.01, 0.2], {value: 0.05, step: 0.005, label: "depreciation δ"})
-viewof alphaSpt  = Inputs.range([0.1, 0.7], {value: 0.30, step: 0.05, label: "capital share α"})
+viewof alphaSpt  = Inputs.range([0.1, 0.7], {value: 0.30, step: 0.01, label: "capital share α"})
 viewof nSpt      = Inputs.range([0.0, 0.05], {value: 0.01, step: 0.005, label: "population growth n"})
 viewof gSpt      = Inputs.range([0.0, 0.05], {value: 0.02, step: 0.005, label: "tech growth g"})
 viewof k0Spt     = Inputs.range([0.1, 10], {value: 1.0, step: 0.1, label: "initial k̃₀"})
@@ -55,15 +55,15 @@ Plot.plot({
     Plot.ruleY([ystarSpt], {stroke: "var(--im-sim)", strokeDasharray: "3 3", opacity: 0.5}),
     Plot.line(pathSpt, {x: "t", y: "k", stroke: "var(--im-accent)", strokeWidth: 2.5}),
     Plot.line(pathSpt, {x: "t", y: "y", stroke: "var(--im-sim)", strokeWidth: 2.5}),
-    Plot.text([{t: TSpt * 0.5, y: kstarSpt}], {text: d => `k̃* = ${kstarSpt.toFixed(2)}`, dy: -8, fill: "var(--im-accent)"}),
-    Plot.text([{t: TSpt * 0.5, y: ystarSpt}], {text: d => `ỹ* = ${ystarSpt.toFixed(2)}`, dy: -8, fill: "var(--im-sim)"})
+    Plot.text([{t: TSpt * 0.5, y: kstarSpt}], {x: "t", y: "y", text: d => `k̃* = ${kstarSpt.toFixed(2)}`, dy: -8, fill: "var(--im-accent)"}),
+    Plot.text([{t: TSpt * 0.5, y: ystarSpt}], {x: "t", y: "y", text: d => `ỹ* = ${ystarSpt.toFixed(2)}`, dy: -8, fill: "var(--im-sim)"})
   ]
 })
 ```
 
 ```{ojs}
 //| echo: false
-md`**Steady state (per effective worker):** $\tilde k^{*} =$ **${kstarSpt.toFixed(3)}**,  $\tilde y^{*} =$ **${ystarSpt.toFixed(3)}**. In the long run, output **per worker** grows at $g =$ **${(gSpt*100).toFixed(1)}%** per period, while **aggregate** output grows at $n+g =$ **${((nSpt+gSpt)*100).toFixed(1)}%**.`
+md`**Steady state (per effective worker):** k̃∗ = **${kstarSpt.toFixed(3)}**, ỹ∗ = **${ystarSpt.toFixed(3)}**. In the long run, output **per worker** grows at g = **${(gSpt*100).toFixed(1)}%** per period, while **aggregate** output grows at n + g = **${((nSpt+gSpt)*100).toFixed(1)}%**.`
 ```
 
 The blue line is capital per effective worker $\tilde k$, red is output per effective worker $\tilde y$, and the dashed lines are their steady-state targets. Slide $n$ up and the dashed targets drop — more mouths to equip means less capital each. Slide $g$ up and the targets *also* drop, yet the readout reminds you that per-worker income is now climbing at $g$ forever.
@@ -113,13 +113,13 @@ From any starting $\tilde k_0$, both lines bent toward the dashed targets and fl
 
 In the steady state, at what rate does output **per worker** ($y = A\tilde y$) grow?
 
-<details><summary>a) g (the technology growth rate)</summary>
+<details><summary>a\) g (the technology growth rate)</summary>
 **Correct**. Per-effective-worker output $\tilde y$ is constant at steady state, so $y = A\tilde y$ grows at the rate of $A$, which is $g$. Only technological progress raises living standards in the long run.
 </details>
-<details><summary>b) n + g</summary>
+<details><summary>b\) n + g</summary>
 No — that's the growth rate of *aggregate* output $Y = AL\tilde y$, which also picks up labor-force growth $n$. Per-*worker* output grows only at $g$.
 </details>
-<details><summary>c) zero — the economy is at a steady state</summary>
+<details><summary>c\) zero — the economy is at a steady state</summary>
 No — only the *per-effective-worker* variables are constant. Per-worker income still rises with $A$ at rate $g$.
 </details>
 </div>

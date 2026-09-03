@@ -173,13 +173,13 @@ Now set **π > 0** and move the wage again: leisure falls as w rises, because no
 
 The government mails every household a lump-sum check (non-labor income rises; the wage is unchanged). According to the model, hours worked...
 
-<details><summary>a) Rise — households are richer, so they can afford to work more</summary>
+<details><summary>a\) Rise — households are richer, so they can afford to work more</summary>
 No — working is not something you "afford"; leisure is. Richer households buy more leisure, so hours worked fall.
 </details>
-<details><summary>b) Fall — a pure income effect with no substitution effect</summary>
+<details><summary>b\) Fall — a pure income effect with no substitution effect</summary>
 **Correct**. The budget line shifts up in parallel: no relative price changed, so there is no substitution effect. Leisure is a normal good, so `l*` rises and `L* = T − l*` falls.
 </details>
-<details><summary>c) Are unchanged — income and substitution effects cancel</summary>
+<details><summary>c\) Are unchanged — income and substitution effects cancel</summary>
 No — that cancellation applies to a *wage* change (under log utility with π = 0), where both effects are present. A lump-sum transfer has only an income effect, so hours must fall.
 </details>
 </div>

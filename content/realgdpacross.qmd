@@ -123,13 +123,13 @@ At the defaults — Country 1 at \$60,000 with price level 1, Country 2 at \$8,0
 
 A country's price level index is 0.5 relative to the US. Compared with converting its GDP at the market exchange rate, its PPP-adjusted GDP per capita will be —
 
-<details><summary>a) Half as large, since prices are half the US level</summary>
+<details><summary>a\) Half as large, since prices are half the US level</summary>
 No — that's the wrong direction. Low prices mean each market dollar *buys more*, so the adjustment scales measured income up, not down.
 </details>
-<details><summary>b) Twice as large, because each dollar of local spending buys twice the goods</summary>
+<details><summary>b\) Twice as large, because each dollar of local spending buys twice the goods</summary>
 **Correct**. PPP GDP = market-rate GDP ÷ 0.5 = 2× the market-rate figure. Cheap nontradables mean the market-rate conversion was understating the real volume of goods and services.
 </details>
-<details><summary>c) Unchanged — PPP only matters for countries with floating exchange rates</summary>
+<details><summary>c\) Unchanged — PPP only matters for countries with floating exchange rates</summary>
 No — the exchange-rate regime is irrelevant. Any country whose price level differs from the base country's gets a nonzero adjustment.
 </details>
 </div>

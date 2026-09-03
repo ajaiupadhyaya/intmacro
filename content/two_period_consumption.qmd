@@ -62,10 +62,10 @@ Plot.plot({
   marks: [
     Plot.line(budget, {x: "c1", y: "c2", stroke: "var(--im-accent)", strokeWidth: 2}),
     Plot.line(indiff, {x: "c1", y: "c2", stroke: "var(--im-sim)", strokeWidth: 2}),
-    Plot.dot([{c1: y1, c2: y2}], {r: 5, fill: "var(--im-warn)", symbol: "square"}),
-    Plot.text([{c1: y1, c2: y2}], {text: ["endowment (y₁,y₂)"], dy: -12, fill: "var(--im-warn)"}),
-    Plot.dot([{c1: c1star, c2: c2star}], {r: 5, fill: "var(--im-accent)"}),
-    Plot.text([{c1: c1star, c2: c2star}], {text: d => [`optimum (${c1star.toFixed(1)}, ${c2star.toFixed(1)})`], dy: -12, fill: "var(--im-accent)"})
+    Plot.dot([{c1: y1, c2: y2}], {x: "c1", y: "c2", r: 5, fill: "var(--im-warn)", symbol: "square"}),
+    Plot.text([{c1: y1, c2: y2}], {x: "c1", y: "c2", text: () => "endowment (y₁,y₂)", dx: -16, dy: -10, textAnchor: "end", fill: "var(--im-warn)"}),
+    Plot.dot([{c1: c1star, c2: c2star}], {x: "c1", y: "c2", r: 5, fill: "var(--im-accent)"}),
+    Plot.text([{c1: c1star, c2: c2star}], {x: "c1", y: "c2", text: () => `optimum (${c1star.toFixed(1)}, ${c2star.toFixed(1)})`, dx: 12, dy: 14, textAnchor: "start", fill: "var(--im-accent)"})
   ]
 })
 ```
@@ -129,13 +129,13 @@ When you made the agent more patient (β → 1), the optimum shifted left toward
 
 Suppose the agent is currently a **lender** (c₁ < y₁). The real interest rate rises. Which statement is correct about the effect on c₁?
 
-<details><summary>a) c₁ must fall — the substitution effect dominates</summary>
+<details><summary>a\) c₁ must fall — the substitution effect dominates</summary>
 Not necessarily. The substitution effect does push toward saving more (lower c₁), but the income effect — the lender earns more on existing savings — pushes c₁ up. The net direction is ambiguous.
 </details>
-<details><summary>b) c₁ is ambiguous — substitution and income effects offset each other</summary>
+<details><summary>b\) c₁ is ambiguous — substitution and income effects offset each other</summary>
 **Correct**. For a lender, a higher r creates a substitution effect (future consumption cheaper → save more → lower c₁) and a positive income effect (higher return on savings → richer → higher c₁). Standard theory does not pin the sign.
 </details>
-<details><summary>c) c₁ must rise — the income effect always dominates for lenders</summary>
+<details><summary>c\) c₁ must rise — the income effect always dominates for lenders</summary>
 No — the income effect works in that direction, but it need not dominate the substitution effect.
 </details>
 </div>

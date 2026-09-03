@@ -118,13 +118,13 @@ At the default settings (z̄ = 0.0005, ℓ = 0.10, largest L̄ = 1000), the pred
 
 In the simple Romer model (φ = 1), country B has twice the population of country A but the same z̄ and ℓ. What does the model predict?
 
-<details><summary>a) B has twice the level of output per person, but the same growth rate</summary>
+<details><summary>a\) B has twice the level of output per person, but the same growth rate</summary>
 No — that's how a *level* variable like the savings rate works in Solow. Here population enters the growth rate itself: g = z̄ℓL̄.
 </details>
-<details><summary>b) B grows twice as fast as A, permanently</summary>
+<details><summary>b\) B grows twice as fast as A, permanently</summary>
 **Correct**. g = z̄ℓL̄ is linear in L̄, so doubling population doubles the growth rate forever — the scale effect. Its empirical failure (researchers grew ~20×, growth didn't budge) is what motivated semi-endogenous growth theory.
 </details>
-<details><summary>c) B grows faster only until it reaches its steady state</summary>
+<details><summary>c\) B grows faster only until it reaches its steady state</summary>
 No — there is no steady state to converge to here; the simple Romer model has no transition dynamics in g. The predicted growth gap is permanent.
 </details>
 </div>

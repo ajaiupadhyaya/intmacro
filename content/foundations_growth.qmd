@@ -46,8 +46,8 @@ Plot.plot({
   marks: [
     Plot.line(series.filter(d => d.who === "A"), {x: "t", y: "value", stroke: "var(--im-accent)", strokeWidth: 2.5}),
     Plot.line(series.filter(d => d.who === "B"), {x: "t", y: "value", stroke: "var(--im-sim)", strokeWidth: 2.5, strokeDasharray: "5 4"}),
-    Plot.text([{t: Tyears, value: levelA * Math.pow(1 + gA, Tyears)}], {text: d => `A: ${d.value.toFixed(1)}`, dx: 8, fill: "var(--im-accent)"}),
-    Plot.text([{t: Tyears, value: levelB * Math.pow(1 + gB, Tyears)}], {text: d => `B: ${d.value.toFixed(1)}`, dx: 8, fill: "var(--im-sim)"})
+    Plot.text([{t: Tyears, value: levelA * Math.pow(1 + gA, Tyears)}], {x: "t", y: "value", text: d => `A: ${d.value.toFixed(1)}`, dx: 8, textAnchor: "start", fill: "var(--im-accent)"}),
+    Plot.text([{t: Tyears, value: levelB * Math.pow(1 + gB, Tyears)}], {x: "t", y: "value", text: d => `B: ${d.value.toFixed(1)}`, dx: 8, textAnchor: "start", fill: "var(--im-sim)"})
   ]
 })
 ```
@@ -95,13 +95,13 @@ With A starting low but growing fast and B starting high but flat, the two lines
 
 Country X has GDP per capita of \$40,000 growing at 1%. Country Y has \$5,000 growing at 7%. Which is true?
 
-<details><summary>a) X will always be richer — it has the higher level</summary>
+<details><summary>a\) X will always be richer — it has the higher level</summary>
 No — Y's far higher growth rate means it closes the gap and eventually overtakes X.
 </details>
-<details><summary>b) Y is catching up and will overtake X given enough time</summary>
+<details><summary>b\) Y is catching up and will overtake X given enough time</summary>
 **Correct**. A higher growth rate compounds; the level head-start is finite, so Y eventually passes X.
 </details>
-<details><summary>c) They grow at the same speed since growth is just level times rate</summary>
+<details><summary>c\) They grow at the same speed since growth is just level times rate</summary>
 No — growth *rate* is independent of the level. Y's 7% beats X's 1% regardless of who is richer now.
 </details>
 </div>

@@ -130,7 +130,7 @@ As $R/L \to \infty$: if $\rho > 0$ ($\sigma > 1$) the $\beta R^{\rho}$ term domi
 
 ## What the simulator showed
 
-At the defaults — β = 0.5, gR = 4%, gL = 1%, **ρ = −1** (σ = 0.5, complements), T = 30 — the robot stock more than triples relative to labor, and the wage index climbs to **5.63**, far above the dashed Cobb-Douglas benchmark of **1.55**: scarce human hands become precious as their robot partners multiply, and labor's share *rises* (from 1.0% to 2.4% with these initial stocks — the direction, not the level, is the lesson; the level just reflects starting with 1 robot per 100 workers). Flip **ρ to +0.5** (σ = 2, substitutes) and the same boom leaves the wage index at just **1.05** while total output explodes to Y ≈ 45 — growth without wage gains, and labor's share falls (90.9% → 86.6%). Set **ρ = 0** and the blue curve lands exactly on the gray one: Cobb-Douglas, shares frozen.
+At the defaults — β = 0.5, gR = 4%, gL = 1%, **ρ = −1** (σ = 0.5, complements), T = 30 — the robot stock more than triples relative to labor, and the wage index climbs to **5.63**, far above the dashed Cobb-Douglas benchmark of **1.55**: scarce human hands become precious as their robot partners multiply, and labor's share *rises* (from 1.0% to 2.3% with these initial stocks — the direction, not the level, is the lesson; the level just reflects starting with 1 robot per 100 workers). Flip **ρ to +0.5** (σ = 2, substitutes) and the same boom leaves the wage index at just **1.05** while total output explodes to Y ≈ 45 — growth without wage gains, and labor's share falls (90.9% → 86.6%). Set **ρ = 0** and the blue curve lands exactly on the gray one: Cobb-Douglas, shares frozen.
 
 ## Common confusions
 
@@ -139,7 +139,7 @@ At the defaults — β = 0.5, gR = 4%, gL = 1%, **ρ = −1** (σ = 0.5, complem
 :::
 
 ::: {.im-confusion}
-**"Output boomed, so workers must be better off."** Not necessarily. In the σ = 2 run, output rose more than forty-fold from its robot-scarce start while the wage gained only 5% over 30 years. Who captures the output gains depends on marginal products, and with high substitutability the gains accrue to robot owners — that is exactly what a falling labor share means.
+**"Output boomed, so workers must be better off."** Not necessarily. In the σ = 2 run, output rose about 50% over the 30 years (Y climbs from 30.3 to 45.0) while the wage index gained only 5%. Who captures the output gains depends on marginal products, and with high substitutability the gains accrue to robot owners — that is exactly what a falling labor share means.
 :::
 
 ## Self-check
@@ -149,13 +149,13 @@ At the defaults — β = 0.5, gR = 4%, gL = 1%, **ρ = −1** (σ = 0.5, complem
 
 In the CES model, robots get steadily better and more numerous. Under which condition does labor's share of income *rise*?
 
-<details><summary>a) σ &gt; 1 — robots and labor are substitutes</summary>
+<details><summary>a\) σ &gt; 1 — robots and labor are substitutes</summary>
 No — with easy substitution, the growing input crowds labor out of the income distribution; labor's share falls toward zero.
 </details>
-<details><summary>b) σ &lt; 1 — robots and labor are complements</summary>
+<details><summary>b\) σ &lt; 1 — robots and labor are complements</summary>
 **Correct**. When inputs are poor substitutes, the relatively scarce input (labor) becomes more valuable as robots accumulate: $s_L = (1-\beta)L^{\rho}/[\beta R^{\rho} + (1-\beta)L^{\rho}] \to 1$ as $R/L \to \infty$ when $\rho < 0$.
 </details>
-<details><summary>c) σ = 1 — the Cobb-Douglas case</summary>
+<details><summary>c\) σ = 1 — the Cobb-Douglas case</summary>
 No — at σ = 1 labor's share is locked at $1-\beta$ no matter what happens to robots. That constancy is the defining feature of Cobb-Douglas.
 </details>
 </div>

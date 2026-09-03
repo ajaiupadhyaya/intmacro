@@ -50,7 +50,7 @@ Plot.plot({
   y: {label: "capital per effective worker k̃", grid: true},
   marks: [
     Plot.ruleY([kstar], {stroke: "var(--im-sim)", strokeDasharray: "4 4"}),
-    Plot.text([{t: 150, k: kstar}], {text: d => `k* = ${kstar.toFixed(2)}`, dy: -8, fill: "var(--im-sim)"}),
+    Plot.text([{t: 150, k: kstar}], {x: "t", y: "k", text: d => `k* = ${kstar.toFixed(2)}`, dy: -8, fill: "var(--im-sim)"}),
     Plot.line(path, {x: "t", y: "k", stroke: "var(--im-accent)", strokeWidth: 2})
   ]
 })
@@ -99,13 +99,13 @@ When you raised **s**, the dashed `k*` line jumped *up* and the curve climbed to
 
 A country permanently doubles its savings rate. In the long run, which is true?
 
-<details><summary>a) Its growth rate doubles</summary>
+<details><summary>a\) Its growth rate doubles</summary>
 No — long-run growth is set by `g`, not `s`. Growth rises only during the transition.
 </details>
-<details><summary>b) Its steady-state capital per worker rises</summary>
+<details><summary>b\) Its steady-state capital per worker rises</summary>
 **Correct**. `k* = (s/(n+g+δ))^{1/(1−α)}` rises with `s` — a higher *level*, reached via temporarily faster growth.
 </details>
-<details><summary>c) Nothing changes</summary>
+<details><summary>c\) Nothing changes</summary>
 No — the level changes even though the long-run growth rate doesn't.
 </details>
 </div>
@@ -116,7 +116,7 @@ No — the level changes even though the long-run growth rate doesn't.
 Using the simulator above, set **s = 0.30, n = 0.02, g = 0.02, δ = 0.05, α = ⅓**. What steady-state `k*` does the dashed line show?
 
 <details><summary>Reveal answer</summary>
-`k* = (0.30/0.09)^{1.5} = (3.333)^{1.5} ≈ 6.09`. The dashed line should read **k* ≈ 6.09**.
+`k* = (0.30/0.09)^{1/(1-α)} = (3.333)^{1.5} ≈ 6.09` at α = ⅓ exactly. The α slider's nearest value is 0.333, so the dashed line reads **k\* ≈ 6.08** — the third decimal of α is the whole difference.
 </details>
 </div>
 

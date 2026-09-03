@@ -167,13 +167,13 @@ The second simulator at its defaults (gN = 5%, π = 3%, T = 10) deflates a \$1,6
 
 An economy's nominal GDP rises 6% in a year in which the GDP deflator also rises 6%. What happened to real GDP?
 
-<details><summary>a) It rose 6% — output grew with spending</summary>
+<details><summary>a\) It rose 6% — output grew with spending</summary>
 No — the deflator rising 6% means the entire nominal increase is higher prices. Deflating the 6%-larger nominal GDP by a 6%-larger price index leaves real GDP unchanged.
 </details>
-<details><summary>b) It stayed (essentially) flat — the growth was all prices</summary>
+<details><summary>b\) It stayed (essentially) flat — the growth was all prices</summary>
 **Correct**. Real growth satisfies (1 + gN) = (1 + gR)(1 + π), so 1.06 = (1 + gR)(1.06) gives gR = 0: the quantity of output did not change.
 </details>
-<details><summary>c) It fell 6% — inflation subtracts from output</summary>
+<details><summary>c\) It fell 6% — inflation subtracts from output</summary>
 No — inflation subtracts from nominal *growth*, not from output itself. Here the subtraction exactly exhausts the 6% nominal growth, leaving real growth at zero, not −6%.
 </details>
 </div>

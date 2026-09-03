@@ -147,13 +147,13 @@ When you raised the **MPC c₁** or the **interest sensitivity i₁**, the curve
 
 Which of the following shifts the IS curve to the right?
 
-<details><summary>a) A fall in the real interest rate</summary>
+<details><summary>a\) A fall in the real interest rate</summary>
 No — $r$ is on the vertical axis, so a fall in $r$ is a movement *along* the curve to a higher-output point, not a shift.
 </details>
-<details><summary>b) An increase in government purchases G</summary>
+<details><summary>b\) An increase in government purchases G</summary>
 **Correct**. Higher $G$ raises autonomous expenditure $A_0$, so equilibrium output is higher at *every* interest rate — the whole curve moves right by $\Delta G/(1-c_1)$.
 </details>
-<details><summary>c) An increase in the MPC c₁</summary>
+<details><summary>c\) An increase in the MPC c₁</summary>
 Not a parallel shift — a higher $c_1$ raises the multiplier, which *rotates* the curve (flatter, and stretched away from the vertical axis). It changes the slope, not just the position.
 </details>
 </div>

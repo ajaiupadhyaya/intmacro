@@ -64,8 +64,8 @@ Plot.plot({
     Plot.ruleY([ystarB_Cv], {stroke: "var(--im-sim)",    strokeDasharray: "3 3", opacity: 0.5}),
     Plot.line(simCv.A, {x: "t", y: "y", stroke: "var(--im-accent)", strokeWidth: 2.5}),
     Plot.line(simCv.B, {x: "t", y: "y", stroke: "var(--im-sim)",    strokeWidth: 2.5}),
-    Plot.text([{t: TCv * 0.5, y: ystarA_Cv}], {text: d => `y*₍A₎ = ${ystarA_Cv.toFixed(2)}`, dy: 10, fill: "var(--im-accent)"}),
-    Plot.text([{t: TCv * 0.5, y: ystarB_Cv}], {text: d => `y*₍B₎ = ${ystarB_Cv.toFixed(2)}`, dy: -8, fill: "var(--im-sim)"})
+    Plot.text([{t: TCv * 0.5, y: ystarA_Cv}], {x: "t", y: "y", text: d => `y*₍A₎ = ${ystarA_Cv.toFixed(2)}`, dy: 12, fill: "var(--im-accent)"}),
+    Plot.text([{t: TCv * 0.5, y: ystarB_Cv}], {x: "t", y: "y", text: d => `y*₍B₎ = ${ystarB_Cv.toFixed(2)}`, dy: -10, fill: "var(--im-sim)"})
   ]
 })
 ```
@@ -83,8 +83,8 @@ growthCv = {
   return {gA, gB, eA, eB};
 }
 
-md`**Country A** (poor) starts at $y_0 = ${simCv.A[0].y.toFixed(2)}$ and heads for $y^{*} = ${ystarA_Cv.toFixed(2)}$.
-**Country B** (rich) starts at $y_0 = ${simCv.B[0].y.toFixed(2)}$ and heads for $y^{*} = ${ystarB_Cv.toFixed(2)}$.
+md`**Country A** (poor) starts at y₀ = ${simCv.A[0].y.toFixed(2)} and heads for y∗ = ${ystarA_Cv.toFixed(2)}.
+**Country B** (rich) starts at y₀ = ${simCv.B[0].y.toFixed(2)} and heads for y∗ = ${ystarB_Cv.toFixed(2)}.
 
 Early-period growth: **A ≈ ${(growthCv.eA * 100).toFixed(2)}%/yr**, **B ≈ ${(growthCv.eB * 100).toFixed(2)}%/yr** — ${growthCv.eA > growthCv.eB ? "the poorer country grows faster, so the gap is closing." : "the richer country grows at least as fast — no catch-up."} ${condCv ? "Because B saves more, the two aim at **different** steady states (conditional convergence)." : "Both share the same parameters, so they aim at the **same** steady state (absolute convergence) — A catches up to B."}`
 ```
@@ -138,13 +138,13 @@ With both countries sharing parameters, the two output paths chased the *same* d
 
 Country A is poor with savings rate $s=0.1$; Country B is rich with $s=0.3$. All other parameters are identical. The Solow model predicts:
 
-<details><summary>a) A grows faster and catches up to B (absolute convergence)</summary>
+<details><summary>a\) A grows faster and catches up to B (absolute convergence)</summary>
 No — A and B have *different* steady states because their saving rates differ. A heads for a low $y^{*}$, so it need not catch B at all.
 </details>
-<details><summary>b) Each converges to its own steady state; A need not catch B (conditional convergence)</summary>
+<details><summary>b\) Each converges to its own steady state; A need not catch B (conditional convergence)</summary>
 **Correct**. With different $s$, the two have different $k^{*}$. Each converges to its *own* target, so the income gap between them need not close. This is conditional convergence.
 </details>
-<details><summary>c) Neither converges because their parameters differ</summary>
+<details><summary>c\) Neither converges because their parameters differ</summary>
 No — different parameters don't prevent convergence; they just give each country a *different* steady state to converge toward.
 </details>
 </div>

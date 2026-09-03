@@ -147,13 +147,13 @@ Raising **r** or **δ** raises the user cost, so q falls and the dot slides down
 
 The central bank raises the real interest rate $r$, with technology and the capital stock unchanged. What happens in the q framework?
 
-<details><summary>a) MPK falls, so q falls</summary>
+<details><summary>a\) MPK falls, so q falls</summary>
 No — MPK depends on $A$, $K$, $L$, none of which changed. It's the *cost* side that moves, not the benefit side.
 </details>
-<details><summary>b) The user cost r + δ rises, so q falls and the desired capital stock K* falls</summary>
+<details><summary>b\) The user cost r + δ rises, so q falls and the desired capital stock K* falls</summary>
 **Correct**. A higher $r$ raises the denominator of $q = MPK/(r+\delta)$, pushing q toward or below 1 and shrinking $K^* = (\alpha A L^{1-\alpha}/(r+\delta))^{1/(1-\alpha)}$. Investment falls — the interest-rate channel of monetary policy on investment.
 </details>
-<details><summary>c) Nothing — interest rates matter for savers, not for firms</summary>
+<details><summary>c\) Nothing — interest rates matter for savers, not for firms</summary>
 No — even a firm investing its own funds forgoes interest it could have earned, so $r$ is an opportunity cost of holding capital.
 </details>
 </div>

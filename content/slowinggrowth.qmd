@@ -134,7 +134,7 @@ i.e. output is about **39% lower** than the baseline path — from a slowdown of
 
 ## What the simulator showed
 
-At the notebook defaults ($g_{A,0} = 2\%$, decay $= 0.0003$, $\alpha = 0.33$, $s = 0.20$, $T = 100$), TFP growth grinds linearly down and hits zero at **t = 67**. Final-period output growth is essentially dead — **g_Y ≈ 0.12%** — while the constant-growth counterfactual is still cruising at about 3% (TFP growth of 2% amplified by capital deepening, $g/(1-\alpha)$). The level consequence is the shocker: after 100 years the slowing economy produces only **17%** of the counterfactual's output — **83% lower** — even though the two paths are nearly indistinguishable for the first couple of decades. Push the decay slider to zero and the gap vanishes; push it higher and the blue path flattens sooner and the shortfall deepens. Small persistent slowdowns compound into enormous level differences.
+At the notebook defaults ($g_{A,0} = 2\%$, decay $= 0.0003$, $\alpha = 0.33$, $s = 0.20$, $T = 100$), TFP growth grinds linearly down and hits zero at **t = 67**. Final-period output growth is essentially dead — **g_Y ≈ 0.11%** — while the constant-growth counterfactual is still cruising at about 3% (TFP growth of 2% amplified by capital deepening, $g/(1-\alpha)$). The level consequence is the shocker: after 100 years the slowing economy produces only **17%** of the counterfactual's output — **83% lower** — even though the two paths are nearly indistinguishable for the first couple of decades. Push the decay slider to zero and the gap vanishes; push it higher and the blue path flattens sooner and the shortfall deepens. Small persistent slowdowns compound into enormous level differences.
 
 ## Common confusions
 
@@ -153,13 +153,13 @@ At the notebook defaults ($g_{A,0} = 2\%$, decay $= 0.0003$, $\alpha = 0.33$, $s
 
 Which is more costly for living standards in 2075: a one-time shock that permanently knocks output 10% below trend today, or a slowdown in trend growth from 2% to 1% starting today?
 
-<details><summary>a) The 10% level shock — losing a tenth of output is worse than losing one percentage point of growth</summary>
+<details><summary>a\) The 10% level shock — losing a tenth of output is worse than losing one percentage point of growth</summary>
 No — the level shock costs 10% forever, but the growth gap *compounds*. After 50 years, $(1.01)^{50}/(1.02)^{50} \approx 0.61$: the slowdown leaves output about 39% below the old path, and the gap keeps widening.
 </details>
-<details><summary>b) The growth slowdown — a growth-rate gap compounds without bound and overtakes any fixed level loss</summary>
+<details><summary>b\) The growth slowdown — a growth-rate gap compounds without bound and overtakes any fixed level loss</summary>
 **Correct**. By 2075 the 1-point slowdown has cost ≈39% of output versus the 10% cost of the level shock, and the growth gap keeps growing while the level gap does not. This asymmetry is why the productivity slowdown matters more than most recessions.
 </details>
-<details><summary>c) They are equivalent — both reduce output permanently</summary>
+<details><summary>c\) They are equivalent — both reduce output permanently</summary>
 No — "permanent" hides the difference. A level shock is a constant proportional gap; a growth-rate gap is a gap that compounds every year. Within about a decade the 2%→1% slowdown already exceeds a 10% level loss.
 </details>
 </div>

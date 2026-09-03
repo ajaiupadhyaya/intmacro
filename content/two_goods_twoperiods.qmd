@@ -64,9 +64,12 @@ Plot.plot({
       fill: d => d.measure.startsWith("Laspeyres") ? "var(--im-accent)"
                : d.measure.startsWith("Paasche") ? "var(--im-sim)"
                : "#c77d2e"}),
-    Plot.text(gdp_cw.bars, {x: "measure", y: "g",
+    Plot.text(gdp_cw.bars.filter(d => d.g >= 0), {x: "measure", y: "g",
       text: d => d.g.toFixed(1) + "%",
-      dy: d => d.g >= 0 ? -8 : 12, fill: "var(--im-fg-primary)", fontWeight: "bold"})
+      dy: -10, fill: "var(--im-fg-primary)", fontWeight: "bold"}),
+    Plot.text(gdp_cw.bars.filter(d => d.g < 0), {x: "measure", y: "g",
+      text: d => d.g.toFixed(1) + "%",
+      dy: 14, fill: "var(--im-fg-primary)", fontWeight: "bold"})
   ]
 })
 ```
@@ -137,13 +140,13 @@ At the defaults, the same economy's growth is **51.00%** at period-1 prices (Las
 
 Computer prices fall sharply while computer purchases boom. Compared with the chained measure, real GDP growth computed at *old* (period-1) prices will be…
 
-<details><summary>a) Lower — the old prices ignore the boom entirely</summary>
+<details><summary>a\) Lower — the old prices ignore the boom entirely</summary>
 No — old prices don't ignore the boom; they value it *generously*, at the old, high computer price. That pushes measured growth up, not down.
 </details>
-<details><summary>b) Higher — the boom in computers is valued at the old, high price</summary>
+<details><summary>b\) Higher — the boom in computers is valued at the old, high price</summary>
 **Correct**. This is substitution bias: Laspeyres weights fast-growing goods by their old (relatively high) prices, overstating growth. Paasche does the reverse, and the chained Fisher measure lands between.
 </details>
-<details><summary>c) The same — price weights cancel out of any growth rate</summary>
+<details><summary>c\) The same — price weights cancel out of any growth rate</summary>
 No — weights only cancel when relative prices are unchanged. The whole point of the two-good example is that changing *relative* prices make the weighting choice bite.
 </details>
 </div>

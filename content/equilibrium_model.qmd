@@ -145,13 +145,13 @@ At the defaults, output spikes to `γ/(1+γ)·εₘ = 0.6 × 0.05 = 0.030` exact
 
 In this model, what makes the effect of a one-time monetary surprise last for many periods?
 
-<details><summary>a) Agents keep being fooled by the same shock</summary>
+<details><summary>a\) Agents keep being fooled by the same shock</summary>
 No — rational expectations means agents fold the shock into their forecasts one period later. The surprise channel operates exactly once.
 </details>
-<details><summary>b) The capital built during the boom depreciates only slowly</summary>
+<details><summary>b\) The capital built during the boom depreciates only slowly</summary>
 **Correct**. The one-period output burst raises investment; the resulting capital raises potential output and erodes at rate δ, so output follows `y_{t+1} = (1 − δ + s_yϕ)·y_t` long after the shock is understood.
 </details>
-<details><summary>c) The money supply itself stays high because ρ is close to 1</summary>
+<details><summary>c\) The money supply itself stays high because ρ is close to 1</summary>
 No — the persistent part of money is anticipated, so prices absorb it one-for-one with no output effect. Set s_y = 0 and even ρ = 0.99 gives a one-period blip in output.
 </details>
 </div>
